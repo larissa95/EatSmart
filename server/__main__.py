@@ -25,7 +25,8 @@ def meal_get_information():
     pass
 #get guests, date,...
 
-@app.route('/meals/<id>/user/add/<uID>', methods=['POST'])
+
+@app.route('/meals/<id>/user/add/<uID>', methods=['POST'])t 
 def meal_user_add(userId):
     pass
 
@@ -58,17 +59,27 @@ def rating_guest_average_get(uID):
     #pass uhostID 
 
 @app.route('/user/create', methods=['POST'])
+def createUser():
+	userId = uuserId.uuserId4()
+	#create User and save it in Database
+	return userId;
 
-@app.route('/user/<uID>/delete', methods=['POST'])
 
-@app.route('/user/<uID>/get/information', methods=['GET'])
-    #name, ratings
+@app.route('/user/<userId>/delete', methods=['POST'])
+def deleteUser(userId):
+	pass
 
-#toAdd: Interface to change User Attributes after Creation
+@app.route('/user/<userId>/get/information', methods=['GET'])
+def getUserInformation():
+#name, ratings
+	pass
 
-@app.route('/get/food/<latitude>/<longitude>/', methods=['GET'])
-def getLocations(latitude, longitude):
-    pass
+@app.route('/user/<userId>/set/information', methods=['POST'])
+def createUser(**kwargs):
+	name = String(request.args.get('name', 'Muster')
+	#toAdd: Interface to change User Attributes after Creation
+	pass
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
