@@ -10,4 +10,11 @@
 
 @implementation DataBaseConnection
 
+
++(NSArray *) mealSuggestions {
+    Meal *meal = [[Meal alloc] initDummy];
+    return @[meal,meal,meal];
+}
+
+
 @end

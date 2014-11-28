@@ -7,7 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HostRating.h"
+#import <UIKit/UIKit.h>
 
 @interface User : NSObject
+
+@property(readonly) NSString *uuid;
+@property(readonly) NSString *name;
+@property(readonly) UIImage *profilePic;
+
+@property(readonly) NSNumber *guestRating;
+@property(readonly) HostRating *hostRating;
+
+
+
+
 
 @end

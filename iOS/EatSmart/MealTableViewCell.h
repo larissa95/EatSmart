@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Meal.h"
 
 @interface MealTableViewCell : UITableViewCell
+
+@property(nonatomic) UIImageView *picture;
+@property(nonatomic) UILabel *mealNameLabel;
+@property(nonatomic) UILabel *ratingLabel;
+
+-(void) setMeal:(Meal *) meal;
 
 @end

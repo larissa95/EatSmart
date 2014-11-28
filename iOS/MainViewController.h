@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MealTableViewCell.h"
+#import "DataBaseConnection.h"
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
+@property(nonatomic) UITableView *table;
+@property(nonatomic) NSArray *mealSuggestions;
 
 @end
