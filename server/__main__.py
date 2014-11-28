@@ -14,7 +14,6 @@ def meal_create():
     #pass user id, datum, meal name,... 
 
 
-
 @app.route('/meals/<id>/delete', methods=['POST'])
 def meal_delete(id):
     mealDic = {"success": True, "mealId": mealId}
@@ -61,11 +60,11 @@ def rating_host_add(uhostId):
 @app.route('/rating/host/average/get/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
 	#pass uID => to identify if user really participated in meal
-    hostRating = {"quality":2.3,
+    hostRatingDic = {"success":True,
+    				"quality":2.3,
 					"quantity":2.1,
 					"ambience":2.3,
 					"mood":5}
-	hostRatingDic = {"success":True, "hostRating":hostRating}
 	return jsonify(hostRatingDic)
 
 @app.route('/rating/guest/add/<uID>', methods=['POST'])
@@ -85,7 +84,7 @@ def createUser():
 	userId = uuserId.uuserId4()
 	#create User and save it in Database
 	userDic = {"success": True, "userId":userId}
-	return jsonify(userId)
+	return jsonify(userDic)
 
 
 @app.route('/user/<userId>/delete', methods=['POST'])
