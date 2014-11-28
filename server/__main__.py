@@ -2,41 +2,55 @@ import json
 import logging
 import os
 import uuid
- 
+import datetime
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 @app.route('/meals/create', methods=['POST'])
 def meal_create():
     mealId = uuid.uuid4()
-    meal = {"success":"1", "mealId":mealId}
-    return jsonify(meal)
+    mealDic = {"success": True, "mealId": mealId}
+    return jsonify(mealDic)
     #pass user id, datum, meal name,... 
 
 
 
 @app.route('/meals/<id>/delete', methods=['POST'])
 def meal_delete(id):
-    pass
+    mealDic = {"success": True, "mealId": mealId}
+    return jsonify(mealDic)
 
 
 @app.route('/meals/<id>/get/information', methods=['GET'])
-def meal_get_information():
-    pass
+def meal_get_information(mealId):
+    responseDic = {"success": True,
+                   "mealId": mealId,
+                   "typ": "food",
+                   "date": datetime.datetime.now(),
+                   "dateRegistrationEnd"
+                   "price": 3.00,
+                   "place": "Adolfstraße 27, 70469 Feuerbach",
+                   "placeGPS": {"longitude": 48.822801, "latitude": 9.165044},
+                   "host": "TODO",
+                   "image": "url"}
+    return jsonify(responseDic)
 #get guests, date,...
 
 
 @app.route('/meals/<id>/user/add/<uID>', methods=['POST'])t 
 def meal_user_add(userId):
-    pass
+    responseDic = {"success": True, "mealId": userId}
+    return jsonify(responseDic)
 
 @app.route('/meals/<id>/user/remove/<uID>', methods=['POST'])
 def meal_user_remove(userId):
-    pass
+    responseDic = {"success": True, "mealId": userId}
+    return jsonify(responseDic)
 
 @app.route('/meals/search/<latitude>/<longitude>', methods=['GET'])
 def meal_search(latitude, longitude):
-    pass
+    responseDic = {"success": True, "mealId": userId}
+    return jsonify(responseDic)
     #pass time, typ
 
 @app.route('/rating/host/add/<uhostID>', methods=['POST'])
