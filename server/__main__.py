@@ -9,8 +9,8 @@ app = Flask(__name__)
 @app.route('/meals/create', methods=['POST'])
 def meal_create():
     mealId = uuid.uuid4()
-    meal = {"success":"1", "mealId":mealId}
-    return jsonify(meal)
+    mealDic = {"success":"1", "mealId":mealId}
+    return jsonify(mealDic)
     #pass user id, datum, meal name,... 
 
 
@@ -46,7 +46,13 @@ def rating_host_add(uhostId):
 
 @app.route('/rating/host/average/get/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
-    pass
+	#pass uID => to identify if user really participated in meal
+    hostRating = {"quality":2.3,
+					"quantity":2.1,
+					"ambience":2.3,
+					"mood":5}
+	hostRatingDic = {"success":True, "hostRating":hostRating}
+	return jsonify(hostRatingDic)
 
 @app.route('/rating/guest/add/<uID>', methods=['POST'])
 def rating_guest_add(uID):
@@ -55,24 +61,41 @@ def rating_guest_add(uID):
 
 @app.route('/rating/guest/average/get/<uID>', methods=['GET'])
 def rating_guest_average_get(uID):
-    pass
     #pass uhostID 
+    guestRating = 3.4
+    guestRatingDic = {"success":True, "guestRating":guestRating}
+	return jsonify(guestRatingDic)
 
 @app.route('/user/create', methods=['POST'])
 def createUser():
 	userId = uuserId.uuserId4()
 	#create User and save it in Database
-	return userId;
+	userDic = {"success": True, "userId":userId}
+	return jsonify(userId)
 
 
 @app.route('/user/<userId>/delete', methods=['POST'])
 def deleteUser(userId):
+	#deleteUserFromDataBase
 	pass
 
 @app.route('/user/<userId>/get/information', methods=['GET'])
 def getUserInformation():
-#name, ratings
-	pass
+	hostRating = {"quality":2.3,
+					"quantity":2.1,
+					"ambience":2.3,
+					"mood":5}
+
+
+	userDic = {"success": True,
+				"userId":userId,
+				"name":"Mustermann",
+				"firstLogin": datetime.datetime.now()
+				"age":38}
+				"hostRating":hostRating
+				"guestRating":4}
+
+	return jsonify(userDic);
 
 @app.route('/user/<userId>/set/information', methods=['POST'])
 def createUser(**kwargs):
@@ -83,4 +106,5 @@ def createUser(**kwargs):
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
+    #version api
 
