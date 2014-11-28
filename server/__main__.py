@@ -30,7 +30,7 @@ def meal_get_information(mealId):
                    "dateRegistrationEnd"
                    "price": 3.00,
                    "place": "Adolfstraße 27, 70469 Feuerbach",
-                   "placeGPS": {"longitude": 48.822801, "latitude": 9.165044},
+                   "placeGPS": {"latitude": 48.822801, "longitude": 9.165044},
                    "host": "TODO",
                    "image": "url"}
     return jsonify(responseDic)
