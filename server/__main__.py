@@ -96,6 +96,61 @@ def meal_get_information(mealId):
 #get guests, date,...
 
 
+@app.route('/meals/<mealId>/request/user/<userId>', methods=['POST'])
+def meal_user_add_request(mealId, userId):
+    session = DBSession()
+    try:
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        user = session.query(User).filter(User.id == userId).one()
+        meal.unconfirmedUsers.append(user)
+        session.add(meal)
+        session.commit()
+    except NoResultFound:
+        pass
+    session.close()
+    responseDic = {"success": True, "mealId": userId}
+    return jsonify(responseDic)
+
+
+@app.route('/meals/<mealId>/request/user/<userId>', methods=['DELETE'])
+def meal_remove_unconfirmed_user(mealId, userId):
+    session = DBSession()
+    try:
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        user = session.query(User).filter(User.id == userId).one()
+        meal.unconfirmedUsers.remove(user)
+        session.add(meal)
+        session.commit()
+    except NoResultFound:
+        pass
+    except ValueError:
+        pass
+    session.close()
+    responseDic = {"success": True, "mealId": userId}
+    return jsonify(responseDic)
+
+
+@app.route('/meals/<mealId>/request/confirm/user/<userId>', methods=['POST'])
+def meal_confirm_unconfirmed_user(mealId, userId):
+    session = DBSession()
+    try:
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        user = session.query(User).filter(User.id == userId).one()
+        meal.unconfirmedUsers.remove(user)
+        session.add(meal)
+        session.commit()
+        meal.users.append(user)
+        session.add(meal)
+        session.commit()
+    except NoResultFound:
+        pass
+    except ValueError:
+        pass
+    session.close()
+    responseDic = {"success": True, "mealId": userId}
+    return jsonify(responseDic)
+  
+
 @app.route('/meals/<mealId>/user/<userId>', methods=['POST'])
 def meal_user_add(mealId, userId):
     session = DBSession()
@@ -111,6 +166,7 @@ def meal_user_add(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
+#probably unused
 @app.route('/meals/<mealId>/user/<userId>', methods=['DELETE'])
 def meal_user_remove(mealId, userId):
     session = DBSession()
