@@ -13,7 +13,7 @@
 
 +(NSArray *) mealSuggestions {
     Meal *meal = [[Meal alloc] initDummy];
-    return @[meal,meal,meal];
+    return @[meal,meal,meal,meal,meal,meal,meal,meal,meal];
 }
 
 

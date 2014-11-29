@@ -2,27 +2,56 @@ import json
 import logging
 import os
 import uuid
-import datetime, math
+import math
+from datetime import datetime
 import requests
 from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 @app.route('/meals/create', methods=['POST'])
 def meal_create():
-    mealId = uuid.uuid4()
-    mealDic = {"success": True, "mealId": mealId}
+    name = request.form['name']
+    DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
+    date = datetime.strptime(request.form['date'], DATETIME_FORMAT)
+    dateRegistrationEnd = datetime.strptime(request.form['dateRegistrationEnd'], DATETIME_FORMAT)
+    price = request.form['price']
+    host = request.form['host']
+    address = request.form['address']
+    typ = request.form['typ']
+    session = DBSession()
+    host = session.query(User).filter(User.id == host).one()
+    meal = Meal(name=name,
+                date=date,
+                dateRegistrationEnd=dateRegistrationEnd,
+                price=price,
+                address=address,
+                typ = typ,
+                host= host)
+    session.add(meal)
+    session.commit()
+    mealDic = {"success": True, "mealId": meal.id}
+    session.close()
     return jsonify(mealDic)
     #pass user id, datum, meal name,... 
 
 
-@app.route('/meals/<id>/delete', methods=['POST'])
-def meal_delete(id):
+@app.route('/meals/<mealId>/delete', methods=['POST'])
+def meal_delete(mealId):
+    session = DBSession()
+    try:
+        meal= session.query(Meal).filter(Meal.id==mealId).one()
+        session.delete(meal)
+        session.commit()
+    except NoResultFound:
+        return jsonify({"success": False, "error": {"message": "No Meal Found with this id"}})
+    session.close()
 
-    mealDic = {"success": True, "mealId": mealId}
-    return jsonify(mealDic)
+    return jsonify({"success": True})
 
 
 def getCloseByCoordinats(latitude, longitude, radius):
@@ -45,17 +74,26 @@ def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
 
 @app.route('/meals/<mealId>/get/information', methods=['GET'])
 def meal_get_information(mealId):
-    responseDic = {"success": True,
+    session = DBSession()
+    try:
+        meal= session.query(Meal).filter(Meal.id==mealId).one()
+        host = meal.host
+        responseDic = {"success": True,
                    "mealId": mealId,
-                   "typ": "food",
-                   "date": datetime.datetime.now(),
-                   "dateRegistrationEnd"
-                   "price": 3.00,
-                   "place": "Adolfstraße 27, 70469 Feuerbach",
-                   "walking_distance": getWalkingDistance(),
+                   "typ": meal.typ,
+                   "date": meal.date,
+                   "dateRegistrationEnd": meal.dateRegistrationEnd,
+                   "price": meal.price,
+                   "place": meal.address,
+                   "walking_distance": 1560,
                    "placeGPS": {"latitude": 48.822801, "longitude": 9.165044},
-                   "host": {"hostname": "Jon", "gender": "male", "hostId": 1234},
+                   "host": {"hostname": host.name, "age": host.age, "phone": host.phone, "gender": host.gender, "hostId": host.id},
                    "image": "http://placekitten.com/g/200/300"}
+        session.commit()
+    except NoResultFound:
+        return jsonify({"success": False, "error": {"message": "No Meal Found with t id"}})
+    session.close()
+    
     return jsonify(responseDic)
 #get guests, date,...
 
@@ -74,7 +112,7 @@ def meal_user_remove(mealId, userId):
 def meal_search(latitude, longitude):
     squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
     #return jsonify(getWalkingDistanceFromGoogle((latitude, longitude),["Adolfstraße 27, Feuerbach"]))
-    resultList = [{"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.datetime.now(), "rating": 5, "price": 3.20}]
+    resultList = [{"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20}]
     responseDic = {"success": True, "results": resultList}
     return jsonify(responseDic)
     #pass time, typ
@@ -108,6 +146,7 @@ def rating_guest_average_get(userId):
 
 @app.route('/user/create', methods=['POST'])
 def createUser():
+
     new_user = User()
     session = DBSession()
     session.add(new_user)
@@ -123,7 +162,7 @@ def getUserInformation(userId):
     userDic = {"success": True,
                 "userId":userId,
                 "name":"Mustermann",
-                "firstLogin": datetime.datetime.now(),
+                "firstLogin": datetime.now(),
                 "age":38,
                 "hostRating":hostRating,
                 "guestRating":4}
