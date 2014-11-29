@@ -29,14 +29,14 @@ def meal_get_information(mealId):
                    "dateRegistrationEnd"
                    "price": 3.00,
                    "place": "Adolfstraße 27, 70469 Feuerbach",
-                   "placeGPS": {"longitude": 48.822801, "latitude": 9.165044},
+                   "placeGPS": {"latitude": 48.822801, "longitude": 9.165044},
                    "host": "TODO",
                    "image": "url"}
     return jsonify(responseDic)
 #get guests, date,...
 
 
-@app.route('/meals/<id>/user/add/<uID>', methods=['POST'])t 
+@app.route('/meals/<id>/user/add/<uID>', methods=['POST'])
 def meal_user_add(userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
@@ -67,6 +67,7 @@ def rating_host_average_get(uhostID):
 					"mood":5}
 	return jsonify(hostRatingDic)
 
+
 @app.route('/rating/guest/add/<uID>', methods=['POST'])
 def rating_guest_add(uID):
     pass
@@ -77,7 +78,7 @@ def rating_guest_average_get(uID):
     #pass uhostID 
     guestRating = 3.4
     guestRatingDic = {"success":True, "guestRating":guestRating}
-	return jsonify(guestRatingDic)
+    return jsonify(guestRatingDic)
 
 @app.route('/user/create', methods=['POST'])
 def createUser():
@@ -89,32 +90,26 @@ def createUser():
 
 @app.route('/user/<userId>/delete', methods=['POST'])
 def deleteUser(userId):
-	#deleteUserFromDataBase
-	pass
+    #deleteUserFromDataBase
+    pass
 
 @app.route('/user/<userId>/get/information', methods=['GET'])
 def getUserInformation():
-	hostRating = {"quality":2.3,
-					"quantity":2.1,
-					"ambience":2.3,
-					"mood":5}
+    hostRating = {"quality":2.3,
+                    "quantity":2.1,
+                    "ambience":2.3,
+                    "mood":5}
 
 
-	userDic = {"success": True,
-				"userId":userId,
-				"name":"Mustermann",
-				"firstLogin": datetime.datetime.now()
-				"age":38}
-				"hostRating":hostRating
-				"guestRating":4}
+    userDic = {"success": True,
+                "userId":userId,
+                "name":"Mustermann",
+                "firstLogin": datetime.datetime.now(),
+                "age":38,
+                "hostRating":hostRating,
+                "guestRating":4}
 
-	return jsonify(userDic);
-
-@app.route('/user/<userId>/set/information', methods=['POST'])
-def createUser(**kwargs):
-	name = String(request.args.get('name', 'Muster')
-	#toAdd: Interface to change User Attributes after Creation
-	pass
+    return jsonify(userDic);
 
 
 if __name__ == '__main__':

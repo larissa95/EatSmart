@@ -9,11 +9,19 @@
 /* Begin PBXBuildFile section */
 		4EA09BD41A28FE9E00D2618B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA09BD31A28FE9E00D2618B /* main.m */; };
 		4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA09BD61A28FE9E00D2618B /* AppDelegate.m */; };
-		4EA09BDA1A28FE9E00D2618B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA09BD91A28FE9E00D2618B /* ViewController.m */; };
-		4EA09BDD1A28FE9E00D2618B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EA09BDB1A28FE9E00D2618B /* Main.storyboard */; };
 		4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EA09BDE1A28FE9E00D2618B /* Images.xcassets */; };
 		4EA09BE21A28FE9E00D2618B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EA09BE01A28FE9E00D2618B /* LaunchScreen.xib */; };
 		4EA09BEE1A28FE9E00D2618B /* EatSmartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA09BED1A28FE9E00D2618B /* EatSmartTests.m */; };
+		518998701A290B77004C71E5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189986F1A290B77004C71E5 /* MainViewController.m */; };
+		518998731A290EF1004C71E5 /* Meal.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998721A290EF1004C71E5 /* Meal.m */; };
+		518998761A290EF8004C71E5 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998751A290EF8004C71E5 /* User.m */; };
+		518998791A29165F004C71E5 /* HostRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998781A29165F004C71E5 /* HostRating.m */; };
+		5189987C1A291C1A004C71E5 /* MealTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189987B1A291C1A004C71E5 /* MealTableViewCell.m */; };
+		5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189987E1A292106004C71E5 /* DataBaseConnection.m */; };
+		518998831A292750004C71E5 /* defaultUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 518998821A292750004C71E5 /* defaultUser.png */; };
+		518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998851A2929AC004C71E5 /* MealDetailViewController.m */; };
+		518998951A2935CB004C71E5 /* 5starsgray.png in Resources */ = {isa = PBXBuildFile; fileRef = 518998941A2935CB004C71E5 /* 5starsgray.png */; };
+		518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998971A2937B8004C71E5 /* AMRatingControl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +40,29 @@
 		4EA09BD31A28FE9E00D2618B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4EA09BD51A28FE9E00D2618B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4EA09BD61A28FE9E00D2618B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		4EA09BD81A28FE9E00D2618B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		4EA09BD91A28FE9E00D2618B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		4EA09BDC1A28FE9E00D2618B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4EA09BDE1A28FE9E00D2618B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4EA09BE11A28FE9E00D2618B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4EA09BE71A28FE9E00D2618B /* EatSmartTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EatSmartTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EA09BEC1A28FE9E00D2618B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4EA09BED1A28FE9E00D2618B /* EatSmartTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EatSmartTests.m; sourceTree = "<group>"; };
+		5189986E1A290B77004C71E5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = ../MainViewController.h; sourceTree = "<group>"; };
+		5189986F1A290B77004C71E5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = ../MainViewController.m; sourceTree = "<group>"; };
+		518998711A290EF1004C71E5 /* Meal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meal.h; sourceTree = "<group>"; };
+		518998721A290EF1004C71E5 /* Meal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meal.m; sourceTree = "<group>"; };
+		518998741A290EF8004C71E5 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		518998751A290EF8004C71E5 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		518998771A29165F004C71E5 /* HostRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostRating.h; sourceTree = "<group>"; };
+		518998781A29165F004C71E5 /* HostRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostRating.m; sourceTree = "<group>"; };
+		5189987A1A291C1A004C71E5 /* MealTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealTableViewCell.h; sourceTree = "<group>"; };
+		5189987B1A291C1A004C71E5 /* MealTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealTableViewCell.m; sourceTree = "<group>"; };
+		5189987D1A292106004C71E5 /* DataBaseConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseConnection.h; sourceTree = "<group>"; };
+		5189987E1A292106004C71E5 /* DataBaseConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseConnection.m; sourceTree = "<group>"; };
+		518998821A292750004C71E5 /* defaultUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultUser.png; sourceTree = "<group>"; };
+		518998841A2929AC004C71E5 /* MealDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealDetailViewController.h; sourceTree = "<group>"; };
+		518998851A2929AC004C71E5 /* MealDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealDetailViewController.m; sourceTree = "<group>"; };
+		518998941A2935CB004C71E5 /* 5starsgray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5starsgray.png; sourceTree = "<group>"; };
+		518998961A2937B8004C71E5 /* AMRatingControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMRatingControl.h; sourceTree = "<group>"; };
+		518998971A2937B8004C71E5 /* AMRatingControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRatingControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,11 +104,26 @@
 		4EA09BD01A28FE9E00D2618B /* EatSmart */ = {
 			isa = PBXGroup;
 			children = (
+				518998941A2935CB004C71E5 /* 5starsgray.png */,
+				518998821A292750004C71E5 /* defaultUser.png */,
 				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
-				4EA09BD81A28FE9E00D2618B /* ViewController.h */,
-				4EA09BD91A28FE9E00D2618B /* ViewController.m */,
-				4EA09BDB1A28FE9E00D2618B /* Main.storyboard */,
+				5189986E1A290B77004C71E5 /* MainViewController.h */,
+				5189986F1A290B77004C71E5 /* MainViewController.m */,
+				5189987A1A291C1A004C71E5 /* MealTableViewCell.h */,
+				5189987B1A291C1A004C71E5 /* MealTableViewCell.m */,
+				518998841A2929AC004C71E5 /* MealDetailViewController.h */,
+				518998851A2929AC004C71E5 /* MealDetailViewController.m */,
+				518998711A290EF1004C71E5 /* Meal.h */,
+				518998721A290EF1004C71E5 /* Meal.m */,
+				518998741A290EF8004C71E5 /* User.h */,
+				518998751A290EF8004C71E5 /* User.m */,
+				518998771A29165F004C71E5 /* HostRating.h */,
+				518998781A29165F004C71E5 /* HostRating.m */,
+				5189987D1A292106004C71E5 /* DataBaseConnection.h */,
+				5189987E1A292106004C71E5 /* DataBaseConnection.m */,
+				518998961A2937B8004C71E5 /* AMRatingControl.h */,
+				518998971A2937B8004C71E5 /* AMRatingControl.m */,
 				4EA09BDE1A28FE9E00D2618B /* Images.xcassets */,
 				4EA09BE01A28FE9E00D2618B /* LaunchScreen.xib */,
 				4EA09BD11A28FE9E00D2618B /* Supporting Files */,
@@ -199,9 +237,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EA09BDD1A28FE9E00D2618B /* Main.storyboard in Resources */,
 				4EA09BE21A28FE9E00D2618B /* LaunchScreen.xib in Resources */,
+				518998951A2935CB004C71E5 /* 5starsgray.png in Resources */,
 				4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */,
+				518998831A292750004C71E5 /* defaultUser.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,8 +258,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EA09BDA1A28FE9E00D2618B /* ViewController.m in Sources */,
+				518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */,
+				518998761A290EF8004C71E5 /* User.m in Sources */,
+				518998731A290EF1004C71E5 /* Meal.m in Sources */,
 				4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */,
+				5189987C1A291C1A004C71E5 /* MealTableViewCell.m in Sources */,
+				5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */,
+				518998701A290B77004C71E5 /* MainViewController.m in Sources */,
+				518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */,
+				518998791A29165F004C71E5 /* HostRating.m in Sources */,
 				4EA09BD41A28FE9E00D2618B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,14 +290,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		4EA09BDB1A28FE9E00D2618B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4EA09BDC1A28FE9E00D2618B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		4EA09BE01A28FE9E00D2618B /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -412,6 +450,7 @@
 				4EA09BF31A28FE9E00D2618B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4EA09BF41A28FE9E00D2618B /* Build configuration list for PBXNativeTarget "EatSmartTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +459,7 @@
 				4EA09BF61A28FE9E00D2618B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

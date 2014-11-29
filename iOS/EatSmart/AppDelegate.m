@@ -16,8 +16,38 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.window makeKeyAndVisible];
+    
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+    
+    
+    MainViewController *firstView = [[MainViewController alloc] init];
+    
+    UINavigationController *navigationController= [[UINavigationController alloc] initWithRootViewController:firstView];
+    navigationController.navigationBar.barTintColor = [UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0];
+    [navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    self.window.rootViewController = navigationController;
+
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(test)
+     name:@"grr"
+     object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"grr"
+     object:self];
+    
+    
     // Override point for customization after application launch.
     return YES;
+}
+
+-(void) test {
+    NSLog(@"TEST");
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

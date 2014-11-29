@@ -11,17 +11,17 @@
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>BA7CB8D20676B4AFE41C5F284713587B1966E698</key>
-		<string>https://github.com/larissa88/EatSmart.git</string>
+		<string>https://github.com/larissa88/EatSmart</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>EatSmart/EatSmart.xcodeproj</string>
+	<string>iOS/EatSmart.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>BA7CB8D20676B4AFE41C5F284713587B1966E698</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/larissa88/EatSmart.git</string>
+	<string>https://github.com/larissa88/EatSmart</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>BA7CB8D20676B4AFE41C5F284713587B1966E698</string>
 			<key>IDESourceControlWCCName</key>
-			<string>EatSmart-Project</string>
+			<string>EatSmart</string>
 		</dict>
 	</array>
 </dict>
