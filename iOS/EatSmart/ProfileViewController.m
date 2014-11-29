@@ -38,6 +38,33 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) loadUserIdFromServer{
+   
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://10.60.36.31:5000/0.2.1b/meals/search/48.742627/9.095000"]];
+        
+        if(data) {
+            NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            
+            NSArray *mealsHuelle = [JSON objectForKey:@"results"];
+            
+            NSMutableArray *meals = [[NSMutableArray alloc] init];
+            
+            for(NSDictionary *dic in mealsHuelle) {
+                Meal *meal =  [[Meal alloc] initWithJSON:dic];
+                [meals addObject:meal];
+            }
+            
+            mealSuggestions = [NSArray arrayWithArray:meals];
+            [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+            [refreshControl endRefreshing];
+        } else {
+            Meal *meal = [[Meal alloc] initDummy];
+            mealSuggestions =  @[meal,meal];
+            [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+            [refreshControl endRefreshing];
+        }
+}
+
 /*
 #pragma mark - Navigation
 
