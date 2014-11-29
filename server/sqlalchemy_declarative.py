@@ -68,7 +68,6 @@ class Meal(Base):
     dateRegistrationEnd = Column(DateTime(timezone=True),
                                  nullable=False)
     #for many to many relationship: (meal/user)
-<<<<<<< HEAD
     users = relationship(
     'User',
     secondary='meal_user_link'
@@ -79,11 +78,7 @@ class Meal(Base):
     secondary='meal_unconfirmed_user_link'
     )
     price = Column(Float,nullable=False)
-=======
-    users = relationship('User',
-                         secondary='meal_user_link')
-    price = Column(Float, nullable=False)
->>>>>>> 52fbc0ad6fe582dedbd41a108d4df9ed15254d7d
+
     address = Column(String(500), nullable=False)
     latitude = Column(Float(20))
     longitude = Column(Float(20))
