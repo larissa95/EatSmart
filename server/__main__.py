@@ -4,7 +4,7 @@ import requests
 from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
-
+from passwords import getPassword, getUser
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -360,7 +360,7 @@ def  mailToAccepted(userId, mealId):
         session = DBSession()
 
         user = serssion.query(User).filter(User.id == userId).one()
-        payload = {'to': user.email, 'from': 'info@eatcookNmeet.com', 'html': render_template('index.html', **locals())}
+        payload = {'api_key': getPassword(), 'api_user': getUser(), 'to': user.email, 'from': 'info@eatcookNmeet.com', 'html': render_template('index.html', **locals())}
         r = requests.post("http://httpbin.org/post", data=payload)
     except NoResultFound:
         pass
