@@ -15,8 +15,13 @@
     self = [super init];    
     
     if(self) {
+        NSLog(@"fsfsdf%@", JSON);
         uuid = [JSON valueForKey:@"hostId"];
-
+        NSLog(@"%i + UUID",uuid);
+        age = [JSON valueForKey:@"age"];
+        if(age == [NSNull null]){
+            NSLog(@"called");
+        }
         if(uuid == (id)[NSNull null]) {
             NSLog(@"j");
         }
