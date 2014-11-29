@@ -168,12 +168,40 @@ def meal_search(latitude, longitude):
     return jsonify(responseDic)
     #pass time, typ
 
+
 @app.route('/0.2.1b/rating/host/<uhostID>', methods=['POST'])
 def rating_host_add(uhostId):
-    pass
-        #pass uID => to identify if user really participated in meal
-        #check if bewertung exists
-    #pass userId,mealID
+    userId = int(request.form['userId'])
+    mealId = int(request.form['mealId'])
+    quality = request.form['quality']
+    quantity = request.form['quantity']
+    onTime = request.form['onTime']
+    mood = request.form['mood']
+
+    try:
+        comment = request.form['comments']
+    except Exception:
+        comment = None
+    
+    alreadyAdded = False
+    session = DBSession()
+    hostRatingsForThisHostAndMeal = session.query(HostRating).filter(and_(HostRating.host_id == uhostId, HostRating.meal_id == mealId)).all()
+    for hostRate in hostRatingsForThisHostAndMeal:
+        if(hostRate.user_id==userId):
+            alreadyAdded = True
+            print('alladded')
+    
+    if not alreadyAdded:
+        print('not added')
+        #pass userID => to identify if user really participated in meal => TODO
+        host = session.query(User).filter(User.id == uhostId).one()
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        user = session.query(User).filter(User.id == userId).one()
+        hostRate = HostRating(quality = quality, quantity = quantity,onTime = onTime, mood = mood,comment = comment, host = host, meal = meal, user_id = user.id)
+        session.add(hostRate)
+        session.commit()
+    session.close()
+    return jsonify({'success': 1})
 
 @app.route('/0.2.1b/rating/host/average/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
@@ -186,14 +214,12 @@ def rating_host_average_get(uhostID):
 @app.route('/0.2.1b/rating/guest/<userId>', methods=['POST'])
 def rating_guest_add(userId):
     uhostId = request.form['uhostId']
-    uhostId = request.form['uhostId']
-    print(uhostId)
     mealId = request.form['mealId']
     _guestRating = request.form['guestRating']
     session = DBSession()
     alreadyAdded = False
     try:
-        guestRatingsForThisUser = session.query(GuestRating).filter(and_(GuestRating.user_id == userId, GuestRating.meal_id == mealId)).one()
+        guestRatingsForThisUserAndMeal = session.query(GuestRating).filter(and_(GuestRating.user_id == userId, GuestRating.meal_id == mealId)).one()
     except NoResultFound:
         try:
             guest = session.query(User).filter(User.id == userId).one()
@@ -281,7 +307,11 @@ def calculateTotalAverageHostRating(userId):
     dic = calculateAverageHostRating(userId)
     if not dic.get('quality'):
         return None
+<<<<<<< HEAD
     return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('ambience'))/4)
+=======
+    return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('onTime'))/4)
+>>>>>>> 265370bf6b2da11d0adcf24e210319cae8a75b26
 
 
 def getNumberOfRatings(userId):
@@ -296,7 +326,7 @@ def calculateAverageHostRating(userId):
     user = session.query(User).filter(User.id == userId).one()
     averageQuality = 0
     averageQuantity = 0
-    averageAmbience = 0
+    averageonTime = 0
     averageMood = 0
     numberOfRatings = len(user.hostratings)
     if(numberOfRatings !=0):
@@ -304,7 +334,7 @@ def calculateAverageHostRating(userId):
         for hostrate in user.hostratings:
             averageQuality += hostrate.quality
             averageQuantity += hostrate.quantity
-            averageAmbience += hostrate.ambience
+            averageonTime += hostrate.onTime
             averageMood += hostrate.mood
             if hostrate.comment is not None:
                 l.append(hostrate.comment)
@@ -313,14 +343,14 @@ def calculateAverageHostRating(userId):
             comments = None
         return{"quality":averageQuality/numberOfRatings,
                     "quantity":averageQuantity/numberOfRatings,
-                    "ambience":averageAmbience/numberOfRatings,
+                    "onTime":averageonTime/numberOfRatings,
                     "mood":averageMood/numberOfRatings,
                     "comments":comments}
     else:
         session.close()
         return {"quality":None,
                     "quantity":None,
-                    "ambience":None,
+                    "onTime":None,
                     "mood":None,
                     "comments":None}
 

@@ -29,7 +29,7 @@ class HostRating(Base):
     id = Column(Integer, primary_key=True)
     quality = Column(Integer,default=3)
     quantity = Column(Integer,default=3)
-    ambience = Column(Integer,default=3)
+    onTime = Column(Integer,default=3)
     mood = Column(Integer,default=3)
     comment = Column(String)
     # => one to many relationship => one user many HostRatings
