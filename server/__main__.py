@@ -307,11 +307,7 @@ def calculateTotalAverageHostRating(userId):
     dic = calculateAverageHostRating(userId)
     if not dic.get('quality'):
         return None
-<<<<<<< HEAD
-    return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('ambience'))/4)
-=======
     return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('onTime'))/4)
->>>>>>> 265370bf6b2da11d0adcf24e210319cae8a75b26
 
 
 def getNumberOfRatings(userId):
