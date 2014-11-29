@@ -12,6 +12,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
+
 @app.route('/meals/create', methods=['POST'])
 def meal_create():
     name = request.form['name']
@@ -30,8 +31,8 @@ def meal_create():
                 dateRegistrationEnd=dateRegistrationEnd,
                 price=price,
                 address=address,
-                typ = typ,
-                host= host)
+                typ=typ,
+                host=host)
     session.add(meal)
     session.commit()
     mealDic = {"success": True, "mealId": meal.id}
@@ -86,25 +87,48 @@ def meal_get_information(mealId):
                    "price": meal.price,
                    "place": meal.address,
                    "walking_distance": 1560,
+                   "guest_attending": len(meal.users),
                    "placeGPS": {"latitude": 48.822801, "longitude": 9.165044},
                    "host": {"hostname": host.name, "age": host.age, "phone": host.phone, "gender": host.gender, "hostId": host.id},
                    "image": "http://placekitten.com/g/200/300"}
         session.commit()
     except NoResultFound:
-        return jsonify({"success": False, "error": {"message": "No Meal Found with t id"}})
+        return jsonify({"success": False, "error": {"message": "No Meal Found with this id"}})
     session.close()
     
     return jsonify(responseDic)
 #get guests, date,...
 
 
-@app.route('/meals/<mealId>/user/add/<userId>', methods=['POST'])
+@app.route('/meals/<mealId>/user/<userId>', methods=['POST'])
 def meal_user_add(mealId, userId):
+    session = DBSession()
+    try:
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        user = session.query(User).filter(User.id == userId).one()
+        meal.users.append(user)
+        session.add(meal)
+        session.commit()
+    except NoResultFound:
+        pass
+    session.close()
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
-@app.route('/meals/<mealId>/user/remove/<userId>', methods=['POST'])
+@app.route('/meals/<mealId>/user/<userId>', methods=['DELETE'])
 def meal_user_remove(mealId, userId):
+    session = DBSession()
+    try:
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        user = session.query(User).filter(User.id == userId).one()
+        meal.users.remove(user)
+        session.add(meal)
+        session.commit()
+    except NoResultFound:
+        pass
+    except ValueError:
+        pass
+    session.close()
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
@@ -124,7 +148,7 @@ def rating_host_add(uhostId):
         #check if bewertung exists
     #pass userId,mealID
 
-@app.route('/rating/host/average/get/<uhostID>', methods=['GET'])
+@app.route('/rating/host/average/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
     hostRatingDic = {"success":True}
     hostRatingDic.update(calculateAverageHostRating(uhostID))
@@ -156,7 +180,7 @@ def createUser():
     return jsonify(userDic)
 
 
-@app.route('/user/<userId>/get/information', methods=['GET'])
+@app.route('/user/<userId>/information', methods=['GET'])
 def getUserInformation(userId):
     hostRating = calculateAverageHostRating(userId)
     userDic = {"success": True,
@@ -172,10 +196,10 @@ def getUserInformation(userId):
 
 @app.route('/user/<userId>/information', methods=['PUT'])
 def setUserInfromation(userId):
-    age = request.form['age']
-    phone = request.form['phone']
-    gender = request.form['gender']
-    name = request.form['name']
+    age = request.headers.get('age')
+    phone = request.headers.get('phone')
+    name = request.headers.get('name')
+    gender = request.headers.get('gender')
     session = DBSession()
     try:
         user = session.query(User).filter(User.id == userId).one()
@@ -184,11 +208,11 @@ def setUserInfromation(userId):
         user.name = name
         user.gender = gender
         session.add(user)
-        session.commit
+        session.commit()
     except NoResultFound:
         pass
     session.close()
-    return {"sucess": True}
+    return jsonify({"success": True})
 
 def calculateAverageHostRating(userId):
     session = DBSession()
