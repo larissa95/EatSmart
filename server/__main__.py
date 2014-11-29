@@ -2,7 +2,8 @@ import json
 import logging
 import os
 import uuid
-import datetime
+import datetime, math
+import requests
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
@@ -15,13 +16,31 @@ def meal_create():
 
 
 
-@app.route('/meals/<id>/delete', methods=['POST'])
-def meal_delete(id):
+@app.route('/meals/<mealId>/delete', methods=['POST'])
+def meal_delete(mealId):
     mealDic = {"success": True, "mealId": mealId}
     return jsonify(mealDic)
 
 
-@app.route('/meals/<id>/get/information', methods=['GET'])
+def getCloseByCoordinats(latitude, longitude, radius):
+    try:
+        latitude = float(latitude)
+        longitude = float(longitude)
+    except ValueError:
+        pass  # DO MAGIC
+    constLatitude = 110574  # meters of a 1 degree latitude
+    constLongtitude = 111320
+    latitude = latitude-radius/constLatitude
+    longitude = longitude-radius/(constLongtitude*math.cos(math.radians(longitude)))
+    return latitude, longitude
+
+def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
+    origins = startCoordinats[0]+","+startCoordinats[1]
+    destinations = "|".join(listofDestinations).replace(" ", "+")
+    googleMapsApiUrl = "http://maps.googleapis.com/maps/api/distancematrix/json?origins={0}&destinations={1}&mode=walking".format(origins,destinations)
+    return requests.get(googleMapsApiUrl).json()
+
+@app.route('/meals/<mealId>/get/information', methods=['GET'])
 def meal_get_information(mealId):
     responseDic = {"success": True,
                    "mealId": mealId,
@@ -30,37 +49,41 @@ def meal_get_information(mealId):
                    "dateRegistrationEnd"
                    "price": 3.00,
                    "place": "Adolfstraße 27, 70469 Feuerbach",
+                   "walking_distance": getWalkingDistance(),
                    "placeGPS": {"latitude": 48.822801, "longitude": 9.165044},
-                   "host": "TODO",
-                   "image": "url"}
+                   "host": {"hostname": "Jon", "gender": "male", "hostId": 1234},
+                   "image": "http://placekitten.com/g/200/300"}
     return jsonify(responseDic)
 #get guests, date,...
 
 
-@app.route('/meals/<id>/user/add/<uID>', methods=['POST'])
-def meal_user_add(userId):
+@app.route('/meals/<mealId>/user/add/<userId>', methods=['POST'])
+def meal_user_add(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
-@app.route('/meals/<id>/user/remove/<uID>', methods=['POST'])
-def meal_user_remove(userId):
+@app.route('/meals/<mealId>/user/remove/<userId>', methods=['POST'])
+def meal_user_remove(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
 @app.route('/meals/search/<latitude>/<longitude>', methods=['GET'])
 def meal_search(latitude, longitude):
-    responseDic = {"success": True, "mealId": userId}
+    squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
+    #return jsonify(getWalkingDistanceFromGoogle((latitude, longitude),["Adolfstraße 27, Feuerbach"]))
+    resultList = [{"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.datetime.now(), "rating": 5, "price": 3.20}]
+    responseDic = {"success": True, "results": resultList}
     return jsonify(responseDic)
     #pass time, typ
 
 @app.route('/rating/host/add/<uhostID>', methods=['POST'])
 def rating_host_add(uhostId):
     pass
-    #pass uID
+    #pass userId
 
 @app.route('/rating/host/average/get/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
-    #pass uID => to identify if user really participated in meal
+    #pass userId => to identify if user really participated in meal
     hostRating = {"quality":2.3,
                     "quantity":2.1,
                     "ambience":2.3,
@@ -68,13 +91,13 @@ def rating_host_average_get(uhostID):
     hostRatingDic = {"success":True, "hostRating":hostRating}
     return jsonify(hostRatingDic)
 
-@app.route('/rating/guest/add/<uID>', methods=['POST'])
-def rating_guest_add(uID):
+@app.route('/rating/guest/add/<userId>', methods=['POST'])
+def rating_guest_add(userId):
     pass
     #pass uhostID 
 
-@app.route('/rating/guest/average/get/<uID>', methods=['GET'])
-def rating_guest_average_get(uID):
+@app.route('/rating/guest/average/get/<userId>', methods=['GET'])
+def rating_guest_average_get(userId):
     #pass uhostID 
     guestRating = 3.4
     guestRatingDic = {"success":True, "guestRating":guestRating}
