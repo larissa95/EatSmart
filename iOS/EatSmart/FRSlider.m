@@ -16,6 +16,8 @@
     self = [super init];
     
     if(self) {
+        NSLog(name);
+        
         scrollView = [[UIScrollView alloc] init];
         scrollView.showsHorizontalScrollIndicator=NO;
         scrollView.showsVerticalScrollIndicator=NO;
