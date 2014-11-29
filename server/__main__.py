@@ -8,7 +8,7 @@ import requests
 from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
-
+from sqlalchemy import func
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
@@ -25,17 +25,20 @@ def meal_create():
     host = request.form['host']
     address = request.form['address']
     typ = request.form['typ']
+    maxGuests = request.form['maxGuests']
     session = DBSession()
     host = session.query(User).filter(User.id == host).one()
+    latitude, longitude = getGPSCoordinatesFromGoogle(address)
     meal = Meal(name=name,
                 date=date,
                 dateRegistrationEnd=dateRegistrationEnd,
+                maxGuests= maxGuests,
                 price=price,
                 address=address,
                 typ=typ,
                 host=host,
-                latitude=48,
-                longitude=10)
+                latitude=latitude,
+                longitude=longitude)
     session.add(meal)
     session.commit()
     mealDic = {"success": True, "mealId": meal.id}
@@ -43,6 +46,11 @@ def meal_create():
     return jsonify(mealDic)
     #pass user id, datum, meal name,... 
 
+def getGPSCoordinatesFromGoogle(address):
+
+    url = "https://maps.google.com/maps/api/geocode/json?address={0}&sensor=false".format(address.replace(" ","+"))
+    response = requests.get(url).json().get('results')[0].get('geometry').get('location')
+    return response.get('lat'), response.get('lng')
 
 @app.route('/meals/<mealId>/delete', methods=['POST'])
 def meal_delete(mealId):
@@ -79,14 +87,11 @@ def meal_get_information(mealId):
                    "dateRegistrationEnd": meal.dateRegistrationEnd,
                    "price": meal.price,
                    "place": meal.address,
-                    #walking distance TODO
-                   "walking_distance": 1560,
+                   "maxGuests": meal.maxGuests,
                    "guest_attending": len(meal.users),
-                    #lat long TODO
-                   "placeGPS": {"latitude": 48.822801, "longitude": 9.165044},
-                   "host": {"hostname": host.name, "age": host.age, "phone": host.phone, "gender": host.gender, "hostId": host.id},
-                   #image TODO
-                   "image": "http://placekitten.com/g/200/300"}
+                   "placeGPS": {"latitude": meal.latitude, "longitude": meal.longitude},
+                   "host": {"hostname": host.name, "age": host.age, "phone": host.phone, "gender": host.gender, "hostId": host.id, "registerdsince": host.firstLogin},
+                   "image": meal.host.image}
         session.commit()
     except NoResultFound:
         return jsonify({"success": False, "error": {"message": "No Meal Found with this id"}})
@@ -146,13 +151,16 @@ def meal_search(latitude, longitude):
         walkingTimes = getWalkingDistanceFromGoogle((latitude,longitude),destinations)
         resultList = []
         for i, meal in enumerate(meals):
+            rating = calculateTotalAverageHostRating(meal.host.id)
+            numberOfRatings = getNumberOfRatings(meal.host.id)
             resultList.append(
                 {"mealId": meal.id,
                  "mealName": meal.name,
                  "walkingTime": walkingTimes[i].get('duration').get('value'),
                  "date": meal.date,
                  # TODO return average host rating
-                 "rating":calculateTotalAverageHostRating(userId),
+                 "rating": rating,
+                 "numberOfRatings": numberOfRatings,
                  "price": meal.price})
     except NoResultFound:
         pass
@@ -170,6 +178,7 @@ def rating_host_add(uhostId):
 @app.route('/rating/host/average/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
     hostRatingDic = {"success":True}
+
     hostRatingDic.update(calculateAverageHostRating(uhostID))
     return jsonify(hostRatingDic)
 
@@ -222,16 +231,16 @@ def getUserInformation(userId):
     hostRating = calculateAverageHostRating(userId)
     user = session.query(User).filter(User.id == userId).one()
     userDic = {"success": True,
-                "userId":userId,
-                #könnte auch None sein, wenn name nicht gesetzt ist
-                "name":user.name,
-                "firstLogin": user.firstLogin,
-                "age":user.age,
-                "phone":user.phone,
-                "hostRating":hostRating,
-                "guestRating":calculateAverageGuestRating(userId)}
+               "userId": userId,
+               "name": user.name,
+               "firstLogin": user.firstLogin,
+               "age": user.age,
+               "phone": user.phone,
+               "gender": user.gender,
+               "hostRating": hostRating,
+               "guestRating": calculateAverageGuestRating(userId)}
 
-    return jsonify(userDic);
+    return jsonify(userDic)
 
 
 @app.route('/user/<userId>/information', methods=['PUT'])
@@ -272,8 +281,14 @@ def calculateTotalAverageHostRating(userId):
     dic = calculateAverageHostRating(userId)
     if not dic.get('quality'):
         return None
-    return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('ambience')/4)
+    return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('ambience'))/4)
 
+
+def getNumberOfRatings(userId):
+    session = DBSession()
+    numberOfRatings = len(session.query(HostRating).filter(HostRating.host_id == userId).all())
+    session.close()
+    return numberOfRatings
 
 
 def calculateAverageHostRating(userId):

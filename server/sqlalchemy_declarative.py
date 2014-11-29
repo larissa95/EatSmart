@@ -18,6 +18,7 @@ class User(Base):
     age = Column(Integer, nullable=True)
     phone = Column(String(250), nullable=True)
     gender = Column(String(250), nullable=True)
+    imageUrl = Column(String(300))
     meals = relationship(
         'Meal',
         secondary='meal_user_link'
@@ -52,30 +53,26 @@ class GuestRating(Base):
     meal = relationship('Meal')
     host_id = Column(Integer)
 
+
 class Meal(Base):
     __tablename__ = 'meal'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     typ = Column(String(250), nullable=True)
     date = Column(DateTime(timezone=True),
-                        nullable=False
-                       )
+                  nullable=False)
     dateRegistrationEnd = Column(DateTime(timezone=True),
-                        nullable=False
-                       )    
+                                 nullable=False)
     #for many to many relationship: (meal/user)
-    users = relationship(
-    'User',
-    secondary='meal_user_link'
-    )
-    price = Column(Float,nullable=False)
+    users = relationship('User',
+                         secondary='meal_user_link')
+    price = Column(Float, nullable=False)
     address = Column(String(500), nullable=False)
     latitude = Column(Float(20))
     longitude = Column(Float(20))
-    #"placeGPS": {"longitude": 48.822801, "latitude": 9.165044},
+    maxGuests = Column(Integer)
     host_id = Column(Integer, ForeignKey('user.id'))
     host = relationship(User)
-    imageUrl = Column(String(250), nullable=True)
 
 
 class MealUserLink(Base):
