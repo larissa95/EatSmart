@@ -9,8 +9,23 @@ app = Flask(__name__)
 
 @app.route('/meals/create', methods=['POST'])
 def meal_create():
-    mealId = uuid.uuid4()
-    mealDic = {"success": True, "mealId": mealId}
+    name = request.form['name']
+    date = request.form['date']
+    dateRegistrationEnd = request.form['dateRegistrationEnd']
+    price = request.form['price']
+    host = request.form['host']
+    address = request.form['address']
+    session = DBSession()
+    meal = Meal(name=name,
+                date=date,
+                dateRegistrationEnd=dateRegistrationEnd,
+                price=price,
+                address=address,
+                host=host)
+    session.add(meal)
+    session.commit()
+    mealDic = {"success": True, "mealId": meal.id}
+    session.close()
     return jsonify(mealDic)
     #pass user id, datum, meal name,... 
 
@@ -83,13 +98,13 @@ def rating_host_add(uhostId):
 
 @app.route('/rating/host/average/get/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
-	#pass uID => to identify if user really participated in meal
+    #pass uID => to identify if user really participated in meal
     hostRatingDic = {"success":True,
-    				"quality":2.3,
-					"quantity":2.1,
-					"ambience":2.3,
-					"mood":5}
-	return jsonify(hostRatingDic)
+                    "quality":2.3,
+                    "quantity":2.1,
+                    "ambience":2.3,
+                    "mood":5}
+    return jsonify(hostRatingDic)
 
 
 @app.route('/rating/guest/add/<userId>', methods=['POST'])
@@ -106,10 +121,10 @@ def rating_guest_average_get(userId):
 
 @app.route('/user/create', methods=['POST'])
 def createUser():
-	userId = uuserId.uuserId4()
-	#create User and save it in Database
-	userDic = {"success": True, "userId":userId}
-	return jsonify(userDic)
+    userId = uuserId.uuserId4()
+    #create User and save it in Database
+    userDic = {"success": True, "userId":userId}
+    return jsonify(userDic)
 
 
 @app.route('/user/<userId>/delete', methods=['POST'])
