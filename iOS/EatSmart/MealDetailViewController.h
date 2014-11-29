@@ -8,11 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import "Meal.h"
+#import "MealHeadView.h"
+#import "MealDetailTableViewCell.h"
+@import MapKit;
 
-@interface MealDetailViewController : UIViewController
+@interface MealDetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
 
 
 @property(nonatomic) UIWebView *mealView;
+@property(nonatomic) MealHeadView *mealHeadView;
+@property(nonatomic) UITableView *table;
+@property(nonatomic) UISegmentedControl *segmentControl;
+@property(nonatomic) Meal *meal;
+@property(nonatomic) NSMutableArray *reviews;
+
+
 -(id) initWithMeal:(Meal *) meal;
+
 
 @end

@@ -27,6 +27,10 @@
 		518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A31A29C75F004C71E5 /* LocalDataBase.m */; };
 		518998A71A29CB23004C71E5 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A61A29CB23004C71E5 /* ProfileViewController.m */; };
 		518998AD1A29E137004C71E5 /* ServerCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AC1A29E137004C71E5 /* ServerCommunication.m */; };
+		518998B01A29FF17004C71E5 /* MealHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AF1A29FF17004C71E5 /* MealHeadView.m */; };
+		51CAD7F91A2A0F1A0042FC77 /* MealDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */; };
+		51CAD7FC1A2A12B30042FC77 /* Cook.png in Resources */ = {isa = PBXBuildFile; fileRef = 51CAD7FA1A2A12B30042FC77 /* Cook.png */; };
+		51CAD7FD1A2A12B30042FC77 /* Eat.png in Resources */ = {isa = PBXBuildFile; fileRef = 51CAD7FB1A2A12B30042FC77 /* Eat.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +83,12 @@
 		518998A61A29CB23004C71E5 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		518998AB1A29E137004C71E5 /* ServerCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunication.h; sourceTree = "<group>"; };
 		518998AC1A29E137004C71E5 /* ServerCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunication.m; sourceTree = "<group>"; };
+		518998AE1A29FF17004C71E5 /* MealHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealHeadView.h; sourceTree = "<group>"; };
+		518998AF1A29FF17004C71E5 /* MealHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealHeadView.m; sourceTree = "<group>"; };
+		51CAD7F71A2A0F1A0042FC77 /* MealDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealDetailTableViewCell.h; sourceTree = "<group>"; };
+		51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealDetailTableViewCell.m; sourceTree = "<group>"; };
+		51CAD7FA1A2A12B30042FC77 /* Cook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cook.png; sourceTree = "<group>"; };
+		51CAD7FB1A2A12B30042FC77 /* Eat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Eat.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +130,8 @@
 		4EA09BD01A28FE9E00D2618B /* EatSmart */ = {
 			isa = PBXGroup;
 			children = (
+				51CAD7FA1A2A12B30042FC77 /* Cook.png */,
+				51CAD7FB1A2A12B30042FC77 /* Eat.png */,
 				518998821A292750004C71E5 /* defaultUser.png */,
 				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
@@ -129,6 +141,10 @@
 				5189987B1A291C1A004C71E5 /* MealTableViewCell.m */,
 				518998841A2929AC004C71E5 /* MealDetailViewController.h */,
 				518998851A2929AC004C71E5 /* MealDetailViewController.m */,
+				518998AE1A29FF17004C71E5 /* MealHeadView.h */,
+				518998AF1A29FF17004C71E5 /* MealHeadView.m */,
+				51CAD7F71A2A0F1A0042FC77 /* MealDetailTableViewCell.h */,
+				51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */,
 				5189989F1A29BE41004C71E5 /* CreateNewMealViewController.h */,
 				518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */,
 				5189989C1A29A86A004C71E5 /* FilterViewController.h */,
@@ -264,9 +280,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51CAD7FD1A2A12B30042FC77 /* Eat.png in Resources */,
 				4EA09BE21A28FE9E00D2618B /* LaunchScreen.xib in Resources */,
 				4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */,
 				518998831A292750004C71E5 /* defaultUser.png in Resources */,
+				51CAD7FC1A2A12B30042FC77 /* Cook.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,8 +310,10 @@
 				518998761A290EF8004C71E5 /* User.m in Sources */,
 				518998731A290EF1004C71E5 /* Meal.m in Sources */,
 				4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */,
+				518998B01A29FF17004C71E5 /* MealHeadView.m in Sources */,
 				5189987C1A291C1A004C71E5 /* MealTableViewCell.m in Sources */,
 				5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */,
+				51CAD7F91A2A0F1A0042FC77 /* MealDetailTableViewCell.m in Sources */,
 				518998701A290B77004C71E5 /* MainViewController.m in Sources */,
 				518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */,
 				518998791A29165F004C71E5 /* HostRating.m in Sources */,
