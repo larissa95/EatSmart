@@ -50,7 +50,7 @@
 }
 
 -(void) loadAdditionalDataInbackground {
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://10.60.36.31:5000/0.2.1b/meals/%@",self.meal.uuid]]];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://10.60.36.31:5000/0.2.1b/meals/%ld",(long)self.meal.uuid]]];
     if(data) {
         
         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -192,7 +192,10 @@
                 }
                 case 3: {
                     cell.titleLabel.text=@"registered for";
-                    cell.descriptionLabel.text=host.registerdsince.description;
+                    
+                    NSTimeInterval daysbetween = [[[NSDate alloc] init] timeIntervalSinceDate:host.registerdsince] / 86400;
+                    
+                    cell.descriptionLabel.text=[NSString stringWithFormat:@"%f days",daysbetween];
                     break;
                 }
                     

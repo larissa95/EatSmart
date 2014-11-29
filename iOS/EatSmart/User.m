@@ -15,27 +15,38 @@
     self = [super init];    
     
     if(self) {
-        NSLog(@"fsfsdf%@", JSON);
-        uuid = [JSON valueForKey:@"hostId"];
-        NSLog(@"%i + UUID",uuid);
-        age = [JSON valueForKey:@"age"];
-        if(age == [NSNull null]){
-            NSLog(@"called");
-        }
-        if(uuid == (id)[NSNull null]) {
-            NSLog(@"j");
-        }
 
+
+        uuid = [[JSON valueForKey:@"hostId"] integerValue];
+        
         
         name = [JSON objectForKey:@"hostname"];
+        if(name == (id)[NSNull null]) {
+            name=nil;
+        }
         
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss zzz"];
-        registerdsince = [dateFormat dateFromString:[JSON objectForKey:@"registerdsince"]];
+        if([JSON objectForKey:@"registerdsince"] == (id)[NSNull null]) {
+            registerdsince=nil;
+        } else {
+            registerdsince = [dateFormat dateFromString:[JSON objectForKey:@"registerdsince"]];
+        }
         
         gender = [JSON objectForKey:@"gender"];
+        if(gender == (id)[NSNull null]) {
+            gender=nil;
+        }
+        
         phoneNumber = [JSON objectForKey:@"phone"];
+        if(phoneNumber == (id)[NSNull null]) {
+            phoneNumber=nil;
+        }
+        
         age=[JSON objectForKey:@"age"];
+        if(age == (id)[NSNull null]) {
+            age=nil;
+        }
     }
     
     return self;

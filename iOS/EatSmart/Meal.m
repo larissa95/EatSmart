@@ -15,9 +15,10 @@
     self = [super init];
 
     if(self) {
-        uuid = [JSON objectForKey:@"mealId"];
+        uuid = [[JSON objectForKey:@"mealId"] integerValue];
+        
         name = [JSON objectForKey:@"mealName"];
-
+        
         
         numberOfCurrentPersons = [JSON objectForKey:@"guest_attending"];
         numberOfMaxPersons = [JSON objectForKey:@"maxGuests"];
