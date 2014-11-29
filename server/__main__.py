@@ -58,18 +58,6 @@ def meal_delete(mealId):
     return jsonify({"success": True})
 
 
-def getCloseByCoordinats(latitude, longitude, radius):
-    try:
-        latitude = float(latitude)
-        longitude = float(longitude)
-    except ValueError:
-        pass  # DO MAGIC
-    constLatitude = 110574  # meters of a 1 degree latitude
-    constLongtitude = 111320
-    latitude = latitude-radius/constLatitude
-    longitude = longitude-radius/(constLongtitude*math.cos(math.radians(longitude)))
-    return latitude, longitude
-
 def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
     origins = str(startCoordinats[0])+","+str(startCoordinats[1])
     destinations = "|".join(listofDestinations).replace(" ", "+")
@@ -91,10 +79,13 @@ def meal_get_information(mealId):
                    "dateRegistrationEnd": meal.dateRegistrationEnd,
                    "price": meal.price,
                    "place": meal.address,
+                    #walking distance TODO
                    "walking_distance": 1560,
                    "guest_attending": len(meal.users),
+                    #lat long TODO
                    "placeGPS": {"latitude": 48.822801, "longitude": 9.165044},
                    "host": {"hostname": host.name, "age": host.age, "phone": host.phone, "gender": host.gender, "hostId": host.id},
+                   #image TODO
                    "image": "http://placekitten.com/g/200/300"}
         session.commit()
     except NoResultFound:
@@ -161,7 +152,7 @@ def meal_search(latitude, longitude):
                  "walkingTime": walkingTimes[i].get('duration').get('value'),
                  "date": meal.date,
                  # TODO return average host rating
-                 "rating": 5,  
+                 "rating":calculateTotalAverageHostRating(userId),
                  "price": meal.price})
     except NoResultFound:
         pass
@@ -276,6 +267,14 @@ def calculateAverageGuestRating(userId):
         return None
     else:
         return averageGuestRating/numberOfRatings
+
+def calculateTotalAverageHostRating(userId):
+    dic = calculateAverageHostRating(userId)
+    if not dic.get('quality'):
+        return None
+    return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('ambience')/4)
+
+
 
 def calculateAverageHostRating(userId):
     session = DBSession()
