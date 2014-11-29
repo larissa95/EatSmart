@@ -120,16 +120,15 @@ def meal_search(latitude, longitude):
 @app.route('/rating/host/add/<uhostID>', methods=['POST'])
 def rating_host_add(uhostId):
     pass
-    #pass userId
+        #pass uID => to identify if user really participated in meal
+        #check if bewertung exists
+    #pass userId,mealID
 
 @app.route('/rating/host/average/get/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
-    #pass uID => to identify if user really participated in meal
-    hostRatingDic = {"success":True,
-                    "quality":2.3,
-                    "quantity":2.1,
-                    "ambience":2.3,
-                    "mood":5}
+    hostRatingDic = {"success":True}
+    hostRatingDic.update(calculateAverageHostRating(uhostID))
+   
     return jsonify(hostRatingDic)
 
 
@@ -157,19 +156,9 @@ def createUser():
     return jsonify(userDic)
 
 
-@app.route('/user/<userId>/delete', methods=['POST'])
-def deleteUser(userId):
-    #deleteUserFromDataBase
-    pass
-
 @app.route('/user/<userId>/get/information', methods=['GET'])
-def getUserInformation():
-    hostRating = {"quality":2.3,
-                    "quantity":2.1,
-                    "ambience":2.3,
-                    "mood":5}
-
-
+def getUserInformation(userId):
+    hostRating = calculateAverageHostRating(userId)
     userDic = {"success": True,
                 "userId":userId,
                 "name":"Mustermann",
@@ -179,6 +168,7 @@ def getUserInformation():
                 "guestRating":4}
 
     return jsonify(userDic);
+
 
 @app.route('/user/<userId>/information', methods=['PUT'])
 def setUserInfromation(userId):
@@ -199,6 +189,33 @@ def setUserInfromation(userId):
         pass
     session.close()
     return {"sucess": True}
+
+def calculateAverageHostRating(userId):
+    session = DBSession()
+    user = session.query(User).filter(User.id == userId).one()
+    averageQuality = 0
+    averageQuantity = 0
+    averageAmbience = 0
+    averageMood = 0
+
+    comments = []
+    for hostrate in user.hostratings:
+        averageQuality += hostrate.quality
+        averageQuantity += hostrate.quantity
+        averageAmbience += hostrate.ambience
+        averageMood += hostrate.mood
+        if hostrate.comment != "":
+            l.append(hostrate.comment)
+
+    numberOfRatings = len(user.hostratings)
+    if(numberOfRatings ==0):
+        return ""
+    else:
+        return{"quality":averageQuality/numberOfRatings,
+                    "quantity":averageQuantity/numberOfRatings,
+                    "ambience":averageAmbience/numberOfRatings,
+                    "mood":averageMood/numberOfRatings,
+                    "comments":comments}
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///sqlalchemy.db')

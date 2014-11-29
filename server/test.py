@@ -28,10 +28,10 @@ session.add(meal2)
 user2.meals.append(meal2)
 #user2 should have meal1 and 2
 
-hostRate = HostRating(quality = 3, quantity = 4, user = user1, meal = meal1)
+hostRate = HostRating(quality = 3, quantity = 4, host = user1, meal = meal1, user_id = user2.id)
 session.add(hostRate)
 
-hostRate1 = HostRating(quality = 2, quantity = 1, user = user1, meal = meal1)
+hostRate1 = HostRating(quality = 2, quantity = 1, host = user1, meal = meal1, user_id = user3.id)
 session.add(hostRate1)
 
 session.commit()
