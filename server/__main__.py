@@ -53,7 +53,7 @@ def meal_delete(mealId):
         session.commit()
     except NoResultFound:
         return jsonify({"success": False,
-                        "error": {"message": "No Meal Found with this id"}})
+                        "error": {"message": "No Meal Found with this id."}})
     session.close()
 
     return jsonify({"success": True})
@@ -65,6 +65,10 @@ def meal_get_information(mealId):
     try:
         meal = session.query(Meal).filter(Meal.id == mealId).one()
         host = meal.host
+        reviews = []
+        for rating in meal.host.hostratings:
+            if rating.comment:
+                reviews.append(rating.comment)
         responseDic = {"success": True,
                        "mealId": mealId,
                        "typ": meal.typ,
@@ -74,6 +78,7 @@ def meal_get_information(mealId):
                        "place": meal.address,
                        "maxGuests": meal.maxGuests,
                        "guest_attending": len(meal.users),
+                       "reviews": reviews,
                        "placeGPS": {
                            "latitude": meal.latitude,
                            "longitude": meal.longitude},
@@ -83,8 +88,9 @@ def meal_get_information(mealId):
                            "phone": host.phone,
                            "gender": host.gender,
                            "hostId": host.id,
-                           "registerdsince": host.firstLogin},
-                       "image": meal.host.image}
+                           "registerdsince": host.firstLogin,
+                           "image": meal.host.imageUrl},
+                       }
         session.commit()
     except NoResultFound:
         return jsonify({"success": False,
@@ -176,7 +182,10 @@ def meal_search(latitude, longitude):
                  "mealName": meal.name,
                  "walkingTime": walkingTimes[i].get('duration').get('value'),
                  "date": meal.date,
-                 # TODO return average host rating
+                 "maxGuests": meal.maxGuests,
+                 "guest_attending": len(meal.users),
+                 "placeGPS": {"latitude": meal.latitude, "longitude": meal.longitude},
+                 "imageUrl": meal.host.imageUrl,
                  "rating": rating,
                  "numberOfRatings": numberOfRatings,
                  "price": meal.price,
@@ -307,6 +316,7 @@ def setUserInfromation(userId):
         pass
     session.close()
     return jsonify({"success": True})
+
 
 def calculateAverageGuestRating(userId):
     session = DBSession()
