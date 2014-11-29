@@ -5,7 +5,7 @@ from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from passwords import getPassword, getUser
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 app = Flask(__name__)
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
@@ -59,6 +59,7 @@ def meal_delete(mealId):
         session.delete(meal)
         session.commit()
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No Meal Found with this id."}})
     session.close()
@@ -102,6 +103,7 @@ def meal_get_information(mealId):
                        }
         session.commit()
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No Meal Found with this id"}})
     session.close()
@@ -120,6 +122,7 @@ def meal_user_add_request(mealId, userId):
         session.add(meal)
         session.commit()
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No User or Meal found with this id"}})
     session.close()
@@ -137,9 +140,11 @@ def meal_remove_unconfirmed_user(mealId, userId):
         session.add(meal)
         session.commit()
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No User or Meal found with this id"}})
     except ValueError:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "This User was not there in the first place"}})
     session.close()
@@ -160,11 +165,13 @@ def meal_confirm_unconfirmed_user(mealId, userId):
             if(len(meal.users) < meal.maxGuests):
                 meal.users.append(user)
         except ValueError:
+            session.close()
             return jsonify({"success": False,
                         "error": {"message": "This User was not there in the first place"}})
         session.add(meal)
         session.commit()
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No User or Meal found with this id"}})
     mailToAccepted(userId, mealId)
@@ -227,9 +234,11 @@ def meal_search(latitude, longitude):
                  "price": meal.price,
                  "typ": meal.typ})
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No User or Meal found with this id"}})
     responseDic = {"success": True, "results": resultList}
+    session.close()
     return jsonify(responseDic)
     #pass time, typ
 
@@ -292,6 +301,7 @@ def rating_guest_add(userId):
             session.add(new_rating)
             session.commit()
         except NoResultFound:
+            session.close()
             return jsonify({"error": True})
     session.close()
     return jsonify({'success': "1"})
@@ -316,6 +326,7 @@ def createUser():
 
 @app.route('/0.2.1b/user/<userId>/information', methods=['GET'])
 def getUserInformation(userId):
+    session = DBSession()
     hostRating = calculateAverageHostRating(userId)
     user = session.query(User).filter(User.id == userId).one()
     userDic = {"success": True,
@@ -327,7 +338,7 @@ def getUserInformation(userId):
                "gender": user.gender,
                "hostRating": hostRating,
                "guestRating": calculateAverageGuestRating(userId)}
-
+    session.close()
     return jsonify(userDic)
 
 
@@ -349,21 +360,24 @@ def setUserInfromation(userId):
         session.add(user)
         session.commit()
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No User found with this id"}})
     session.close()
     return jsonify({"success": True})
 
-
+@app.route('/mail/<userId>/<mealId>', methods=['GET'])
 def  mailToAccepted(userId, mealId):
     try:
         session = DBSession()
 
-        user = serssion.query(User).filter(User.id == userId).one()
-        payload = {'api_key': getPassword(), 'api_user': getUser(), 'to': user.email, 'from': 'info@eatcookNmeet.com', 'html': render_template('index.html', **locals())}
-        r = requests.post("http://httpbin.org/post", data=payload)
+        user = session.query(User).filter(User.id == userId).one()
+        payload = {'subject':"THis is a test",'api_key': getPassword(), 'api_user': getUser(), 'to': user.email, 'from': 'info@eatcookNmeet.com', 'html': render_template('emailAccepted.html', **locals())}
+        r = requests.post("https://api.sendgrid.com/api/mail.send.json", data=payload)
     except NoResultFound:
         pass
+    session.close()
+    return jsonify({"stuff": r.json()})
 
 def calculateAverageGuestRating(userId):
     session = DBSession()
@@ -375,8 +389,10 @@ def calculateAverageGuestRating(userId):
     numberOfRatings = len(user.guestratings)
     session.close()
     if(numberOfRatings == 0):
+        session.close()
         return None
     else:
+        session.close()
         return averageGuestRating/numberOfRatings
 
 def calculateTotalAverageHostRating(userId):
@@ -455,9 +471,11 @@ def meal_user_remove(mealId, userId):
         session.add(meal)
         session.commit()
     except NoResultFound:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "No User or Meal found with this id"}})
     except ValueError:
+        session.close()
         return jsonify({"success": False,
                         "error": {"message": "The User was not here in the first place"}})
     session.close()
@@ -485,6 +503,7 @@ if __name__ == '__main__':
     #logging.info("Connected to mysql on {0}:{1}/{2}".format(
     #    mysqlhost, mysqlport, mysqldb))
     DBSession = sessionmaker(bind=engine)
+
     # app.register_error_handler(Exception, error_handler)
     app.run(debug=True, host='0.0.0.0')
 
