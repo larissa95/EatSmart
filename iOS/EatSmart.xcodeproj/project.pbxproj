@@ -26,6 +26,7 @@
 		518998A11A29BE41004C71E5 /* CreateNewMealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */; };
 		518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A31A29C75F004C71E5 /* LocalDataBase.m */; };
 		518998A71A29CB23004C71E5 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A61A29CB23004C71E5 /* ProfileViewController.m */; };
+		518998AD1A29E137004C71E5 /* ServerCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AC1A29E137004C71E5 /* ServerCommunication.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,8 @@
 		518998A31A29C75F004C71E5 /* LocalDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalDataBase.m; sourceTree = "<group>"; };
 		518998A51A29CB23004C71E5 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		518998A61A29CB23004C71E5 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		518998AB1A29E137004C71E5 /* ServerCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunication.h; sourceTree = "<group>"; };
+		518998AC1A29E137004C71E5 /* ServerCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +149,8 @@
 				518998971A2937B8004C71E5 /* AMRatingControl.m */,
 				518998991A29A66A004C71E5 /* FRSlider.h */,
 				5189989A1A29A66A004C71E5 /* FRSlider.m */,
+				518998AB1A29E137004C71E5 /* ServerCommunication.h */,
+				518998AC1A29E137004C71E5 /* ServerCommunication.m */,
 				4EA09BDE1A28FE9E00D2618B /* Images.xcassets */,
 				4EA09BE01A28FE9E00D2618B /* LaunchScreen.xib */,
 				4EA09BD11A28FE9E00D2618B /* Supporting Files */,
@@ -292,6 +297,7 @@
 				518998701A290B77004C71E5 /* MainViewController.m in Sources */,
 				518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */,
 				518998791A29165F004C71E5 /* HostRating.m in Sources */,
+				518998AD1A29E137004C71E5 /* ServerCommunication.m in Sources */,
 				5189989E1A29A86A004C71E5 /* FilterViewController.m in Sources */,
 				4EA09BD41A28FE9E00D2618B /* main.m in Sources */,
 			);

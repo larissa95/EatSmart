@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "FRSlider.h"
+#import "AMRatingControl.h"
 
 @interface FilterViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic) UITableView *table;
+@property(nonatomic) UIDatePicker *datePicker;
 
 @end

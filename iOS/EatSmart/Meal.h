@@ -24,7 +24,7 @@
 
 @property(readonly) NSString *locationDescription;
 @property(readonly) CLLocation *gpsLocation;
-@property(readonly) NSNumber *walkDistanceInMinutes;
+@property(readonly) NSNumber *walkDistanceInSeconds;
 
 -(id)initWithJSON:(NSDictionary *) JSON;
 -(id) initDummy;

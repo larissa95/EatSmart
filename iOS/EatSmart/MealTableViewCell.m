@@ -9,7 +9,7 @@
 #import "MealTableViewCell.h"
 
 @implementation MealTableViewCell
-@synthesize picture,mealNameLabel,distanceDescriptionLabel,timeLabel,priceLabel,starView;
+@synthesize picture,mealNameLabel,distanceDescriptionLabel,timeLabel,priceLabel,starLabel;
 
 -(id) init {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"mealCell"];
@@ -42,11 +42,13 @@
     priceLabel.font = [UIFont fontWithName:@"Helveticaneue-light" size:17];
     [self addSubview:priceLabel];
     
-    starView = [[AMRatingControl alloc]initWithLocation:CGPointMake(0, 0) emptyColor:[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0] solidColor:[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0] andMaxRating:5];
+    starLabel = [[UILabel alloc] init];
+    starLabel.font=[UIFont fontWithName:@"" size:20];
+    starLabel.textColor=[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0];
+
+    [self addSubview:starLabel];
     
-    starView.userInteractionEnabled=NO;
-    
-    [self addSubview:starView];
+   
     
     return self;
 }
@@ -61,9 +63,9 @@
     
     
     mealNameLabel.text=meal.name;
-    distanceDescriptionLabel.text = [NSString stringWithFormat:@"%@ min walking",meal.walkDistanceInMinutes];
+    distanceDescriptionLabel.text = [NSString stringWithFormat:@"%u min walking",[meal.walkDistanceInSeconds intValue]/60];
     
-    priceLabel.text = [NSString stringWithFormat:@"%.2f EUR",[meal.price floatValue]];
+    priceLabel.text = [NSString stringWithFormat:@"%.2f €",[meal.price floatValue]];
     
     
     NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
@@ -74,7 +76,17 @@
     timeLabel.text = [NSString stringWithFormat:@"%@",dateStr];
     
     
-    [starView setRating:[meal.host averageHostRating]];
+    NSString *ratingString = @"";
+    
+    for(int i=0; i<[meal.host averageHostRating]; i++) {
+        ratingString = [NSString stringWithFormat:@"%@★",ratingString];
+    }
+    for(int i=[meal.host averageHostRating]; i<5; i++) {
+        ratingString = [NSString stringWithFormat:@"%@☆",ratingString];
+    }
+    
+    starLabel.text=ratingString;
+    
 }
 
 
@@ -89,7 +101,7 @@
     timeLabel.frame=CGRectMake(self.frame.size.width-140, 29, 100, 20);
     priceLabel.frame=CGRectMake(self.frame.size.width-140, 50, 100, 20);
     
-    starView.frame=CGRectMake(self.frame.size.height, 57, self.frame.size.width-self.frame.size.height-115, 25);
+    starLabel.frame=CGRectMake(self.frame.size.height, 57, self.frame.size.width-self.frame.size.height, 25);
     
 }
 

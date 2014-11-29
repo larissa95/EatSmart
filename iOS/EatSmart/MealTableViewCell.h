@@ -17,7 +17,7 @@
 @property(nonatomic) UILabel *distanceDescriptionLabel;
 @property(nonatomic) UILabel *timeLabel;
 @property(nonatomic) UILabel *priceLabel;
-@property(nonatomic) AMRatingControl *starView;
+@property(nonatomic) UILabel *starLabel;
 
 
 -(void) setMeal:(Meal *) meal;
