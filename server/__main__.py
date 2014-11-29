@@ -180,6 +180,25 @@ def getUserInformation():
 
     return jsonify(userDic);
 
+@app.route('/user/<userId>/information', methods=['PUT'])
+def setUserInfromation(userId):
+    age = request.form['age']
+    phone = request.form['phone']
+    gender = request.form['gender']
+    name = request.form['name']
+    session = DBSession()
+    try:
+        user = session.query(User).filter(User.id == userId).one()
+        user.age = age
+        user.phone = phone
+        user.name = name
+        user.gender = gender
+        session.add(user)
+        session.commit
+    except NoResultFound:
+        pass
+    session.close()
+    return {"sucess": True}
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///sqlalchemy.db')
@@ -187,4 +206,3 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
     #version api
-
