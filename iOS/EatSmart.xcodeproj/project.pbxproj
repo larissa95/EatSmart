@@ -19,7 +19,6 @@
 		518998791A29165F004C71E5 /* HostRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998781A29165F004C71E5 /* HostRating.m */; };
 		5189987C1A291C1A004C71E5 /* MealTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189987B1A291C1A004C71E5 /* MealTableViewCell.m */; };
 		5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189987E1A292106004C71E5 /* DataBaseConnection.m */; };
-		518998831A292750004C71E5 /* defaultUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 518998821A292750004C71E5 /* defaultUser.png */; };
 		518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998851A2929AC004C71E5 /* MealDetailViewController.m */; };
 		518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998971A2937B8004C71E5 /* AMRatingControl.m */; };
 		5189989B1A29A66A004C71E5 /* FRSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189989A1A29A66A004C71E5 /* FRSlider.m */; };
@@ -28,6 +27,7 @@
 		518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A31A29C75F004C71E5 /* LocalDataBase.m */; };
 		518998AD1A29E137004C71E5 /* ServerCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AC1A29E137004C71E5 /* ServerCommunication.m */; };
 		518998B01A29FF17004C71E5 /* MealHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AF1A29FF17004C71E5 /* MealHeadView.m */; };
+		51B2388A1A2A3B1A0076509E /* PlaceholderProfileImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B238891A2A3B1A0076509E /* PlaceholderProfileImage.png */; };
 		51CAD7F91A2A0F1A0042FC77 /* MealDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */; };
 		51CAD7FC1A2A12B30042FC77 /* Cook.png in Resources */ = {isa = PBXBuildFile; fileRef = 51CAD7FA1A2A12B30042FC77 /* Cook.png */; };
 		51CAD7FD1A2A12B30042FC77 /* Eat.png in Resources */ = {isa = PBXBuildFile; fileRef = 51CAD7FB1A2A12B30042FC77 /* Eat.png */; };
@@ -68,7 +68,6 @@
 		5189987B1A291C1A004C71E5 /* MealTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealTableViewCell.m; sourceTree = "<group>"; };
 		5189987D1A292106004C71E5 /* DataBaseConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseConnection.h; sourceTree = "<group>"; };
 		5189987E1A292106004C71E5 /* DataBaseConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseConnection.m; sourceTree = "<group>"; };
-		518998821A292750004C71E5 /* defaultUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultUser.png; sourceTree = "<group>"; };
 		518998841A2929AC004C71E5 /* MealDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealDetailViewController.h; sourceTree = "<group>"; };
 		518998851A2929AC004C71E5 /* MealDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealDetailViewController.m; sourceTree = "<group>"; };
 		518998961A2937B8004C71E5 /* AMRatingControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMRatingControl.h; sourceTree = "<group>"; };
@@ -85,6 +84,7 @@
 		518998AC1A29E137004C71E5 /* ServerCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunication.m; sourceTree = "<group>"; };
 		518998AE1A29FF17004C71E5 /* MealHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealHeadView.h; sourceTree = "<group>"; };
 		518998AF1A29FF17004C71E5 /* MealHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealHeadView.m; sourceTree = "<group>"; };
+		51B238891A2A3B1A0076509E /* PlaceholderProfileImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlaceholderProfileImage.png; sourceTree = "<group>"; };
 		51CAD7F71A2A0F1A0042FC77 /* MealDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealDetailTableViewCell.h; sourceTree = "<group>"; };
 		51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealDetailTableViewCell.m; sourceTree = "<group>"; };
 		51CAD7FA1A2A12B30042FC77 /* Cook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cook.png; sourceTree = "<group>"; };
@@ -132,7 +132,7 @@
 			children = (
 				51CAD7FA1A2A12B30042FC77 /* Cook.png */,
 				51CAD7FB1A2A12B30042FC77 /* Eat.png */,
-				518998821A292750004C71E5 /* defaultUser.png */,
+				51B238891A2A3B1A0076509E /* PlaceholderProfileImage.png */,
 				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
 				4E080BD21A2A37BD0021D33F /* ProfileViewController.h */,
@@ -283,8 +283,8 @@
 				51CAD7FD1A2A12B30042FC77 /* Eat.png in Resources */,
 				4EA09BE21A28FE9E00D2618B /* LaunchScreen.xib in Resources */,
 				4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */,
-				518998831A292750004C71E5 /* defaultUser.png in Resources */,
 				51CAD7FC1A2A12B30042FC77 /* Cook.png in Resources */,
+				51B2388A1A2A3B1A0076509E /* PlaceholderProfileImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

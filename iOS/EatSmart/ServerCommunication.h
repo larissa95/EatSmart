@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+@import UIKit;
 @protocol ServerDelegate <NSObject>
 
 @required
@@ -19,6 +19,7 @@
 
 
 -(void) loadDataFromServerWithURL:(NSString *) url andParameters:(NSString *) parameters;
++(void) loadImageFromURLInBackgroundAndPutInImageView:(NSArray *) urlAndImageView;
 @property (strong, nonatomic) id<ServerDelegate> delegate;
 
 @end

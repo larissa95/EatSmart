@@ -20,6 +20,8 @@
 @property(readonly) NSNumber *numberOfCurrentPersons;
 @property(readonly) NSDate *timeStamp;
 
+@property(readonly) NSString *profilePicString;
+
 @property(readonly) NSNumber *price;
 @property(readonly) NSNumber *rating;
 

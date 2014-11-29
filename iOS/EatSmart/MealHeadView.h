@@ -10,6 +10,7 @@
 #import "Meal.h"
 #import "ProfileViewController.h"
 #import "LocalDataBase.h"
+#import "ServerCommunication.h"
 
 @interface MealHeadView : UIView
 
