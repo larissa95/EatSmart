@@ -78,10 +78,10 @@
     
     NSString *ratingString = @"";
     
-    for(int i=0; i<[meal.host averageHostRating]; i++) {
+    for(int i=0; i<[meal.rating intValue]; i++) {
         ratingString = [NSString stringWithFormat:@"%@★",ratingString];
     }
-    for(int i=[meal.host averageHostRating]; i<5; i++) {
+    for(int i=[meal.rating intValue]; i<5; i++) {
         ratingString = [NSString stringWithFormat:@"%@☆",ratingString];
     }
     
@@ -114,5 +114,7 @@
 
     // Configure the view for the selected state
 }
+
+
 
 @end

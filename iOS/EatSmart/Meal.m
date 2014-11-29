@@ -10,7 +10,7 @@
 
 
 @implementation Meal
-@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInSeconds,host;
+@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInSeconds,host,rating,isCookEvent;
 -(id)initWithJSON:(NSDictionary *) JSON {
     self = [super init];
 
@@ -22,6 +22,7 @@
         numberOfCurrentPersons = [JSON objectForKey:@"numberOfCurrentPersons"];
         numberOfMaxPersons = [JSON objectForKey:@"numberOfMaxPersons"];
         
+        rating = [JSON objectForKey:@"rating"];
         
         NSString *dateStr = [JSON objectForKey:@"date"];
         
