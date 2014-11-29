@@ -45,7 +45,6 @@
      postNotificationName:@"grr"
      object:self];
     
-    
     // Override point for customization after application launch.
     return YES;
 }
@@ -74,6 +73,10 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
++(NSString *) IP {
+    return @"10.60.36.31:5000/0.2.1b";
 }
 
 @end

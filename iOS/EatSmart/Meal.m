@@ -10,17 +10,18 @@
 
 
 @implementation Meal
-@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInSeconds,host,rating,isCookEvent;
+@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInSeconds,host,rating,isCookEvent,gpsLocation,profilePicString,locationDescription;
 -(id)initWithJSON:(NSDictionary *) JSON {
     self = [super init];
 
     if(self) {
-        uuid = [JSON objectForKey:@"mealId"];
-        name = [JSON objectForKey:@"mealName"];
-
+        uuid = [[JSON objectForKey:@"mealId"] integerValue];
         
-        numberOfCurrentPersons = [JSON objectForKey:@"numberOfCurrentPersons"];
-        numberOfMaxPersons = [JSON objectForKey:@"numberOfMaxPersons"];
+        name = [JSON objectForKey:@"mealName"];
+        
+        
+        numberOfCurrentPersons = [JSON objectForKey:@"guest_attending"];
+        numberOfMaxPersons = [JSON objectForKey:@"maxGuests"];
         
         rating = [JSON objectForKey:@"rating"];
         
@@ -40,6 +41,12 @@
         } else {
             isCookEvent=false;
         }
+        
+        gpsLocation=CLLocationCoordinate2DMake([[[JSON objectForKey:@"placeGPS"] objectForKey:@"latitude"] doubleValue], [[[JSON objectForKey:@"placeGPS"] objectForKey:@"longitude"] doubleValue]);
+        
+        profilePicString = [JSON objectForKey:@"imageUrl"];
+
+        locationDescription = [JSON objectForKey:@"address"];
         
     }
     
@@ -63,6 +70,8 @@
         walkDistanceInSeconds = [NSNumber numberWithFloat:500.f];
         
         host = [[User alloc] initDummy];
+        
+        profilePicString = @"http://0.static.wix.com/media/f3cd4142eb0cd3fc50150ad5c7a9a3f8.wix_mp_1024";
         
     }
     

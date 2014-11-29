@@ -13,7 +13,7 @@
 @end
 
 @implementation MealDetailViewController
-@synthesize mealView,mealHeadView,table,segmentControl;
+@synthesize mealView,mealHeadView,table,segmentControl,host;
 
 
 -(id) initWithMeal:(Meal *) meal {
@@ -23,7 +23,7 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share)];
         
         
-        mealHeadView = [[MealHeadView alloc] initWithMeal:meal];
+        mealHeadView = [[MealHeadView alloc] initWithMeal:meal andNavigationController:self.navigationController];
         [self.view addSubview:mealHeadView];
         
         table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
@@ -41,8 +41,30 @@
         
         [self.view addSubview:segmentControl];
         self.meal=meal;
+        
+        [self performSelectorInBackground:@selector(loadAdditionalDataInbackground) withObject:nil];
+        
+        
     }
     return self;
+}
+
+-(void) loadAdditionalDataInbackground {
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://10.60.36.31:5000/0.2.1b/meals/%ld",(long)self.meal.uuid]]];
+    if(data) {
+        
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        
+        NSDictionary *hostHuelle = [JSON objectForKey:@"host"];
+        
+        host = [[User alloc] initWithJSON:hostHuelle];
+        [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+        
+        
+    }
+
+
+    //http://10.60.36.31:5000/0.2.1b/meals/1
 }
 
 -(void) segmentChanged {
@@ -155,22 +177,25 @@
             switch (indexPath.row) {
                 case 0: {
                     cell.titleLabel.text=@"name";
-                    cell.descriptionLabel.text=@"TBD";
+                    cell.descriptionLabel.text=host.name;
                     break;
                 }
                 case 1: {
                     cell.titleLabel.text=@"age";
-                    cell.descriptionLabel.text=@"TBD";
+                    cell.descriptionLabel.text=host.age;
                     break;
                 }
                 case 2: {
                     cell.titleLabel.text=@"gender";
-                    cell.descriptionLabel.text=@"TBD";
+                    cell.descriptionLabel.text=host.gender;
                     break;
                 }
                 case 3: {
                     cell.titleLabel.text=@"registered for";
-                    cell.descriptionLabel.text=@"TBD";
+                    
+                    NSTimeInterval daysbetween = [[[NSDate alloc] init] timeIntervalSinceDate:host.registerdsince] / 86400;
+                    
+                    cell.descriptionLabel.text=[NSString stringWithFormat:@"%f days",daysbetween];
                     break;
                 }
                     
@@ -209,7 +234,9 @@
         
         [view addSubview:map];
         map.userInteractionEnabled=NO;
-        map.centerCoordinate=self.meal.gpsLocation;
+        map.region = MKCoordinateRegionMake(self.meal.gpsLocation, MKCoordinateSpanMake(0.002, 0.003));
+        
+       
         
         return view;
     }

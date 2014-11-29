@@ -12,11 +12,13 @@
 #import "DataBaseConnection.h"
 #import "FilterViewController.h"
 #import "CreateNewMealViewController.h"
+#import "ProfileViewController.h"
 
 @interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic) UITableView *table;
 @property(nonatomic) NSArray *mealSuggestions;
 @property(nonatomic) UIToolbar *toolBar;
+@property(nonatomic) UIRefreshControl *refreshControl;
 
 @end

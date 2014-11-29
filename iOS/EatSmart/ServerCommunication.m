@@ -12,7 +12,7 @@
 
 @synthesize delegate;
 
-//http://10.60.36.31:5000/0.2.1b/meals/1
+
 
 -(void) loadDataFromServerWithURL:(NSString *) url andParameters:(NSString *) parameters {
     [self performSelectorInBackground:@selector(backgroundLoading:) withObject:@[url,parameters]];
@@ -41,6 +41,12 @@
     [delegate finishedServerCommunication:ausgabe];
 }
 
+
++(void) loadImageFromURLInBackgroundAndPutInImageView:(NSArray *) urlAndImageView {
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[urlAndImageView objectAtIndex:0]]]];
+    UIImageView *imageView = [urlAndImageView objectAtIndex:1];
+    [imageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+}
 
 
 

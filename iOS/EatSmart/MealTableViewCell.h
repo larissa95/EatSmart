@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Meal.h"
 #import "AMRatingControl.h"
+#import "ServerCommunication.h"
 
 @interface MealTableViewCell : UITableViewCell
 

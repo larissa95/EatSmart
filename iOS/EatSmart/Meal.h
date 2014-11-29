@@ -14,11 +14,13 @@
 
 
 @property(readonly) User *host;
-@property(readonly) NSString *uuid;
+@property(readonly) NSInteger uuid;
 @property(readonly) NSString *name;
 @property(readonly) NSNumber *numberOfMaxPersons;
 @property(readonly) NSNumber *numberOfCurrentPersons;
 @property(readonly) NSDate *timeStamp;
+
+@property(readonly) NSString *profilePicString;
 
 @property(readonly) NSNumber *price;
 @property(readonly) NSNumber *rating;

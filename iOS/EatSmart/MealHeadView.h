@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Meal.h"
+#import "ProfileViewController.h"
+#import "LocalDataBase.h"
+#import "ServerCommunication.h"
 
 @interface MealHeadView : UIView
 
@@ -19,9 +22,12 @@
 @property(nonatomic) UILabel *hostRating;
 @property(nonatomic) int buyStatusForThisUser;
 @property(nonatomic) Meal *meal;
+@property(nonatomic) UINavigationController *navigationController;
 
 
--(id) initWithMeal:(Meal *) meal;
 
+
+
+-(id) initWithMeal:(Meal *) meal andNavigationController: (UINavigationController*) controller;
 
 @end

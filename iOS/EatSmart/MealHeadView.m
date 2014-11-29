@@ -11,19 +11,23 @@
 @implementation MealHeadView
 @synthesize profilePic,buy,title,hostRating,buyStatusForThisUser,cookoreatPic,cookoreatLabel;
 
--(id) initWithMeal:(Meal *) meal {
+-(id) initWithMeal:(Meal *) meal andNavigationController: (UINavigationController*) controller{
     self=[super init];
     
     if(self) {
+        self.navigationController = controller;
         self.meal=meal;
         buyStatusForThisUser = 0;
-        profilePic = [[UIImageView alloc] initWithImage:[meal.host profilePic]];
-        if(!profilePic.image) {
-            profilePic.image = [UIImage imageNamed:@"defaultUser.png"];
+        profilePic = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceholderProfileImage.png"]];
+        profilePic.image = [UIImage imageNamed:@"PlaceholderProfileImage.png"];
+        if(meal.profilePicString) {
+            [ServerCommunication performSelectorInBackground:@selector(loadImageFromURLInBackgroundAndPutInImageView:) withObject:@[meal.profilePicString,profilePic]];
         }
         profilePic.contentMode=UIViewContentModeScaleAspectFill;
         profilePic.layer.cornerRadius=profilePic.frame.size.width/2;
         profilePic.layer.masksToBounds=YES;
+        profilePic.layer.borderColor=[[UIColor grayColor] CGColor];
+        profilePic.layer.borderWidth=1;
         
         [self addSubview:profilePic];
         
@@ -105,8 +109,18 @@
         [alert show];
         
     } else if(buyStatusForThisUser==1) {
-        [buy setTitle:@"Pending" forState:UIControlStateNormal];
-        buyStatusForThisUser++;
+        NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString* uuID = [documentsPath stringByAppendingPathComponent:@"user.txt"];
+        
+        if([LocalDataBase UserIsRegistered]){
+            [buy setTitle:@"Pending" forState:UIControlStateNormal];
+            buyStatusForThisUser++;
+        }else{
+            NSLog(@"test");
+            //TODO
+            //ProfileViewController *profile = [[ProfileViewController alloc] init];
+            //[self.navigationController pushViewController:profile animated:YES];
+        }
     } else if(buyStatusForThisUser==2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Pending…"
                                                         message:@"Waiting for the host to accept your request."
@@ -121,10 +135,13 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     
     if (buttonIndex == 1 && buyStatusForThisUser == 1) {
+        NSLog(@"päoj");
         [self buyPress];
     } else if(buttonIndex==1 && buyStatusForThisUser == 2) {
         buyStatusForThisUser=-1;
         [self buyPress];
+    } else if(buttonIndex == 0 && buyStatusForThisUser == 1) {
+        buyStatusForThisUser=0;
     }
 }
 
