@@ -59,15 +59,6 @@ def meal_delete(mealId):
     return jsonify({"success": True})
 
 
-def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
-    origins = str(startCoordinats[0])+","+str(startCoordinats[1])
-    destinations = "|".join(listofDestinations).replace(" ", "+")
-    googleMapsApiUrl = "http://maps.googleapis.com/maps/api/distancematrix/json?origins={0}&destinations={1}&mode=walking".format(origins,destinations)
-    response = requests.get(googleMapsApiUrl).json()
-
-    return response.get('rows')[0].get('elements')
-
-
 @app.route('/0.2.1b/meals/<mealId>', methods=['GET'])
 def meal_get_information(mealId):
     session = DBSession()
@@ -138,7 +129,7 @@ def meal_remove_unconfirmed_user(mealId, userId):
     return jsonify(responseDic)
 
 
-@app.route('/0.2.1b/meals/<mealId>/request/user/<userId>', methods=['PUT'])
+@app.route('/0.2.1b/meals/<mealId>/user/<userId>', methods=['PUT'])
 def meal_confirm_unconfirmed_user(mealId, userId):
     session = DBSession()
     try:
@@ -146,24 +137,6 @@ def meal_confirm_unconfirmed_user(mealId, userId):
         user = session.query(User).filter(User.id == userId).one()
         meal.unconfirmedUsers.remove(user)
         meal.users.append(user)
-        session.add(meal)
-        session.commit()
-    except NoResultFound:
-        pass
-    except ValueError:
-        pass
-    session.close()
-    responseDic = {"success": True, "mealId": userId}
-    return jsonify(responseDic)
-  
-#probably unused
-#@app.route('/0.2.1b/meals/<mealId>/user/<userId>', methods=['DELETE'])
-def meal_user_remove(mealId, userId):
-    session = DBSession()
-    try:
-        meal = session.query(Meal).filter(Meal.id == mealId).one()
-        user = session.query(User).filter(User.id == userId).one()
-        meal.users.remove(user)
         session.add(meal)
         session.commit()
     except NoResultFound:
@@ -184,14 +157,16 @@ def meal_search(latitude, longitude):
         diffLongitude = 110574*math.cos(math.radians(longitude))
         meals = session.query(Meal)\
             .filter(and_(Meal.longitude <= longitude+diffLongitude,
-                     Meal.longitude >= longitude-diffLongitude))\
-        .filter(and_(Meal.latitude <= latitude+diffLatitude, Meal.latitude >= latitude-diffLatitude))\
-        .all()
-
+                         Meal.longitude >= longitude-diffLongitude))\
+            .filter(and_(Meal.latitude <= latitude+diffLatitude,
+                         Meal.latitude >= latitude-diffLatitude))\
+            .all()
+        if len(meals) == 0:
+            return {"success": True, "results": []}
         destinations = []
         for meal in meals:
             destinations.append(meal.address)
-        walkingTimes = getWalkingDistanceFromGoogle((latitude,longitude),destinations)
+        walkingTimes = getWalkingDistanceFromGoogle((latitude, longitude), destinations)
         resultList = []
         for i, meal in enumerate(meals):
             rating = calculateTotalAverageHostRating(meal.host.id)
@@ -204,7 +179,8 @@ def meal_search(latitude, longitude):
                  # TODO return average host rating
                  "rating": rating,
                  "numberOfRatings": numberOfRatings,
-                 "price": meal.price})
+                 "price": meal.price,
+                 "typ": meal.typ})
     except NoResultFound:
         pass
     responseDic = {"success": True, "results": resultList}
@@ -349,8 +325,8 @@ def calculateAverageGuestRating(userId):
 def calculateTotalAverageHostRating(userId):
     dic = calculateAverageHostRating(userId)
     if not dic.get('quality'):
-        return None
-    return((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('onTime'))/4)
+        return 0
+    return(int(round(float((dic.get('quality')+dic.get('quantity')+dic.get('mood')+dic.get('onTime'))/4))))
 
 
 def getNumberOfRatings(userId):
@@ -394,12 +370,41 @@ def calculateAverageHostRating(userId):
                     "comments":None}
 
 
+def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
+    origins = str(startCoordinats[0])+","+str(startCoordinats[1])
+    destinations = "|".join(listofDestinations).replace(" ", "+")
+    googleMapsApiUrl = "http://maps.googleapis.com/maps/api/distancematrix/json?origins={0}&destinations={1}&mode=walking".format(origins,destinations)
+    try:
+        response = requests.get(googleMapsApiUrl).json().get('rows')[0]
+        return response.get('elements')
+    except IndexError:
+        pass
+
+    return None
+
 
 def getGPSCoordinatesFromGoogle(address):
-
     url = "https://maps.google.com/maps/api/geocode/json?address={0}&sensor=false".format(address.replace(" ","+"))
     response = requests.get(url).json().get('results')[0].get('geometry').get('location')
     return response.get('lat'), response.get('lng')
+
+
+def meal_user_remove(mealId, userId):
+    session = DBSession()
+    try:
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        user = session.query(User).filter(User.id == userId).one()
+        meal.users.remove(user)
+        session.add(meal)
+        session.commit()
+    except NoResultFound:
+        pass
+    except ValueError:
+        pass
+    session.close()
+    responseDic = {"success": True, "mealId": userId}
+    return jsonify(responseDic)
+
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///sqlalchemy.db')
