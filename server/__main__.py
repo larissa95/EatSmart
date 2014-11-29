@@ -164,14 +164,38 @@ def rating_host_add(uhostId):
 def rating_host_average_get(uhostID):
     hostRatingDic = {"success":True}
     hostRatingDic.update(calculateAverageHostRating(uhostID))
-   
     return jsonify(hostRatingDic)
 
 
 @app.route('/rating/guest/<userId>', methods=['POST'])
 def rating_guest_add(userId):
-    pass
-    #pass uhostID and check meals
+    uhostId = request.form['uhostId']
+    uhostId = request.form['uhostId']
+    print(uhostId)
+    mealId = request.form['mealId']
+    _guestRating = request.form['guestRating']
+    session = DBSession()
+    alreadyAdded = False
+    guestRatingsForThisUser = session.query(GuestRating).filter(GuestRating.user_id == userId).all()
+    for guestrate in guestRatingsForThisUser:
+        if(guestrate.meal.id == mealId):
+            #User hat für diese Mahlzeit schon eine Bewertung bekommen, wie er sich als Gast verhalten hat
+            #HostId nur zur Validierung
+            alreadyAdded = True
+    if not alreadyAdded:
+        try:
+            guest = session.query(User).filter(User.id == userId).one()
+            meal = session.query(Meal).filter(Meal.id == mealId).one()
+            #host muss man nicht zwingend erstellen, man könnte id auch direkt weitergeben, aber so überprüfung ob host für diese id existiert
+            host = session.query(User).filter(User.id == uhostId).one()
+            new_rating = GuestRating(guestRating = _guestRating, user = guest, meal = meal, host_id = host.id)
+            session.add(new_rating)
+            session.commit()
+        except NoResultFound:
+            return jsonify({"error": True})
+    session.close()
+    return jsonify({'success': "1"})
+
 
 @app.route('/rating/guest/average/<userId>', methods=['GET'])
 def rating_guest_average_get(userId):
@@ -231,8 +255,9 @@ def calculateAverageGuestRating(userId):
     session = DBSession()
     user = session.query(User).filter(User.id == userId).one()
     averageGuestRating = 0
-    for guestrate in user.guestratings: 
-        averageGuestRating += guestrate
+    for guestrate in user.guestratings:
+        print(averageGuestRating)
+        averageGuestRating += guestrate.guestRating
     numberOfRatings = len(user.guestratings)
     session.close()
     if(numberOfRatings == 0):
@@ -247,26 +272,31 @@ def calculateAverageHostRating(userId):
     averageQuantity = 0
     averageAmbience = 0
     averageMood = 0
-
-    comments = []
-    for hostrate in user.hostratings:
-        averageQuality += hostrate.quality
-        averageQuantity += hostrate.quantity
-        averageAmbience += hostrate.ambience
-        averageMood += hostrate.mood
-        if hostrate.comment is not None:
-            l.append(hostrate.comment)
-
     numberOfRatings = len(user.hostratings)
-    session.close()
-    if(numberOfRatings ==0):
-        return None
-    else:
+    if(numberOfRatings !=0):
+        comments = []
+        for hostrate in user.hostratings:
+            averageQuality += hostrate.quality
+            averageQuantity += hostrate.quantity
+            averageAmbience += hostrate.ambience
+            averageMood += hostrate.mood
+            if hostrate.comment is not None:
+                l.append(hostrate.comment)
+        session.close()
+        if len(comments)==0:
+            comments = None
         return{"quality":averageQuality/numberOfRatings,
                     "quantity":averageQuantity/numberOfRatings,
                     "ambience":averageAmbience/numberOfRatings,
                     "mood":averageMood/numberOfRatings,
                     "comments":comments}
+    else:
+        session.close()
+        return {"quality":None,
+                    "quantity":None,
+                    "ambience":None,
+                    "mood":None,
+                    "comments":None}
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///sqlalchemy.db')
