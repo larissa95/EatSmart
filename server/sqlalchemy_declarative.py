@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import create_engine
 from datetime import datetime
+from sqlalchemy.types import Float
 
 Base = declarative_base()
 
@@ -69,6 +70,8 @@ class Meal(Base):
     )
     price = Column(Float,nullable=False)
     address = Column(String(500), nullable=False)
+    latitude = Column(Float(20))
+    longitude = Column(Float(20))
     #"placeGPS": {"longitude": 48.822801, "latitude": 9.165044},
     host_id = Column(Integer, ForeignKey('user.id'))
     host = relationship(User)

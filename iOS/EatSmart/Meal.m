@@ -10,21 +10,30 @@
 
 
 @implementation Meal
-@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInMinutes,host;
+@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInSeconds,host;
 -(id)initWithJSON:(NSDictionary *) JSON {
     self = [super init];
 
     if(self) {
-        uuid = [JSON objectForKey:@"uuid"];
-        name = [JSON objectForKey:@"name"];
+        uuid = [JSON objectForKey:@"mealId"];
+        name = [JSON objectForKey:@"mealName"];
 
         
         numberOfCurrentPersons = [JSON objectForKey:@"numberOfCurrentPersons"];
         numberOfMaxPersons = [JSON objectForKey:@"numberOfMaxPersons"];
         
-        timeStamp = [JSON objectForKey:@"timeStamp"];
+        
+        NSString *dateStr = [JSON objectForKey:@"date"];
+        
+        // Convert string to date object
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"E, dd MMM YYYY HH:mm:ss z"];
+        timeStamp = [dateFormat dateFromString:dateStr];
         
         price = [JSON objectForKey:@"price"];
+        
+        walkDistanceInSeconds = [JSON objectForKey:@"walkingTime"];
+        
     }
     
     return self;
@@ -44,7 +53,7 @@
         
         price = [NSNumber numberWithFloat:3.20f];
         
-        walkDistanceInMinutes = [NSNumber numberWithFloat:10.f];
+        walkDistanceInSeconds = [NSNumber numberWithFloat:10.f];
         
         host = [[User alloc] initDummy];
         
