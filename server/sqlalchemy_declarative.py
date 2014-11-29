@@ -15,6 +15,8 @@ class User(Base):
                        nullable=True
                        )
     age = Column(Integer, nullable=True)
+    phone = Column(String(250), nullable=True)
+    gender = Column(String(250), nullable=True)
     meals = relationship(
         'Meal',
         secondary='meal_user_link'
@@ -78,4 +80,5 @@ class MealUserLink(Base):
 
 engine = create_engine('sqlite:///sqlalchemy.db')
 Base.metadata.create_all(engine)
+
 
