@@ -1,14 +1,9 @@
-import json
-import logging
-import os
-import uuid
 import math
 from datetime import datetime
 import requests
 from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy import func
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
@@ -20,7 +15,9 @@ def meal_create():
     DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
     date = datetime.strptime(request.form['date'], DATETIME_FORMAT)
-    dateRegistrationEnd = datetime.strptime(request.form['dateRegistrationEnd'], DATETIME_FORMAT)
+    dateRegistrationEnd = datetime.strptime(
+        request.form['dateRegistrationEnd'],
+        DATETIME_FORMAT)
     price = request.form['price']
     host = request.form['host']
     address = request.form['address']
@@ -32,7 +29,7 @@ def meal_create():
     meal = Meal(name=name,
                 date=date,
                 dateRegistrationEnd=dateRegistrationEnd,
-                maxGuests= maxGuests,
+                maxGuests=maxGuests,
                 price=price,
                 address=address,
                 typ=typ,
@@ -44,23 +41,19 @@ def meal_create():
     mealDic = {"success": True, "mealId": meal.id}
     session.close()
     return jsonify(mealDic)
-    #pass user id, datum, meal name,... 
+    # pass user id, datum, meal name,...
 
-def getGPSCoordinatesFromGoogle(address):
-
-    url = "https://maps.google.com/maps/api/geocode/json?address={0}&sensor=false".format(address.replace(" ","+"))
-    response = requests.get(url).json().get('results')[0].get('geometry').get('location')
-    return response.get('lat'), response.get('lng')
 
 @app.route('/0.2.1b/meals/<mealId>', methods=['DELETE'])
 def meal_delete(mealId):
     session = DBSession()
     try:
-        meal= session.query(Meal).filter(Meal.id==mealId).one()
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
         session.delete(meal)
         session.commit()
     except NoResultFound:
-        return jsonify({"success": False, "error": {"message": "No Meal Found with this id"}})
+        return jsonify({"success": False,
+                        "error": {"message": "No Meal Found with this id"}})
     session.close()
 
     return jsonify({"success": True})
@@ -74,29 +67,39 @@ def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
 
     return response.get('rows')[0].get('elements')
 
+
 @app.route('/0.2.1b/meals/<mealId>', methods=['GET'])
 def meal_get_information(mealId):
     session = DBSession()
     try:
-        meal= session.query(Meal).filter(Meal.id==mealId).one()
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
         host = meal.host
         responseDic = {"success": True,
-                   "mealId": mealId,
-                   "typ": meal.typ,
-                   "date": meal.date,
-                   "dateRegistrationEnd": meal.dateRegistrationEnd,
-                   "price": meal.price,
-                   "place": meal.address,
-                   "maxGuests": meal.maxGuests,
-                   "guest_attending": len(meal.users),
-                   "placeGPS": {"latitude": meal.latitude, "longitude": meal.longitude},
-                   "host": {"hostname": host.name, "age": host.age, "phone": host.phone, "gender": host.gender, "hostId": host.id, "registerdsince": host.firstLogin},
-                   "image": meal.host.image}
+                       "mealId": mealId,
+                       "typ": meal.typ,
+                       "date": meal.date,
+                       "dateRegistrationEnd": meal.dateRegistrationEnd,
+                       "price": meal.price,
+                       "place": meal.address,
+                       "maxGuests": meal.maxGuests,
+                       "guest_attending": len(meal.users),
+                       "placeGPS": {
+                           "latitude": meal.latitude,
+                           "longitude": meal.longitude},
+                       "host": {
+                           "hostname": host.name,
+                           "age": host.age,
+                           "phone": host.phone,
+                           "gender": host.gender,
+                           "hostId": host.id,
+                           "registerdsince": host.firstLogin},
+                       "image": meal.host.image}
         session.commit()
     except NoResultFound:
-        return jsonify({"success": False, "error": {"message": "No Meal Found with this id"}})
+        return jsonify({"success": False,
+                        "error": {"message": "No Meal Found with this id"}})
     session.close()
-    
+
     return jsonify(responseDic)
 #get guests, date,...
 
@@ -116,6 +119,7 @@ def meal_user_add(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
+
 @app.route('/0.2.1b/meals/<mealId>/user/<userId>', methods=['DELETE'])
 def meal_user_remove(mealId, userId):
     session = DBSession()
@@ -133,6 +137,7 @@ def meal_user_remove(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
+
 @app.route('/0.2.1b/meals/search/<float:latitude>/<float:longitude>', methods=['GET'])
 def meal_search(latitude, longitude):
     #squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
@@ -141,7 +146,8 @@ def meal_search(latitude, longitude):
         diffLatitude = 5000/110574
         diffLongitude = 110574*math.cos(math.radians(longitude))
         meals = session.query(Meal)\
-        .filter(and_(Meal.longitude <= longitude+diffLongitude, Meal.longitude >= longitude-diffLongitude))\
+            .filter(and_(Meal.longitude <= longitude+diffLongitude,
+                     Meal.longitude >= longitude-diffLongitude))\
         .filter(and_(Meal.latitude <= latitude+diffLatitude, Meal.latitude >= latitude-diffLatitude))\
         .all()
 
@@ -182,7 +188,7 @@ def rating_host_add(uhostId):
         comment = request.form['comments']
     except Exception:
         comment = None
-    
+
     alreadyAdded = False
     session = DBSession()
     hostRatingsForThisHostAndMeal = session.query(HostRating).filter(and_(HostRating.host_id == uhostId, HostRating.meal_id == mealId)).all()
@@ -190,7 +196,7 @@ def rating_host_add(uhostId):
         if(hostRate.user_id==userId):
             alreadyAdded = True
             print('alladded')
-    
+
     if not alreadyAdded:
         print('not added')
         #pass userID => to identify if user really participated in meal => TODO
@@ -349,6 +355,14 @@ def calculateAverageHostRating(userId):
                     "onTime":None,
                     "mood":None,
                     "comments":None}
+
+
+
+def getGPSCoordinatesFromGoogle(address):
+
+    url = "https://maps.google.com/maps/api/geocode/json?address={0}&sensor=false".format(address.replace(" ","+"))
+    response = requests.get(url).json().get('results')[0].get('geometry').get('location')
+    return response.get('lat'), response.get('lng')
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///sqlalchemy.db')
