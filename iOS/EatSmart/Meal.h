@@ -20,8 +20,11 @@
 @property(readonly) NSNumber *numberOfCurrentPersons;
 @property(readonly) NSDate *timeStamp;
 
+@property(readonly) NSNumber *price;
+
 @property(readonly) NSString *locationDescription;
 @property(readonly) CLLocation *gpsLocation;
+@property(readonly) NSNumber *walkDistanceInMinutes;
 
 -(id)initWithJSON:(NSDictionary *) JSON;
 -(id) initDummy;

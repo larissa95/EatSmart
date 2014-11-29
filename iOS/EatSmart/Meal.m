@@ -10,7 +10,7 @@
 
 
 @implementation Meal
-@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp;
+@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInMinutes,host;
 -(id)initWithJSON:(NSDictionary *) JSON {
     self = [super init];
 
@@ -23,6 +23,8 @@
         numberOfMaxPersons = [JSON objectForKey:@"numberOfMaxPersons"];
         
         timeStamp = [JSON objectForKey:@"timeStamp"];
+        
+        price = [JSON objectForKey:@"price"];
     }
     
     return self;
@@ -39,6 +41,12 @@
         numberOfMaxPersons = [NSNumber numberWithInt:6];
         
         timeStamp = [[NSDate alloc] init];
+        
+        price = [NSNumber numberWithFloat:3.20f];
+        
+        walkDistanceInMinutes = [NSNumber numberWithFloat:10.f];
+        
+        host = [[User alloc] initDummy];
         
     }
     

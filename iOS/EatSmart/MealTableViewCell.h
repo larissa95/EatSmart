@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "Meal.h"
+#import "AMRatingControl.h"
 
 @interface MealTableViewCell : UITableViewCell
 
 @property(nonatomic) UIImageView *picture;
 @property(nonatomic) UILabel *mealNameLabel;
-@property(nonatomic) UILabel *ratingLabel;
+@property(nonatomic) UILabel *distanceDescriptionLabel;
+@property(nonatomic) UILabel *timeLabel;
+@property(nonatomic) UILabel *priceLabel;
+@property(nonatomic) AMRatingControl *starView;
+
 
 -(void) setMeal:(Meal *) meal;
 

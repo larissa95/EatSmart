@@ -11,6 +11,19 @@
 @implementation User
 
 
+-(id) initDummy {
+    self = [super init];
+    
+    if(self) {
+        
+    }
+    
+    return self;
+    
+}
 
+-(int) averageHostRating {
+    return 3;
+}
 
 @end

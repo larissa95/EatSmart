@@ -20,6 +20,8 @@
 @property(readonly) HostRating *hostRating;
 
 
+-(int) averageHostRating;
+-(id) initDummy;
 
 
 
