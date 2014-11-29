@@ -58,7 +58,8 @@
 }
 
 -(void) profile {
-    
+    ProfileViewController *profile = [[ProfileViewController alloc] init];
+    [self.navigationController pushViewController:profile animated:YES];
 }
 
 -(void) add {

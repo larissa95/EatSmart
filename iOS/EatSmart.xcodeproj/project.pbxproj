@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E080BD41A2A37BD0021D33F /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E080BD31A2A37BD0021D33F /* ProfileViewController.m */; };
 		4EA09BD41A28FE9E00D2618B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA09BD31A28FE9E00D2618B /* main.m */; };
 		4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA09BD61A28FE9E00D2618B /* AppDelegate.m */; };
 		4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EA09BDE1A28FE9E00D2618B /* Images.xcassets */; };
@@ -25,7 +26,6 @@
 		5189989E1A29A86A004C71E5 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189989D1A29A86A004C71E5 /* FilterViewController.m */; };
 		518998A11A29BE41004C71E5 /* CreateNewMealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */; };
 		518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A31A29C75F004C71E5 /* LocalDataBase.m */; };
-		518998A71A29CB23004C71E5 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A61A29CB23004C71E5 /* ProfileViewController.m */; };
 		518998AD1A29E137004C71E5 /* ServerCommunication.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AC1A29E137004C71E5 /* ServerCommunication.m */; };
 		518998B01A29FF17004C71E5 /* MealHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AF1A29FF17004C71E5 /* MealHeadView.m */; };
 		51CAD7F91A2A0F1A0042FC77 /* MealDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */; };
@@ -44,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E080BD21A2A37BD0021D33F /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		4E080BD31A2A37BD0021D33F /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		4EA09BCE1A28FE9E00D2618B /* EatSmart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EatSmart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EA09BD21A28FE9E00D2618B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4EA09BD31A28FE9E00D2618B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -79,8 +81,6 @@
 		518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateNewMealViewController.m; sourceTree = "<group>"; };
 		518998A21A29C75F004C71E5 /* LocalDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalDataBase.h; sourceTree = "<group>"; };
 		518998A31A29C75F004C71E5 /* LocalDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalDataBase.m; sourceTree = "<group>"; };
-		518998A51A29CB23004C71E5 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
-		518998A61A29CB23004C71E5 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		518998AB1A29E137004C71E5 /* ServerCommunication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerCommunication.h; sourceTree = "<group>"; };
 		518998AC1A29E137004C71E5 /* ServerCommunication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerCommunication.m; sourceTree = "<group>"; };
 		518998AE1A29FF17004C71E5 /* MealHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealHeadView.h; sourceTree = "<group>"; };
@@ -135,6 +135,8 @@
 				518998821A292750004C71E5 /* defaultUser.png */,
 				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
+				4E080BD21A2A37BD0021D33F /* ProfileViewController.h */,
+				4E080BD31A2A37BD0021D33F /* ProfileViewController.m */,
 				5189986E1A290B77004C71E5 /* MainViewController.h */,
 				5189986F1A290B77004C71E5 /* MainViewController.m */,
 				5189987A1A291C1A004C71E5 /* MealTableViewCell.h */,
@@ -149,8 +151,6 @@
 				518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */,
 				5189989C1A29A86A004C71E5 /* FilterViewController.h */,
 				5189989D1A29A86A004C71E5 /* FilterViewController.m */,
-				518998A51A29CB23004C71E5 /* ProfileViewController.h */,
-				518998A61A29CB23004C71E5 /* ProfileViewController.m */,
 				518998711A290EF1004C71E5 /* Meal.h */,
 				518998721A290EF1004C71E5 /* Meal.m */,
 				518998741A290EF8004C71E5 /* User.h */,
@@ -306,13 +306,13 @@
 				5189989B1A29A66A004C71E5 /* FRSlider.m in Sources */,
 				518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */,
 				518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */,
-				518998A71A29CB23004C71E5 /* ProfileViewController.m in Sources */,
 				518998761A290EF8004C71E5 /* User.m in Sources */,
 				518998731A290EF1004C71E5 /* Meal.m in Sources */,
 				4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */,
 				518998B01A29FF17004C71E5 /* MealHeadView.m in Sources */,
 				5189987C1A291C1A004C71E5 /* MealTableViewCell.m in Sources */,
 				5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */,
+				4E080BD41A2A37BD0021D33F /* ProfileViewController.m in Sources */,
 				51CAD7F91A2A0F1A0042FC77 /* MealDetailTableViewCell.m in Sources */,
 				518998701A290B77004C71E5 /* MainViewController.m in Sources */,
 				518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */,
