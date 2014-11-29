@@ -14,7 +14,7 @@
 
 
 @property(readonly) User *host;
-@property(readonly) NSString *uuid;
+@property(readonly) NSInteger uuid;
 @property(readonly) NSString *name;
 @property(readonly) NSNumber *numberOfMaxPersons;
 @property(readonly) NSNumber *numberOfCurrentPersons;
