@@ -1822,9 +1822,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="261.56046"
-     inkscape:cy="558.36939"
+     inkscape:zoom="1.4"
+     inkscape:cx="362.43522"
+     inkscape:cy="551.81762"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1841,7 +1841,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2088,7 +2088,7 @@
          transform="translate(-1.4285714,-118.57143)"
          id="g14506">
         <rect
-           style="fill:#aaaaaa;fill-opacity:1;stroke:none"
+           style="fill:#e6e6e6;fill-opacity:1;stroke:none"
            id="rect14502"
            width="411.34744"
            height="44.898598"
@@ -2107,7 +2107,7 @@
            y="419.1911"
            style="font-size:7.72245789px;stroke:none">
           <tspan
-             style="font-size:21.88029861000000054px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
+             style="font-size:21.88029861000000054px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
              sodipodi:role="line"
              id="tspan26640"
              x="173.66934"
@@ -2120,7 +2120,7 @@
          y="300.61993"
          style="font-size:7.72245789px">
         <tspan
-           style="font-size:21.88029861000000054px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
+           style="font-size:21.88029861000000054px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
            sodipodi:role="line"
            id="tspan26640-1"
            x="484.12027"
@@ -2135,7 +2135,7 @@
          transform="translate(-1.4285714,-118.57143)"
          id="g14506-7">
         <rect
-           style="fill:#aaaaaa;fill-opacity:1;stroke:none"
+           style="fill:#e6e6e6;fill-opacity:1;stroke:none"
            id="rect14502-7"
            width="411.34744"
            height="44.898598"
@@ -2154,7 +2154,7 @@
            y="419.1911"
            style="font-size:7.72245789000000027px;stroke:none;fill:#ffffff;fill-opacity:1">
           <tspan
-             style="font-size:21.88029861000000054px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
+             style="font-size:21.88029861000000054px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
              sodipodi:role="line"
              id="tspan26640-5"
              x="173.66934"
@@ -2167,7 +2167,7 @@
          y="299.90564"
          style="font-size:7.72245789px">
         <tspan
-           style="font-size:21.88029861px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
+           style="font-size:21.88029861000000054px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
            sodipodi:role="line"
            id="tspan26640-1-0"
            x="504.83456"
@@ -2447,7 +2447,7 @@
            x="251.84294"
            id="tspan26640-5-06"
            sodipodi:role="line"
-           style="font-size:16.61868095px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans">All</tspan>
+           style="font-size:16.61868095000000167px;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans">All</tspan>
       </text>
       <text
          style="font-size:8.02106571px;stroke:none"
