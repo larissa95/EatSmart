@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MealTableViewCell.h"
+#import "MealDetailViewController.h"
 #import "DataBaseConnection.h"
 
 @interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic) UITableView *table;
 @property(nonatomic) NSArray *mealSuggestions;
+@property(nonatomic) UIToolbar *toolBar;
 
 @end

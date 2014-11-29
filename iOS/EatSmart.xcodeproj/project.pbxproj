@@ -19,6 +19,9 @@
 		5189987C1A291C1A004C71E5 /* MealTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189987B1A291C1A004C71E5 /* MealTableViewCell.m */; };
 		5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189987E1A292106004C71E5 /* DataBaseConnection.m */; };
 		518998831A292750004C71E5 /* defaultUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 518998821A292750004C71E5 /* defaultUser.png */; };
+		518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998851A2929AC004C71E5 /* MealDetailViewController.m */; };
+		518998951A2935CB004C71E5 /* 5starsgray.png in Resources */ = {isa = PBXBuildFile; fileRef = 518998941A2935CB004C71E5 /* 5starsgray.png */; };
+		518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998971A2937B8004C71E5 /* AMRatingControl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,11 @@
 		5189987D1A292106004C71E5 /* DataBaseConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseConnection.h; sourceTree = "<group>"; };
 		5189987E1A292106004C71E5 /* DataBaseConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseConnection.m; sourceTree = "<group>"; };
 		518998821A292750004C71E5 /* defaultUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultUser.png; sourceTree = "<group>"; };
+		518998841A2929AC004C71E5 /* MealDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealDetailViewController.h; sourceTree = "<group>"; };
+		518998851A2929AC004C71E5 /* MealDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealDetailViewController.m; sourceTree = "<group>"; };
+		518998941A2935CB004C71E5 /* 5starsgray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5starsgray.png; sourceTree = "<group>"; };
+		518998961A2937B8004C71E5 /* AMRatingControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMRatingControl.h; sourceTree = "<group>"; };
+		518998971A2937B8004C71E5 /* AMRatingControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRatingControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +104,7 @@
 		4EA09BD01A28FE9E00D2618B /* EatSmart */ = {
 			isa = PBXGroup;
 			children = (
+				518998941A2935CB004C71E5 /* 5starsgray.png */,
 				518998821A292750004C71E5 /* defaultUser.png */,
 				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
@@ -103,6 +112,8 @@
 				5189986F1A290B77004C71E5 /* MainViewController.m */,
 				5189987A1A291C1A004C71E5 /* MealTableViewCell.h */,
 				5189987B1A291C1A004C71E5 /* MealTableViewCell.m */,
+				518998841A2929AC004C71E5 /* MealDetailViewController.h */,
+				518998851A2929AC004C71E5 /* MealDetailViewController.m */,
 				518998711A290EF1004C71E5 /* Meal.h */,
 				518998721A290EF1004C71E5 /* Meal.m */,
 				518998741A290EF8004C71E5 /* User.h */,
@@ -111,6 +122,8 @@
 				518998781A29165F004C71E5 /* HostRating.m */,
 				5189987D1A292106004C71E5 /* DataBaseConnection.h */,
 				5189987E1A292106004C71E5 /* DataBaseConnection.m */,
+				518998961A2937B8004C71E5 /* AMRatingControl.h */,
+				518998971A2937B8004C71E5 /* AMRatingControl.m */,
 				4EA09BDE1A28FE9E00D2618B /* Images.xcassets */,
 				4EA09BE01A28FE9E00D2618B /* LaunchScreen.xib */,
 				4EA09BD11A28FE9E00D2618B /* Supporting Files */,
@@ -225,6 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EA09BE21A28FE9E00D2618B /* LaunchScreen.xib in Resources */,
+				518998951A2935CB004C71E5 /* 5starsgray.png in Resources */,
 				4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */,
 				518998831A292750004C71E5 /* defaultUser.png in Resources */,
 			);
@@ -244,12 +258,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */,
 				518998761A290EF8004C71E5 /* User.m in Sources */,
 				518998731A290EF1004C71E5 /* Meal.m in Sources */,
 				4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */,
 				5189987C1A291C1A004C71E5 /* MealTableViewCell.m in Sources */,
 				5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */,
 				518998701A290B77004C71E5 /* MainViewController.m in Sources */,
+				518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */,
 				518998791A29165F004C71E5 /* HostRating.m in Sources */,
 				4EA09BD41A28FE9E00D2618B /* main.m in Sources */,
 			);
