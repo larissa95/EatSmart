@@ -1,0 +1,32 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+ 
+from sqlalchemy_declarative import *
+ 
+engine = create_engine('sqlite:///sqlalchemy.db')
+Base.metadata.bind = engine
+
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+ 
+user1 = User(name='Minion')
+session.add(user1)
+user2 = User(name='Frede')
+session.add(user2)
+user3 = User(name='Fritz')
+session.add(user3)
+
+meal1 = Meal(name='test', date=datetime.datetime.now(), dateRegistrationEnd=datetime.datetime.now(),price=3.4,address='dfa', host=user1)
+session.add(meal2)
+meal1.users.append(user2)
+meal1.users.append(user3)
+meal2 = Meal(name='test1', date=datetime.datetime.now(), dateRegistrationEnd=datetime.datetime.now(),price=4.2,address='dfa', host=user1)
+session.add(meal1)
+users2.meals.append(meal2)
+#user2 should have meal1 and 2
+
+session.commit()
+
+print(user2.meals[0].name)
+print(user2.meals[1].name)
+print(meal1.user[0].name)
