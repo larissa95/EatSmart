@@ -14,7 +14,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 
-@app.route('/meals/create', methods=['POST'])
+@app.route('/0.2.1b/meals/create', methods=['POST'])
 def meal_create():
     name = request.form['name']
     DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -52,7 +52,7 @@ def getGPSCoordinatesFromGoogle(address):
     response = requests.get(url).json().get('results')[0].get('geometry').get('location')
     return response.get('lat'), response.get('lng')
 
-@app.route('/meals/<mealId>/delete', methods=['POST'])
+@app.route('/0.2.1b/meals/<mealId>', methods=['DELETE'])
 def meal_delete(mealId):
     session = DBSession()
     try:
@@ -74,7 +74,7 @@ def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
 
     return response.get('rows')[0].get('elements')
 
-@app.route('/meals/<mealId>/information', methods=['GET'])
+@app.route('/0.2.1b/meals/<mealId>', methods=['GET'])
 def meal_get_information(mealId):
     session = DBSession()
     try:
@@ -101,7 +101,7 @@ def meal_get_information(mealId):
 #get guests, date,...
 
 
-@app.route('/meals/<mealId>/user/<userId>', methods=['POST'])
+@app.route('/0.2.1b/meals/<mealId>/user/<userId>', methods=['POST'])
 def meal_user_add(mealId, userId):
     session = DBSession()
     try:
@@ -116,7 +116,7 @@ def meal_user_add(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
-@app.route('/meals/<mealId>/user/<userId>', methods=['DELETE'])
+@app.route('/0.2.1b/meals/<mealId>/user/<userId>', methods=['DELETE'])
 def meal_user_remove(mealId, userId):
     session = DBSession()
     try:
@@ -133,7 +133,7 @@ def meal_user_remove(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
-@app.route('/meals/search/<float:latitude>/<float:longitude>', methods=['GET'])
+@app.route('/0.2.1b/meals/search/<float:latitude>/<float:longitude>', methods=['GET'])
 def meal_search(latitude, longitude):
     #squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
     session = DBSession()
@@ -168,14 +168,14 @@ def meal_search(latitude, longitude):
     return jsonify(responseDic)
     #pass time, typ
 
-@app.route('/rating/host/<uhostID>', methods=['POST'])
+@app.route('/0.2.1b/rating/host/<uhostID>', methods=['POST'])
 def rating_host_add(uhostId):
     pass
         #pass uID => to identify if user really participated in meal
         #check if bewertung exists
     #pass userId,mealID
 
-@app.route('/rating/host/average/<uhostID>', methods=['GET'])
+@app.route('/0.2.1b/rating/host/average/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
     hostRatingDic = {"success":True}
 
@@ -183,7 +183,7 @@ def rating_host_average_get(uhostID):
     return jsonify(hostRatingDic)
 
 
-@app.route('/rating/guest/<userId>', methods=['POST'])
+@app.route('/0.2.1b/rating/guest/<userId>', methods=['POST'])
 def rating_guest_add(userId):
     uhostId = request.form['uhostId']
     uhostId = request.form['uhostId']
@@ -209,12 +209,12 @@ def rating_guest_add(userId):
     return jsonify({'success': "1"})
 
 
-@app.route('/rating/guest/average/<userId>', methods=['GET'])
+@app.route('/0.2.1b/rating/guest/average/<userId>', methods=['GET'])
 def rating_guest_average_get(userId):
     guestRatingDic = {"success":True, "guestRating":calculateAverageGuestRating(userId)}
     return jsonify(guestRatingDic)
 
-@app.route('/user/create', methods=['POST'])
+@app.route('/0.2.1b/user/create', methods=['POST'])
 def createUser():
 
     new_user = User()
@@ -226,7 +226,7 @@ def createUser():
     return jsonify(userDic)
 
 
-@app.route('/user/<userId>/information', methods=['GET'])
+@app.route('/0.2.1b/user/<userId>/information', methods=['GET'])
 def getUserInformation(userId):
     hostRating = calculateAverageHostRating(userId)
     user = session.query(User).filter(User.id == userId).one()
@@ -243,7 +243,7 @@ def getUserInformation(userId):
     return jsonify(userDic)
 
 
-@app.route('/user/<userId>/information', methods=['PUT'])
+@app.route('/0.2.1b/user/<userId>/information', methods=['PUT'])
 def setUserInfromation(userId):
     age = request.headers.get('age')
     phone = request.headers.get('phone')
