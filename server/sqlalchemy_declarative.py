@@ -23,17 +23,20 @@ class User(Base):
 class HostRating(Base):
     __tablename__ = 'hostRating'
     id = Column(Integer, primary_key=True)
-    quality = Column(Integer)
-    quantity = Column(Integer)
-    ambience = Column(Integer)
-    mood = Column(Integer)
+    quality = Column(Integer,default=3)
+    quantity = Column(Integer,default=3)
+    ambience = Column(Integer,default=3)
+    mood = Column(Integer,default=3)
+    comment = Column(Integer, default = "")
     # => one to many relationship => one user many HostRatings
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship('User', backref=backref('hostratings', order_by=id))
+    host_id = Column(Integer, ForeignKey('user.id'))
+    host = relationship('User', backref=backref('hostratings', order_by=id))
     # for a list of hostratings call user.hostratings
     # Meal und nicht 'Meal' as Meal is not defined at this moment
     meal_id = Column(Integer, ForeignKey('meal.id'))
     meal = relationship('Meal')
+
+    user_id = Column(Integer)
 
 
 class GuestRating(Base):
