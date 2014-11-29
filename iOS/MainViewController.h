@@ -10,6 +10,8 @@
 #import "MealTableViewCell.h"
 #import "MealDetailViewController.h"
 #import "DataBaseConnection.h"
+#import "FilterViewController.h"
+#import "CreateNewMealViewController.h"
 
 @interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
