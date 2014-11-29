@@ -46,6 +46,7 @@
 }
 
 -(void) segmentChanged {
+    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     [table reloadData];
 }
 
@@ -128,7 +129,7 @@
                     cell.titleLabel.text=@"date and time";
                     
                     NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
-                    [fmt setDateFormat:@"HH:mm a, dd.MM."];
+                    [fmt setDateFormat:@"dd.MM.YYYY, HH:mm a"];
                     NSString* dateStr = [fmt stringFromDate:self.meal.timeStamp];
                     cell.descriptionLabel.text=dateStr;
                     break;
@@ -192,10 +193,34 @@
         NSString *str = @"Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war.";
         CGSize size = [str sizeWithFont:[UIFont fontWithName:@"HelveticaNeue" size:19] constrainedToSize:CGSizeMake(self.view.frame.size.width, 10000) lineBreakMode:UILineBreakModeWordWrap];
 
-        NSLog(@"%f",size.height);
         return size.height + 10;
     }
     return 60;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (segmentControl.selectedSegmentIndex==0) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
+        
+        MKMapView *map =[[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
+        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+        annotation.coordinate=self.meal.gpsLocation;
+        [map addAnnotation:annotation];
+        
+        [view addSubview:map];
+        map.userInteractionEnabled=NO;
+        map.centerCoordinate=self.meal.gpsLocation;
+        
+        return view;
+    }
+    return nil;
+}
+
+-(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if(segmentControl.selectedSegmentIndex==0) {
+        return 300;
+    }
+    return 0;
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

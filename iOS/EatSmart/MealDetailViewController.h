@@ -10,6 +10,7 @@
 #import "Meal.h"
 #import "MealHeadView.h"
 #import "MealDetailTableViewCell.h"
+@import MapKit;
 
 @interface MealDetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
 
@@ -20,6 +21,7 @@
 @property(nonatomic) UISegmentedControl *segmentControl;
 @property(nonatomic) Meal *meal;
 @property(nonatomic) NSMutableArray *reviews;
+
 
 -(id) initWithMeal:(Meal *) meal;
 

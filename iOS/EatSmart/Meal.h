@@ -24,7 +24,7 @@
 @property(readonly) NSNumber *rating;
 
 @property(readonly) NSString *locationDescription;
-@property(readonly) CLLocation *gpsLocation;
+@property(readonly) CLLocationCoordinate2D gpsLocation;
 @property(readonly) NSNumber *walkDistanceInSeconds;
 
 @property(readonly) bool isCookEvent;

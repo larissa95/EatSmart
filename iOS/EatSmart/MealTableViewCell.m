@@ -9,7 +9,7 @@
 #import "MealTableViewCell.h"
 
 @implementation MealTableViewCell
-@synthesize picture,mealNameLabel,distanceDescriptionLabel,timeLabel,priceLabel,starLabel;
+@synthesize picture,mealNameLabel,distanceDescriptionLabel,timeLabel,priceLabel,starLabel,cookoreatPic;
 
 -(id) init {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"mealCell"];
@@ -45,10 +45,11 @@
     starLabel = [[UILabel alloc] init];
     starLabel.font=[UIFont fontWithName:@"" size:20];
     starLabel.textColor=[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0];
-
+    
     [self addSubview:starLabel];
     
-   
+    cookoreatPic = [[UIImageView alloc] init];
+    [self addSubview:cookoreatPic];
     
     return self;
 }
@@ -59,6 +60,12 @@
         picture.image=[UIImage imageNamed:@"defaultUser.png"];
     } else {
         picture.image=meal.host.profilePic;
+    }
+    
+    if(meal.isCookEvent) {
+        cookoreatPic.image=[UIImage imageNamed:@"Cook.png"];
+    } else {
+        cookoreatPic.image=[UIImage imageNamed:@"Eat.png"];
     }
     
     
@@ -72,19 +79,20 @@
     [fmt setDateFormat:@"HH:mm a"];
     NSString* dateStr = [[fmt stringFromDate:meal.timeStamp] lowercaseString];
     
-
+    
     timeLabel.text = [NSString stringWithFormat:@"%@",dateStr];
     
     
     NSString *ratingString = @"";
     
-    for(int i=0; i<[meal.rating intValue]; i++) {
-        ratingString = [NSString stringWithFormat:@"%@★",ratingString];
+    if(meal.rating) {
+        for(int i=0; i<[meal.rating intValue]; i++) {
+            ratingString = [NSString stringWithFormat:@"%@★",ratingString];
+        }
+        for(int i=[meal.rating intValue]; i<5; i++) {
+            ratingString = [NSString stringWithFormat:@"%@☆",ratingString];
+        }
     }
-    for(int i=[meal.rating intValue]; i<5; i++) {
-        ratingString = [NSString stringWithFormat:@"%@☆",ratingString];
-    }
-    
     starLabel.text=ratingString;
     
 }
@@ -94,7 +102,9 @@
     [super layoutSubviews];
     picture.frame=CGRectMake(10, 10, self.frame.size.height-20, self.frame.size.height-20);
     picture.layer.cornerRadius=picture.frame.size.width/2;
-    mealNameLabel.frame=CGRectMake(self.frame.size.height, 17, self.frame.size.width-self.frame.size.height-115, 20);
+    mealNameLabel.frame=CGRectMake(self.frame.size.height+24, 17, self.frame.size.width-self.frame.size.height-115, 20);
+    cookoreatPic.frame=CGRectMake(self.frame.size.height, 17, 20, 20);
+    
     
     distanceDescriptionLabel.frame=CGRectMake(self.frame.size.height, 41, self.frame.size.width-self.frame.size.height-115, 17);
     
@@ -111,7 +121,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

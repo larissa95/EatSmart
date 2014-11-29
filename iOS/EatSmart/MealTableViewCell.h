@@ -18,6 +18,7 @@
 @property(nonatomic) UILabel *timeLabel;
 @property(nonatomic) UILabel *priceLabel;
 @property(nonatomic) UILabel *starLabel;
+@property(nonatomic) UIImageView *cookoreatPic;
 
 
 -(void) setMeal:(Meal *) meal;

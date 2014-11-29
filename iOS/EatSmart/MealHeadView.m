@@ -105,7 +105,7 @@
         [alert show];
         
     } else if(buyStatusForThisUser==1) {
-        [buy setTitle:@"…" forState:UIControlStateNormal];
+        [buy setTitle:@"Pending" forState:UIControlStateNormal];
         buyStatusForThisUser++;
     } else if(buyStatusForThisUser==2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Pending…"
@@ -136,7 +136,7 @@
     title.frame=CGRectMake(self.frame.size.height+5, 5, self.frame.size.width-self.frame.size.height-10, 35);
     
     cookoreatPic.frame=CGRectMake(self.frame.size.height+5, 43, 20, 20);
-    cookoreatLabel.frame=CGRectMake(self.frame.size.height+5+20, 43, 100, 20);
+    cookoreatLabel.frame=CGRectMake(self.frame.size.height+5+20, 43, 150, 20);
     hostRating.frame=CGRectMake(self.frame.size.height+5, 75, self.frame.size.width, 20);
     
 

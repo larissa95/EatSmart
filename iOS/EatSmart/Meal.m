@@ -28,12 +28,18 @@
         
         // Convert string to date object
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"E, dd MMM YYYY HH:mm:ss z"];
+        [dateFormat setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss zzz"];
         timeStamp = [dateFormat dateFromString:dateStr];
         
         price = [JSON objectForKey:@"price"];
         
         walkDistanceInSeconds = [JSON objectForKey:@"walkingTime"];
+        
+        if([[JSON objectForKey:@"typ"] isEqualToString:@"cooking"]) {
+            isCookEvent=true;
+        } else {
+            isCookEvent=false;
+        }
         
     }
     
@@ -54,7 +60,7 @@
         
         price = [NSNumber numberWithFloat:3.20f];
         
-        walkDistanceInSeconds = [NSNumber numberWithFloat:10.f];
+        walkDistanceInSeconds = [NSNumber numberWithFloat:500.f];
         
         host = [[User alloc] initDummy];
         
