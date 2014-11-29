@@ -15,7 +15,7 @@
     self = [super init];    
     
     if(self) {
-        
+
 
         uuid = [[JSON valueForKey:@"hostId"] integerValue];
         

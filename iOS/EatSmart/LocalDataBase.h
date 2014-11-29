@@ -10,4 +10,10 @@
 
 @interface LocalDataBase : NSObject
 
++(void) setUserId:(int) _id;
++(int) userId;
+
++(Boolean) UserIsRegistered;
+
+
 @end

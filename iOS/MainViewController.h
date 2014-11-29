@@ -12,6 +12,7 @@
 #import "DataBaseConnection.h"
 #import "FilterViewController.h"
 #import "CreateNewMealViewController.h"
+#import "ProfileViewController.h"
 
 @interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 

@@ -11,10 +11,11 @@
 @implementation MealHeadView
 @synthesize profilePic,buy,title,hostRating,buyStatusForThisUser,cookoreatPic,cookoreatLabel;
 
--(id) initWithMeal:(Meal *) meal {
+-(id) initWithMeal:(Meal *) meal andNavigationController: (UINavigationController*) controller{
     self=[super init];
     
     if(self) {
+        self.navigationController = controller;
         self.meal=meal;
         buyStatusForThisUser = 0;
         profilePic = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceholderProfileImage.png"]];
@@ -108,8 +109,18 @@
         [alert show];
         
     } else if(buyStatusForThisUser==1) {
-        [buy setTitle:@"Pending" forState:UIControlStateNormal];
-        buyStatusForThisUser++;
+        NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString* uuID = [documentsPath stringByAppendingPathComponent:@"user.txt"];
+        
+        if([LocalDataBase UserIsRegistered]){
+            [buy setTitle:@"Pending" forState:UIControlStateNormal];
+            buyStatusForThisUser++;
+        }else{
+            NSLog(@"test");
+            //TODO
+            //ProfileViewController *profile = [[ProfileViewController alloc] init];
+            //[self.navigationController pushViewController:profile animated:YES];
+        }
     } else if(buyStatusForThisUser==2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Pending…"
                                                         message:@"Waiting for the host to accept your request."

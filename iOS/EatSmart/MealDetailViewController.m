@@ -23,7 +23,7 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share)];
         
         
-        mealHeadView = [[MealHeadView alloc] initWithMeal:meal];
+        mealHeadView = [[MealHeadView alloc] initWithMeal:meal andNavigationController:self.navigationController];
         [self.view addSubview:mealHeadView];
         
         table=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
