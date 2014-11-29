@@ -70,14 +70,14 @@ bool dateCellExtended;
     switch (indexPath.section) {
         case 2: {
             if(indexPath.row==0) {
-                FRSlider *slider = [[FRSlider alloc] initWithName:@"Price" Unit:@"€" min:0 max:10 currentValue:2.30 nachKommaStellen:0.01];
+                FRSlider *slider = [[FRSlider alloc] initWithName:@"max. price" Unit:@"€" min:0 max:10 currentValue:2.30 nachKommaStellen:0.01];
                 slider.frame=CGRectMake(0, 0, self.view.frame.size.width, [self tableView:table heightForRowAtIndexPath:indexPath]);
                 [cell addSubview:slider];
                 break;
             }
             
             if(indexPath.row==1) {
-                FRSlider *slider = [[FRSlider alloc] initWithName:@"Walking time" Unit:@"min" min:0 max:20 currentValue:5 nachKommaStellen:1.0];
+                FRSlider *slider = [[FRSlider alloc] initWithName:@"max. walking time" Unit:@"min" min:0 max:20 currentValue:5 nachKommaStellen:1.0];
                 slider.frame=CGRectMake(0, 0, self.view.frame.size.width, [self tableView:table heightForRowAtIndexPath:indexPath]);
                 [cell addSubview:slider];
                 break;

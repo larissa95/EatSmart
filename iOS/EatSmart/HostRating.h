@@ -13,7 +13,7 @@
 @property(readonly) NSMutableArray *reviewTexts;
 
 @property(readonly) NSNumber *quality;
-@property(readonly) NSNumber *ambiente;
+@property(readonly) NSNumber *onTime;
 @property(readonly) NSNumber *quantity;
 @property(readonly) NSNumber *mood;
 

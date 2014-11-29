@@ -4,6 +4,7 @@ import requests
 from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy import func, count
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
@@ -137,18 +138,27 @@ def meal_remove_unconfirmed_user(mealId, userId):
 
 @app.route('/0.2.1b/meals/<mealId>/user/<userId>', methods=['PUT'])
 def meal_confirm_unconfirmed_user(mealId, userId):
+    print('called')
     session = DBSession()
     try:
         meal = session.query(Meal).filter(Meal.id == mealId).one()
         user = session.query(User).filter(User.id == userId).one()
-        meal.unconfirmedUsers.remove(user)
-        meal.users.append(user)
+        try:
+            meal.unconfirmedUsers.remove(user)
+            #just add to list if it was in the confirmations list before.
+            if(len(meal.users) < meal.maxGuests):
+                meal.users.append(user)
+        except ValueError:
+            print('Exception geworfen')
+            pass
         session.add(meal)
         session.commit()
     except NoResultFound:
         pass
     except ValueError:
         pass
+    #TO DO Error Respone, konnte nicht confirmed werden
+    #confirmed, nicht confirmed
     session.close()
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
@@ -162,11 +172,12 @@ def meal_search(latitude, longitude):
         diffLatitude = 5000/110574
         diffLongitude = 110574*math.cos(math.radians(longitude))
         meals = session.query(Meal)\
-            .filter(and_(Meal.longitude <= longitude+diffLongitude,
-                         Meal.longitude >= longitude-diffLongitude))\
-            .filter(and_(Meal.latitude <= latitude+diffLatitude,
-                         Meal.latitude >= latitude-diffLatitude))\
-            .all()
+        .filter(and_(Meal.longitude <= longitude+diffLongitude, 
+                     Meal.longitude >= longitude-diffLongitude))\
+        .filter(and_(Meal.latitude <= latitude+diffLatitude,
+                     Meal.latitude >= latitude-diffLatitude))\
+        .filter(Meal.users.count() <= Meal.maxGuests)\
+        .all()
         if len(meals) == 0:
             return {"success": True, "results": []}
         destinations = []

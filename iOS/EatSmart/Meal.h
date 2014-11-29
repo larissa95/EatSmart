@@ -21,10 +21,13 @@
 @property(readonly) NSDate *timeStamp;
 
 @property(readonly) NSNumber *price;
+@property(readonly) NSNumber *rating;
 
 @property(readonly) NSString *locationDescription;
-@property(readonly) CLLocation *gpsLocation;
+@property(readonly) CLLocationCoordinate2D gpsLocation;
 @property(readonly) NSNumber *walkDistanceInSeconds;
+
+@property(readonly) bool isCookEvent;
 
 -(id)initWithJSON:(NSDictionary *) JSON;
 -(id) initDummy;

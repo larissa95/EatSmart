@@ -24,7 +24,7 @@
     
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Filter" style:UIBarButtonItemStylePlain target:self  action:@selector(filter)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Profile" style:UIBarButtonItemStylePlain target:self  action:@selector(profile)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Events" style:UIBarButtonItemStylePlain target:self  action:@selector(events)];
     
     
     
@@ -41,11 +41,15 @@
     
     toolBar = [[UIToolbar alloc] init];
     toolBar.tintColor = [UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0];
-    toolBar.items=@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add)]];
+    toolBar.items=@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add)],[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],[[UIBarButtonItem alloc] initWithTitle: @"Profile" style:UIBarButtonItemStylePlain target:self  action:@selector(profile)]];
 
     [self.view addSubview:toolBar];
     
     // Do any additional setup after loading the view.
+}
+
+-(void) events {
+    
 }
 
 -(void) filter {
