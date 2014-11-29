@@ -24,13 +24,15 @@ def meal_create():
     maxGuests = request.form['maxGuests']
     description = request.form['description']
     nutrition_typ = request.form['nutrition_typ']
+    latitude = request.form['latitude']
+    longitude = request.form['longitude']
     session = DBSession()
     try:
         host = session.query(User).filter(User.id == host).one()
     except NoResultFound:
         return jsonify({"success": False,
                         "error": {"message": "No User Found with this id."}})
-    latitude, longitude = getGPSCoordinatesFromGoogle(address)
+    # latitude, longitude = getGPSCoordinatesFromGoogle(address)
     meal = Meal(name=name,
                 date=date,
                 dateRegistrationEnd=dateRegistrationEnd,
@@ -206,7 +208,7 @@ def meal_search(latitude, longitude):
             return jsonify({"success": True, "results": []})
         destinations = []
         for meal in meals:
-            destinations.append(meal.address)
+            destinations.append(str(meal.latitude)+","+str(meal.longitude))
         walkingTimes = getWalkingDistanceFromGoogle((latitude, longitude), destinations)
         resultList = []
         for i, meal in enumerate(meals):
