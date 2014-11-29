@@ -12,7 +12,7 @@
 
 @interface User : NSObject
 
-@property(readonly) NSString *uuid;
+@property(readonly) NSInteger uuid;
 @property(readonly) NSString *name;
 @property(readonly) NSString *profilePicURL;
 @property(readonly) NSString *gender;
