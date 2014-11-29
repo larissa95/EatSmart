@@ -23,6 +23,10 @@ class User(Base):
         'Meal',
         secondary='meal_user_link'
     )
+    unconfirmedMeals = relationship(
+        'Meal',
+        secondary='meal_unconfirmed_user_link'
+    )
 
 class HostRating(Base):
     __tablename__ = 'hostRating'
@@ -64,9 +68,17 @@ class Meal(Base):
     dateRegistrationEnd = Column(DateTime(timezone=True),
                                  nullable=False)
     #for many to many relationship: (meal/user)
-    users = relationship('User',
-                         secondary='meal_user_link')
-    price = Column(Float, nullable=False)
+    users = relationship(
+    'User',
+    secondary='meal_user_link'
+    )
+
+    unconfirmedUsers = relationship(
+    'User',
+    secondary='meal_unconfirmed_user_link'
+    )
+    price = Column(Float,nullable=False)
+
     address = Column(String(500), nullable=False)
     latitude = Column(Float(20))
     longitude = Column(Float(20))
@@ -75,8 +87,13 @@ class Meal(Base):
     host = relationship(User)
 
 
-class MealUserLink(Base):
+class MealConfirmedUserLink(Base):
     __tablename__ = 'meal_user_link'
+    meal_id = Column(Integer, ForeignKey('meal.id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+
+class MealUnconfirmedUserLink(Base):
+    __tablename__ = 'meal_unconfirmed_user_link'
     meal_id = Column(Integer, ForeignKey('meal.id'), primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
 
