@@ -34,6 +34,9 @@ session.add(hostRate)
 hostRate1 = HostRating(quality = 2, quantity = 1, host = user1, meal = meal1, user_id = user3.id)
 session.add(hostRate1)
 
+guestRate = HostRating(guestRating = 3, user = user2, meal = meal1, host_id = user1.id)
+guestRate = HostRating(guestRating = 2, user = user2, meal = meal1, host_id = user1.id)
+
 session.commit()
 
 
