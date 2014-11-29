@@ -192,13 +192,9 @@ def rating_guest_add(userId):
     _guestRating = request.form['guestRating']
     session = DBSession()
     alreadyAdded = False
-    guestRatingsForThisUser = session.query(GuestRating).filter(GuestRating.user_id == userId).all()
-    for guestrate in guestRatingsForThisUser:
-        if(guestrate.meal.id == mealId):
-            #User hat für diese Mahlzeit schon eine Bewertung bekommen, wie er sich als Gast verhalten hat
-            #HostId nur zur Validierung
-            alreadyAdded = True
-    if not alreadyAdded:
+    try:
+        guestRatingsForThisUser = session.query(GuestRating).filter(and_(GuestRating.user_id == userId, GuestRating.meal_id == mealId)).one()
+    except NoResultFound:
         try:
             guest = session.query(User).filter(User.id == userId).one()
             meal = session.query(Meal).filter(Meal.id == mealId).one()
