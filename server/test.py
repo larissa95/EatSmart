@@ -27,8 +27,18 @@ meal2 = Meal(name='test1', date=datetime.datetime.now(), dateRegistrationEnd=dat
 session.add(meal2)
 user2.meals.append(meal2)
 #user2 should have meal1 and 2
+
+hostRate = HostRating(quality = 3, quantity = 4, user = user1, meal = meal1)
+session.add(hostRate)
+
+hostRate1 = HostRating(quality = 2, quantity = 1, user = user1, meal = meal1)
+session.add(hostRate1)
+
 session.commit()
 
+
+
+print(user1.hostratings[1].quality);
 
 print(user2.meals[0].name)
 print(user2.meals[1].name)
