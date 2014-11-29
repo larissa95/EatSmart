@@ -159,13 +159,11 @@ def rating_host_average_get(uhostID):
 @app.route('/rating/guest/add/<userId>', methods=['POST'])
 def rating_guest_add(userId):
     pass
-    #pass uhostID 
+    #pass uhostID and check meals
 
 @app.route('/rating/guest/average/get/<userId>', methods=['GET'])
 def rating_guest_average_get(userId):
-    #pass uhostID 
-    guestRating = 3.4
-    guestRatingDic = {"success":True, "guestRating":guestRating}
+    guestRatingDic = {"success":True, "guestRating":calculateAverageGuestRating(userId)}
     return jsonify(guestRatingDic)
 
 @app.route('/user/create', methods=['POST'])
@@ -183,13 +181,16 @@ def createUser():
 @app.route('/user/<userId>/information', methods=['GET'])
 def getUserInformation(userId):
     hostRating = calculateAverageHostRating(userId)
+    user = session.query(User).filter(User.id == userId).one()
     userDic = {"success": True,
                 "userId":userId,
-                "name":"Mustermann",
-                "firstLogin": datetime.now(),
-                "age":38,
+                #könnte auch None sein, wenn name nicht gesetzt ist
+                "name":user.name,
+                "firstLogin": user.firstLogin,
+                "age":user.age,
+                "phone":user.phone,
                 "hostRating":hostRating,
-                "guestRating":4}
+                "guestRating":calculateAverageGuestRating(userId)}
 
     return jsonify(userDic);
 
@@ -214,6 +215,19 @@ def setUserInfromation(userId):
     session.close()
     return jsonify({"success": True})
 
+def calculateAverageGuestRating(userId):
+    session = DBSession()
+    user = session.query(User).filter(User.id == userId).one()
+    averageGuestRating = 0
+    for guestrate in user.guestratings: 
+        averageGuestRating += guestrate
+    numberOfRatings = len(user.guestratings)
+    session.close()
+    if(numberOfRatings == 0):
+        return None
+    else:
+        return averageGuestRating/numberOfRatings
+
 def calculateAverageHostRating(userId):
     session = DBSession()
     user = session.query(User).filter(User.id == userId).one()
@@ -228,12 +242,13 @@ def calculateAverageHostRating(userId):
         averageQuantity += hostrate.quantity
         averageAmbience += hostrate.ambience
         averageMood += hostrate.mood
-        if hostrate.comment != "":
+        if hostrate.comment is not None:
             l.append(hostrate.comment)
 
     numberOfRatings = len(user.hostratings)
+    session.close()
     if(numberOfRatings ==0):
-        return ""
+        return None
     else:
         return{"quality":averageQuality/numberOfRatings,
                     "quantity":averageQuantity/numberOfRatings,
