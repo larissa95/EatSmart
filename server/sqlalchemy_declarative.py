@@ -29,7 +29,7 @@ class HostRating(Base):
     quantity = Column(Integer,default=3)
     ambience = Column(Integer,default=3)
     mood = Column(Integer,default=3)
-    comment = Column(Integer, default = "")
+    comment = Column(String)
     # => one to many relationship => one user many HostRatings
     host_id = Column(Integer, ForeignKey('user.id'))
     host = relationship('User', backref=backref('hostratings', order_by=id))
@@ -46,9 +46,10 @@ class GuestRating(Base):
     id = Column(Integer, primary_key=True)
     guestRating = Column(Integer)
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship('User')
+    user = relationship('User',backref=backref('guestratings', order_by=id))
     meal_id = Column(Integer, ForeignKey('meal.id'))
     meal = relationship('Meal')
+    host_id = Column(Integer)
 
 class Meal(Base):
     __tablename__ = 'meal'
