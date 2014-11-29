@@ -58,18 +58,6 @@ def meal_delete(mealId):
     return jsonify({"success": True})
 
 
-def getCloseByCoordinats(latitude, longitude, radius):
-    try:
-        latitude = float(latitude)
-        longitude = float(longitude)
-    except ValueError:
-        pass  # DO MAGIC
-    constLatitude = 110574  # meters of a 1 degree latitude
-    constLongtitude = 111320
-    latitude = latitude-radius/constLatitude
-    longitude = longitude-radius/(constLongtitude*math.cos(math.radians(longitude)))
-    return latitude, longitude
-
 def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
     origins = str(startCoordinats[0])+","+str(startCoordinats[1])
     destinations = "|".join(listofDestinations).replace(" ", "+")
