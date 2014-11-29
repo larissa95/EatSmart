@@ -33,14 +33,16 @@
     [self addSubview:distanceDescriptionLabel];
     
     timeLabel = [[UILabel alloc] init];
+    timeLabel.textAlignment=NSTextAlignmentRight;
     timeLabel.font=[UIFont fontWithName:@"Helveticaneue-bold" size:19];
     [self addSubview:timeLabel];
     
     priceLabel = [[UILabel alloc] init];
+    priceLabel.textAlignment=NSTextAlignmentRight;
     priceLabel.font = [UIFont fontWithName:@"Helveticaneue-light" size:17];
     [self addSubview:priceLabel];
     
-    starView = [[AMRatingControl alloc]initWithLocation:CGPointMake(0, 0) emptyColor:[UIColor orangeColor] solidColor:[UIColor orangeColor] andMaxRating:5];
+    starView = [[AMRatingControl alloc]initWithLocation:CGPointMake(0, 0) emptyColor:[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0] solidColor:[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0] andMaxRating:5];
     
     starView.userInteractionEnabled=NO;
     
@@ -84,10 +86,10 @@
     
     distanceDescriptionLabel.frame=CGRectMake(self.frame.size.height, 41, self.frame.size.width-self.frame.size.height-115, 17);
     
-    timeLabel.frame=CGRectMake(self.frame.size.width-115, 29, 125, 20);
-    priceLabel.frame=CGRectMake(self.frame.size.width-115, 50, 125, 20);
+    timeLabel.frame=CGRectMake(self.frame.size.width-140, 29, 100, 20);
+    priceLabel.frame=CGRectMake(self.frame.size.width-140, 50, 100, 20);
     
-    starView.frame=CGRectMake(self.frame.size.height, 63, self.frame.size.width-self.frame.size.height-115, 25);
+    starView.frame=CGRectMake(self.frame.size.height, 57, self.frame.size.width-self.frame.size.height-115, 25);
     
 }
 

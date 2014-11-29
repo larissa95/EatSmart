@@ -20,8 +20,12 @@
 		5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189987E1A292106004C71E5 /* DataBaseConnection.m */; };
 		518998831A292750004C71E5 /* defaultUser.png in Resources */ = {isa = PBXBuildFile; fileRef = 518998821A292750004C71E5 /* defaultUser.png */; };
 		518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998851A2929AC004C71E5 /* MealDetailViewController.m */; };
-		518998951A2935CB004C71E5 /* 5starsgray.png in Resources */ = {isa = PBXBuildFile; fileRef = 518998941A2935CB004C71E5 /* 5starsgray.png */; };
 		518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998971A2937B8004C71E5 /* AMRatingControl.m */; };
+		5189989B1A29A66A004C71E5 /* FRSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189989A1A29A66A004C71E5 /* FRSlider.m */; };
+		5189989E1A29A86A004C71E5 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189989D1A29A86A004C71E5 /* FilterViewController.m */; };
+		518998A11A29BE41004C71E5 /* CreateNewMealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */; };
+		518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A31A29C75F004C71E5 /* LocalDataBase.m */; };
+		518998A71A29CB23004C71E5 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998A61A29CB23004C71E5 /* ProfileViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,9 +64,18 @@
 		518998821A292750004C71E5 /* defaultUser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultUser.png; sourceTree = "<group>"; };
 		518998841A2929AC004C71E5 /* MealDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealDetailViewController.h; sourceTree = "<group>"; };
 		518998851A2929AC004C71E5 /* MealDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealDetailViewController.m; sourceTree = "<group>"; };
-		518998941A2935CB004C71E5 /* 5starsgray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5starsgray.png; sourceTree = "<group>"; };
 		518998961A2937B8004C71E5 /* AMRatingControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMRatingControl.h; sourceTree = "<group>"; };
 		518998971A2937B8004C71E5 /* AMRatingControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRatingControl.m; sourceTree = "<group>"; };
+		518998991A29A66A004C71E5 /* FRSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FRSlider.h; sourceTree = "<group>"; };
+		5189989A1A29A66A004C71E5 /* FRSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FRSlider.m; sourceTree = "<group>"; };
+		5189989C1A29A86A004C71E5 /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
+		5189989D1A29A86A004C71E5 /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
+		5189989F1A29BE41004C71E5 /* CreateNewMealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateNewMealViewController.h; sourceTree = "<group>"; };
+		518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateNewMealViewController.m; sourceTree = "<group>"; };
+		518998A21A29C75F004C71E5 /* LocalDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalDataBase.h; sourceTree = "<group>"; };
+		518998A31A29C75F004C71E5 /* LocalDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalDataBase.m; sourceTree = "<group>"; };
+		518998A51A29CB23004C71E5 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		518998A61A29CB23004C71E5 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +117,6 @@
 		4EA09BD01A28FE9E00D2618B /* EatSmart */ = {
 			isa = PBXGroup;
 			children = (
-				518998941A2935CB004C71E5 /* 5starsgray.png */,
 				518998821A292750004C71E5 /* defaultUser.png */,
 				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
@@ -114,6 +126,12 @@
 				5189987B1A291C1A004C71E5 /* MealTableViewCell.m */,
 				518998841A2929AC004C71E5 /* MealDetailViewController.h */,
 				518998851A2929AC004C71E5 /* MealDetailViewController.m */,
+				5189989F1A29BE41004C71E5 /* CreateNewMealViewController.h */,
+				518998A01A29BE41004C71E5 /* CreateNewMealViewController.m */,
+				5189989C1A29A86A004C71E5 /* FilterViewController.h */,
+				5189989D1A29A86A004C71E5 /* FilterViewController.m */,
+				518998A51A29CB23004C71E5 /* ProfileViewController.h */,
+				518998A61A29CB23004C71E5 /* ProfileViewController.m */,
 				518998711A290EF1004C71E5 /* Meal.h */,
 				518998721A290EF1004C71E5 /* Meal.m */,
 				518998741A290EF8004C71E5 /* User.h */,
@@ -122,8 +140,12 @@
 				518998781A29165F004C71E5 /* HostRating.m */,
 				5189987D1A292106004C71E5 /* DataBaseConnection.h */,
 				5189987E1A292106004C71E5 /* DataBaseConnection.m */,
+				518998A21A29C75F004C71E5 /* LocalDataBase.h */,
+				518998A31A29C75F004C71E5 /* LocalDataBase.m */,
 				518998961A2937B8004C71E5 /* AMRatingControl.h */,
 				518998971A2937B8004C71E5 /* AMRatingControl.m */,
+				518998991A29A66A004C71E5 /* FRSlider.h */,
+				5189989A1A29A66A004C71E5 /* FRSlider.m */,
 				4EA09BDE1A28FE9E00D2618B /* Images.xcassets */,
 				4EA09BE01A28FE9E00D2618B /* LaunchScreen.xib */,
 				4EA09BD11A28FE9E00D2618B /* Supporting Files */,
@@ -238,7 +260,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EA09BE21A28FE9E00D2618B /* LaunchScreen.xib in Resources */,
-				518998951A2935CB004C71E5 /* 5starsgray.png in Resources */,
 				4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */,
 				518998831A292750004C71E5 /* defaultUser.png in Resources */,
 			);
@@ -258,7 +279,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				518998A11A29BE41004C71E5 /* CreateNewMealViewController.m in Sources */,
+				5189989B1A29A66A004C71E5 /* FRSlider.m in Sources */,
+				518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */,
 				518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */,
+				518998A71A29CB23004C71E5 /* ProfileViewController.m in Sources */,
 				518998761A290EF8004C71E5 /* User.m in Sources */,
 				518998731A290EF1004C71E5 /* Meal.m in Sources */,
 				4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */,
@@ -267,6 +292,7 @@
 				518998701A290B77004C71E5 /* MainViewController.m in Sources */,
 				518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */,
 				518998791A29165F004C71E5 /* HostRating.m in Sources */,
+				5189989E1A29A86A004C71E5 /* FilterViewController.m in Sources */,
 				4EA09BD41A28FE9E00D2618B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FRSlider : UIView
+@interface FRSlider : UIView<UIScrollViewDelegate>
+
+@property(nonatomic) UIScrollView *scrollView;
+@property(nonatomic) UIView *colorIndicator;
+@property(nonatomic) UIImageView *dragSeparator;
+@property(nonatomic) UILabel *descriptionLabel;
+@property(nonatomic) UILabel *valueLabel;
+
+@property(nonatomic) NSString *unit;
+
+@property(nonatomic) int min;
+@property(nonatomic) int max;
+@property(nonatomic) float currentValue;
+@property(nonatomic) double roundingIncrement;
+
+
+
+-(id) initWithName:(NSString *) name Unit:(NSString *) unit min:(float) min max:(float) max currentValue:(float) currentValue nachKommaStellen:(double) roundingIncrement;
 
 @end

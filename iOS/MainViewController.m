@@ -31,6 +31,7 @@
     table = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     table.dataSource=self;
     table.delegate=self;
+    table.contentInset=UIEdgeInsetsMake(0, 0, 40, 0);
     [self.view addSubview:table];
     
     [self updateMealSuggestions];
@@ -48,7 +49,8 @@
 }
 
 -(void) filter {
-    
+    FilterViewController *fvc = [[FilterViewController alloc] init];
+    [self.navigationController pushViewController:fvc animated:YES];
 }
 
 -(void) profile {
@@ -56,7 +58,10 @@
 }
 
 -(void) add {
-    
+    CreateNewMealViewController *createMeal = [[CreateNewMealViewController alloc] init];
+    createMeal.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    self.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [self.navigationController presentViewController:createMeal animated:YES completion: nil];
 }
 
 -(void) updateMealSuggestions {
@@ -103,6 +108,7 @@
 }
 
 -(void) viewWillLayoutSubviews {
+    table.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     toolBar.frame=CGRectMake(0, self.view.frame.size.height-40, self.view.frame.size.width, 40);
 }
 

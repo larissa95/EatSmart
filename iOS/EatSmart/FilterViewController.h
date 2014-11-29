@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FRSlider.h"
 
-@interface FilterViewController : UIViewController
+@interface FilterViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
+@property(nonatomic) UITableView *table;
 
 @end
