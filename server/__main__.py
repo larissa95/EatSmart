@@ -26,6 +26,7 @@ def meal_create():
     nutrition_typ = request.form['nutrition_typ']
     latitude = request.form['latitude']
     longitude = request.form['longitude']
+
     session = DBSession()
     try:
         host = session.query(User).filter(User.id == host).one()
