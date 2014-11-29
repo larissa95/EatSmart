@@ -17,13 +17,16 @@
     if(self) {
         self.meal=meal;
         buyStatusForThisUser = 0;
-        profilePic = [[UIImageView alloc] initWithImage:[meal.host profilePic]];
-        if(!profilePic.image) {
-            profilePic.image = [UIImage imageNamed:@"defaultUser.png"];
+        profilePic = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlaceholderProfileImage.png"]];
+        profilePic.image = [UIImage imageNamed:@"PlaceholderProfileImage.png"];
+        if(meal.profilePicString) {
+            [ServerCommunication performSelectorInBackground:@selector(loadImageFromURLInBackgroundAndPutInImageView:) withObject:@[meal.profilePicString,profilePic]];
         }
         profilePic.contentMode=UIViewContentModeScaleAspectFill;
         profilePic.layer.cornerRadius=profilePic.frame.size.width/2;
         profilePic.layer.masksToBounds=YES;
+        profilePic.layer.borderColor=[[UIColor grayColor] CGColor];
+        profilePic.layer.borderWidth=1;
         
         [self addSubview:profilePic];
         
@@ -121,10 +124,13 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     
     if (buttonIndex == 1 && buyStatusForThisUser == 1) {
+        NSLog(@"päoj");
         [self buyPress];
     } else if(buttonIndex==1 && buyStatusForThisUser == 2) {
         buyStatusForThisUser=-1;
         [self buyPress];
+    } else if(buttonIndex == 0 && buyStatusForThisUser == 1) {
+        buyStatusForThisUser=0;
     }
 }
 

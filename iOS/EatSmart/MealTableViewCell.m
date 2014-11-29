@@ -20,6 +20,8 @@
     picture.contentMode=UIViewContentModeScaleAspectFill;
     picture.layer.cornerRadius=picture.frame.size.width/2;
     picture.layer.masksToBounds=YES;
+    picture.layer.borderColor=[[UIColor grayColor] CGColor];
+    picture.layer.borderWidth=1;
     
     [self addSubview:picture];
     
@@ -51,16 +53,29 @@
     cookoreatPic = [[UIImageView alloc] init];
     [self addSubview:cookoreatPic];
     
+    
+    
     return self;
 }
 
+-(void) loadImageFromURLInBackgroundAndPutInImageView:(NSArray *) urlAndImageView {
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[urlAndImageView objectAtIndex:0]]]];
+    UIImageView *imageView = [urlAndImageView objectAtIndex:1];
+    [imageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+}
+
+
+
 -(void) setMeal:(Meal *) meal {
     
-    if(!meal.host.profilePic) {
-        picture.image=[UIImage imageNamed:@"defaultUser.png"];
-    } else {
-        picture.image=meal.host.profilePic;
+    picture.image = [UIImage imageNamed:@"PlaceholderProfileImage.png"];
+    if(meal.profilePicString) {
+        [ServerCommunication performSelectorInBackground:@selector(loadImageFromURLInBackgroundAndPutInImageView:) withObject:@[meal.profilePicString,picture]];
     }
+    
+    
+    
+    
     
     if(meal.isCookEvent) {
         cookoreatPic.image=[UIImage imageNamed:@"Cook.png"];
@@ -102,7 +117,7 @@
     [super layoutSubviews];
     picture.frame=CGRectMake(10, 10, self.frame.size.height-20, self.frame.size.height-20);
     picture.layer.cornerRadius=picture.frame.size.width/2;
-    mealNameLabel.frame=CGRectMake(self.frame.size.height+24, 17, self.frame.size.width-self.frame.size.height-115, 20);
+    mealNameLabel.frame=CGRectMake(self.frame.size.height+24, 14, self.frame.size.width-self.frame.size.height-115, 25);
     cookoreatPic.frame=CGRectMake(self.frame.size.height, 17, 20, 20);
     
     
@@ -112,7 +127,6 @@
     priceLabel.frame=CGRectMake(self.frame.size.width-140, 50, 100, 20);
     
     starLabel.frame=CGRectMake(self.frame.size.height, 57, self.frame.size.width-self.frame.size.height, 25);
-    
 }
 
 - (void)awakeFromNib {

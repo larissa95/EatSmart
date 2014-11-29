@@ -20,6 +20,7 @@
 @property(nonatomic) UITableView *table;
 @property(nonatomic) UISegmentedControl *segmentControl;
 @property(nonatomic) Meal *meal;
+@property(nonatomic) User *host;
 @property(nonatomic) NSMutableArray *reviews;
 
 

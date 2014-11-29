@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Meal.h"
+#import "ServerCommunication.h"
 
 @interface MealHeadView : UIView
 

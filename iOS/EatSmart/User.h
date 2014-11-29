@@ -14,15 +14,19 @@
 
 @property(readonly) NSString *uuid;
 @property(readonly) NSString *name;
-@property(readonly) UIImage *profilePic;
+@property(readonly) NSString *profilePicURL;
+@property(readonly) NSString *gender;
+@property(readonly) NSString *phoneNumber;
+@property(readonly) NSString *age;
 
 @property(readonly) NSNumber *guestRating;
 @property(readonly) HostRating *hostRating;
 
+@property(readonly) NSDate *registerdsince;
 
 -(int) averageHostRating;
 -(id) initDummy;
-
+-(id) initWithJSON:(NSDictionary *) JSON;
 
 
 @end

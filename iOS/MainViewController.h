@@ -18,5 +18,6 @@
 @property(nonatomic) UITableView *table;
 @property(nonatomic) NSArray *mealSuggestions;
 @property(nonatomic) UIToolbar *toolBar;
+@property(nonatomic) UIRefreshControl *refreshControl;
 
 @end
