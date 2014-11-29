@@ -9,6 +9,7 @@ from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 
+
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
@@ -32,7 +33,9 @@ def meal_create():
                 price=price,
                 address=address,
                 typ=typ,
-                host=host)
+                host=host,
+                latitude=48,
+                longitude=10)
     session.add(meal)
     session.commit()
     mealDic = {"success": True, "mealId": meal.id}
@@ -68,10 +71,12 @@ def getCloseByCoordinats(latitude, longitude, radius):
     return latitude, longitude
 
 def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
-    origins = startCoordinats[0]+","+startCoordinats[1]
+    origins = str(startCoordinats[0])+","+str(startCoordinats[1])
     destinations = "|".join(listofDestinations).replace(" ", "+")
     googleMapsApiUrl = "http://maps.googleapis.com/maps/api/distancematrix/json?origins={0}&destinations={1}&mode=walking".format(origins,destinations)
-    return requests.get(googleMapsApiUrl).json()
+    response = requests.get(googleMapsApiUrl).json()
+
+    return response.get('rows')[0].get('elements')
 
 @app.route('/meals/<mealId>/information', methods=['GET'])
 def meal_get_information(mealId):
@@ -132,23 +137,34 @@ def meal_user_remove(mealId, userId):
     responseDic = {"success": True, "mealId": userId}
     return jsonify(responseDic)
 
-@app.route('/meals/search/<latitude>/<longitude>', methods=['GET'])
+@app.route('/meals/search/<float:latitude>/<float:longitude>', methods=['GET'])
 def meal_search(latitude, longitude):
-    squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
+    #squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
     session = DBSession()
     try:
-        session.query(Meal).filter(meal)
-    except:
+        diffLatitude = 5000/110574
+        diffLongitude = 110574*math.cos(math.radians(longitude))
+        meals = session.query(Meal)\
+        .filter(and_(Meal.longitude <= longitude+diffLongitude, Meal.longitude >= longitude-diffLongitude))\
+        .filter(and_(Meal.latitude <= latitude+diffLatitude, Meal.latitude >= latitude-diffLatitude))\
+        .all()
+
+        destinations = []
+        for meal in meals:
+            destinations.append(meal.address)
+        walkingTimes = getWalkingDistanceFromGoogle((latitude,longitude),destinations)
+        resultList = []
+        for i, meal in enumerate(meals):
+            resultList.append(
+                {"mealId": meal.id,
+                 "mealName": meal.name,
+                 "walkingTime": walkingTimes[i].get('duration').get('value'),
+                 "date": meal.date,
+                 # TODO return average host rating
+                 "rating": 5,  
+                 "price": meal.price})
+    except NoResultFound:
         pass
-    #return jsonify(getWalkingDistanceFromGoogle((latitude, longitude),["Adolfstraße 27, Feuerbach"]))
-    resultList = []
-    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
-    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
-    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
-    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
-    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
-    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
-    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
     responseDic = {"success": True, "results": resultList}
     return jsonify(responseDic)
     #pass time, typ
