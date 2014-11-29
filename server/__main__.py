@@ -3,6 +3,9 @@ import logging
 import os
 import uuid
 import datetime
+from sqlalchemy_declarative import *
+from sqlalchemy.orm import sessionmaker
+
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
@@ -59,13 +62,13 @@ def rating_host_add(uhostId):
 
 @app.route('/rating/host/average/get/<uhostID>', methods=['GET'])
 def rating_host_average_get(uhostID):
-	#pass uID => to identify if user really participated in meal
+    #pass uID => to identify if user really participated in meal
     hostRatingDic = {"success":True,
-    				"quality":2.3,
-					"quantity":2.1,
-					"ambience":2.3,
-					"mood":5}
-	return jsonify(hostRatingDic)
+                    "quality":2.3,
+                    "quantity":2.1,
+                    "ambience":2.3,
+                    "mood":5}
+    return jsonify(hostRatingDic)
 
 
 @app.route('/rating/guest/add/<uID>', methods=['POST'])
@@ -82,10 +85,13 @@ def rating_guest_average_get(uID):
 
 @app.route('/user/create', methods=['POST'])
 def createUser():
-	userId = uuserId.uuserId4()
-	#create User and save it in Database
-	userDic = {"success": True, "userId":userId}
-	return jsonify(userDic)
+    new_user = User()
+    session = DBSession()
+    session.add(new_user)
+    session.commit()
+    userDic = {"success": True, "userId":new_user.id}
+    session.close()
+    return jsonify(userDic)
 
 
 @app.route('/user/<userId>/delete', methods=['POST'])
@@ -113,6 +119,9 @@ def getUserInformation():
 
 
 if __name__ == '__main__':
+    engine = create_engine('sqlite:///sqlalchemy.db')
+    DBSession = sessionmaker(bind=engine)
     app.run(debug=True, host='0.0.0.0')
+
     #version api
 

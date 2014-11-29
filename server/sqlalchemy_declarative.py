@@ -79,3 +79,4 @@ class MealUserLink(Base):
 engine = create_engine('sqlite:///sqlalchemy.db')
 Base.metadata.create_all(engine)
 
+
