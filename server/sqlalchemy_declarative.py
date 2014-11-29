@@ -9,6 +9,7 @@ from sqlalchemy.types import Float
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
@@ -19,6 +20,7 @@ class User(Base):
     phone = Column(String(250), nullable=True)
     gender = Column(String(250), nullable=True)
     imageUrl = Column(String(300))
+    email = Column(String(200), unique=True)
     meals = relationship(
         'Meal',
         secondary='meal_user_link'
@@ -28,14 +30,15 @@ class User(Base):
         secondary='meal_unconfirmed_user_link'
     )
 
+
 class HostRating(Base):
     __tablename__ = 'hostRating'
     id = Column(Integer, primary_key=True)
-    quality = Column(Integer,default=3)
-    quantity = Column(Integer,default=3)
-    onTime = Column(Integer,default=3)
-    mood = Column(Integer,default=3)
-    comment = Column(String)
+    quality = Column(Integer, default=3)
+    quantity = Column(Integer, default=3)
+    onTime = Column(Integer, default=3)
+    mood = Column(Integer, default=3)
+    comment = Column(String(500))
     # => one to many relationship => one user many HostRatings
     host_id = Column(Integer, ForeignKey('user.id'))
     host = relationship('User', backref=backref('hostratings', order_by=id))
@@ -63,10 +66,12 @@ class Meal(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     typ = Column(String(250), nullable=True)
+    nutrition_typ = Column(String(250))
     date = Column(DateTime(timezone=True),
                   nullable=False)
     dateRegistrationEnd = Column(DateTime(timezone=True),
                                  nullable=False)
+    description = Column(String(500))
     #for many to many relationship: (meal/user)
     users = relationship(
     'User',
