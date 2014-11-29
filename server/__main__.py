@@ -73,7 +73,7 @@ def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
     googleMapsApiUrl = "http://maps.googleapis.com/maps/api/distancematrix/json?origins={0}&destinations={1}&mode=walking".format(origins,destinations)
     return requests.get(googleMapsApiUrl).json()
 
-@app.route('/meals/<mealId>/get/information', methods=['GET'])
+@app.route('/meals/<mealId>/information', methods=['GET'])
 def meal_get_information(mealId):
     session = DBSession()
     try:
@@ -135,13 +135,25 @@ def meal_user_remove(mealId, userId):
 @app.route('/meals/search/<latitude>/<longitude>', methods=['GET'])
 def meal_search(latitude, longitude):
     squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
+    session = DBSession()
+    try:
+        session.query(Meal).filter(meal)
+    except:
+        pass
     #return jsonify(getWalkingDistanceFromGoogle((latitude, longitude),["Adolfstraße 27, Feuerbach"]))
-    resultList = [{"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20}]
+    resultList = []
+    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
+    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
+    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
+    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
+    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
+    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
+    resultList.append({"mealId": uuid.uuid4(), "mealName": "Sauerbraten", "walkingTime": 1560, "date": datetime.now(), "rating": 5, "price": 3.20})
     responseDic = {"success": True, "results": resultList}
     return jsonify(responseDic)
     #pass time, typ
 
-@app.route('/rating/host/add/<uhostID>', methods=['POST'])
+@app.route('/rating/host/<uhostID>', methods=['POST'])
 def rating_host_add(uhostId):
     pass
         #pass uID => to identify if user really participated in meal
@@ -156,12 +168,12 @@ def rating_host_average_get(uhostID):
     return jsonify(hostRatingDic)
 
 
-@app.route('/rating/guest/add/<userId>', methods=['POST'])
+@app.route('/rating/guest/<userId>', methods=['POST'])
 def rating_guest_add(userId):
     pass
     #pass uhostID and check meals
 
-@app.route('/rating/guest/average/get/<userId>', methods=['GET'])
+@app.route('/rating/guest/average/<userId>', methods=['GET'])
 def rating_guest_average_get(userId):
     guestRatingDic = {"success":True, "guestRating":calculateAverageGuestRating(userId)}
     return jsonify(guestRatingDic)
