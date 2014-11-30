@@ -36,12 +36,11 @@
     
     [self performSelectorOnMainThread:@selector(finishedCatchingData:) withObject:responseData waitUntilDone:NO];
     NSString *someString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-    NSLog(@"%@,respo",someString);
 }
 
 -(void) finishedCatchingData:(NSData *) ausgabe {
     NSString *someString = [[NSString alloc] initWithData:ausgabe encoding:NSUTF8StringEncoding];
-    NSLog(@"%@,test",someString);
+
     [delegate finishedServerCommunication:ausgabe fromServer:self.tag];
 }
 

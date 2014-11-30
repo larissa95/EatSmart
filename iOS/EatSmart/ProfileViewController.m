@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"Profil";
+    self.title = @"Profile";
 
     if(![LocalDataBase UserIsRegistered]){
         [self showPayPalLogin];
@@ -39,7 +39,10 @@
         NSLog(JSON.description);
         NSNumber *iden = (NSNumber*)[JSON objectForKey:@"userId"];
         [LocalDataBase setUserId:[iden intValue]];
+        [self showProfileView];
     }else{
+        self.loginButton.alpha = 1;
+        self.intro.alpha = 1;
         NSLog(@"nil");
     }
     
@@ -48,7 +51,8 @@
         if(output){
             NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:output options:0 error:nil];
             NSLog(JSON.description);
-
+            User *user = [[User alloc] initWithJSON:JSON];
+            NSLog(user.name);
         }else{
             NSLog(@"nil");
         }
@@ -61,34 +65,34 @@
     [PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentSandbox : @"AeEWUBBptPcT0_TaEVdkHM7OWIl3QYQNr6zlsT8Lul_MDjcz_07hbKAV3dqz"}];
     self.payPalConfig = [[PayPalConfiguration alloc] init];
     self.payPalConfig.acceptCreditCards = YES;
-    self.payPalConfig.languageOrLocale = @"de";
+    self.payPalConfig.languageOrLocale = @"en";
     [PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentSandbox : @"AeEWUBBptPcT0_TaEVdkHM7OWIl3QYQNr6zlsT8Lul_MDjcz_07hbKAV3dqz"}];
     self.payPalConfig = [[PayPalConfiguration alloc] init];
     self.payPalConfig.acceptCreditCards = YES;
     self.payPalConfig.languageOrLocale = @"de";
-    self.payPalConfig.merchantName = @"mealhub";
+    self.payPalConfig.merchantName = @"MealHub";
     self.payPalConfig.merchantPrivacyPolicyURL = [NSURL URLWithString:@"https://www.paypal.com/webapps/mpp/ua/privacy-full"];
     self.payPalConfig.merchantUserAgreementURL = [NSURL URLWithString:@"https://www.paypal.com/webapps/mpp/ua/useragreement-full"];
     
-    UILabel *intro=[ [UILabel alloc] initWithFrame:CGRectMake(20,15,self.view.frame.size.width-40,200)];
-    intro.lineBreakMode = UILineBreakModeWordWrap;
-    intro.numberOfLines = 0;
-    intro.text=@"Bitte loggen Sie sich mit Ihrem Paypal Account ein:";
-    intro.font=[UIFont fontWithName:@"Helvetica" size:18 ];
-    [intro setTextAlignment:UITextAlignmentCenter];
-    [self.view addSubview:intro];
+    self.intro=[ [UILabel alloc] initWithFrame:CGRectMake(20,15,self.view.frame.size.width-40,200)];
+    self.intro.lineBreakMode = UILineBreakModeWordWrap;
+    self.intro.numberOfLines = 0;
+    self.intro.text=@"Please login with your Paypal Account";
+    self.intro.font=[UIFont fontWithName:@"Helvetica" size:18 ];
+    [self.intro setTextAlignment:UITextAlignmentCenter];
+    [self.view addSubview:self.intro];
     
     
-    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
-    loginButton.frame = CGRectMake(75, 150, self.view.frame.size.width-150, 66);
-    [loginButton addTarget:self action:@selector(getUserAuthorizationForProfileSharing:) forControlEvents:UIControlEventTouchUpInside];
+      self.loginButton.frame = CGRectMake(75, 150, self.view.frame.size.width-150, 66);
+    [self.loginButton addTarget:self action:@selector(getUserAuthorizationForProfileSharing:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImage *btnImage = [UIImage imageNamed:@"loginWithPayPal.png"];
     
-    [loginButton setBackgroundImage:btnImage forState:UIControlStateNormal];
-    loginButton.contentMode=UIViewContentModeScaleAspectFit;
-    [self.view addSubview:loginButton];
+    [self.loginButton setBackgroundImage:btnImage forState:UIControlStateNormal];
+      self.loginButton.contentMode=UIViewContentModeScaleAspectFit;
+    [self.view addSubview:  self.loginButton];
 }
 
 -(void) loadUserIdFromServer{
@@ -97,8 +101,7 @@
     server.delegate = self;
     server.tag = 0;
     [server loadDataFromServerWithURL:[NSString stringWithFormat:@"%@/user/create",[ServerUrl serverUrl]] andParameters:@"" andHTTPMethod:@"POST"];
-    
-    //block
+
 }
 
 
@@ -135,12 +138,12 @@
     ChooseCharityViewController *charity = [[ChooseCharityViewController alloc] initWithUser:[ServerDataBaseCommunication userForUUID:@"larissa"]];
     [self.navigationController pushViewController:charity animated:YES];
   */
+    self.loginButton.alpha = 0;
+    self.intro.alpha = 0;
     [self loadUserIdFromServer];
     NSLog(@"succes");
     NSLog(@"Here is your authorization:\n\n%@\n\nSend this to your server to complete profile sharing setup.", authorization);
-    if([LocalDataBase UserIsRegistered]){
-        [self showProfileView];
-    }
+
  
 }
 
@@ -151,24 +154,6 @@
     server.delegate = self;
     server.tag = 1;
     [server loadDataFromServerWithURL:[NSString stringWithFormat:@"%@/user/%i/information",[ServerUrl serverUrl],[LocalDataBase userId]] andParameters:@"" andHTTPMethod:@"GET"];
-    
-    /*
-     def getUserInformation(userId):
-     hostRating = calculateAverageHostRating(userId)
-     user = session.query(User).filter(User.id == userId).one()
-     userDic = {"success": True,
-     "userId": userId,
-     "name": user.name,
-     "firstLogin": user.firstLogin,
-     "age": user.age,
-     "phone": user.phone,
-     "gender": user.gender,
-     "hostRating": hostRating,
-     "guestRating": calculateAverageGuestRating(userId)}
-     
-     return jsonify(userDic)
-     */
-
 }
 /*
 #pragma mark - Navigation
