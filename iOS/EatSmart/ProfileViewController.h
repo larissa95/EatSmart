@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "LocalDataBase.h"
 #import "ServerUrl.h"
+#import "PayPalMobile.h"
 #import "ServerCommunication.h"
 
 @interface ProfileViewController : UIViewController
+
+@property(nonatomic, strong, readwrite) PayPalConfiguration *payPalConfig;
+
 
 @end

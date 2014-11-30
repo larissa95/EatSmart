@@ -330,22 +330,39 @@ def createUser():
     return jsonify(userDic)
 
 
+
 @app.route('/0.2.1b/user/<userId>/information', methods=['GET'])
 def getUserInformation(userId):
     session = DBSession()
     hostRating = calculateAverageHostRating(userId)
     user = session.query(User).filter(User.id == userId).one()
+    mealHostIds = []
+    mealGuestIds = []
+    mealUnconfirmedIds = []
+    for meal in user.meals:
+        if meal.host_id == userId:
+            mealHostIds.append(meal.id)
+        else:
+            mealGuestIds.append(meal.id)
+    for meal in user.unconfirmedMeals:
+        mealUnconfirmedIds.append(meal.id)
+
     userDic = {"success": True,
-               "userId": userId,
-               "name": user.name,
-               "firstLogin": user.firstLogin,
-               "age": user.age,
-               "phone": user.phone,
-               "gender": user.gender,
-               "hostRating": hostRating,
-               "guestRating": calculateAverageGuestRating(userId)}
+                "userId": userId,
+                "name": user.name,
+                "firstLogin": user.firstLogin,
+                "age": user.age,
+                "phone": user.phone,
+                "gender": user.gender,
+                "hostRating": hostRating,
+                "guestRating": calculateAverageGuestRating(userId),
+                "mealHostIds": mealHostIds,
+                "mealGuestIds": mealGuestIds,
+                "mealUnconfirmedIds": mealUnconfirmedIds
+    }
     session.close()
     return jsonify(userDic)
+
 
 
 @app.route('/0.2.1b/user/<userId>/information', methods=['PUT'])
@@ -431,7 +448,7 @@ def calculateAverageHostRating(userId):
             averageonTime += hostrate.onTime
             averageMood += hostrate.mood
             if hostrate.comment is not None:
-                l.append(hostrate.comment)
+                comments.append(hostrate.comment)
         session.close()
         if len(comments) == 0:
             comments = None

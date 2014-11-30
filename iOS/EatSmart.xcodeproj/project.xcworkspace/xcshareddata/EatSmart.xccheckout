@@ -10,6 +10,8 @@
 	<string>EatSmart</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>B8ACDF6C0D0B7D583290DC655772DFCA59B660E6</key>
+		<string>github.com:oliland/runforit.git</string>
 		<key>BA7CB8D20676B4AFE41C5F284713587B1966E698</key>
 		<string>https://github.com/larissa88/EatSmart</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>iOS/EatSmart.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>B8ACDF6C0D0B7D583290DC655772DFCA59B660E6</key>
+		<string>../../../../Projects/runforit</string>
 		<key>BA7CB8D20676B4AFE41C5F284713587B1966E698</key>
 		<string>../../..</string>
 	</dict>
@@ -35,6 +39,14 @@
 			<string>BA7CB8D20676B4AFE41C5F284713587B1966E698</string>
 			<key>IDESourceControlWCCName</key>
 			<string>EatSmart</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B8ACDF6C0D0B7D583290DC655772DFCA59B660E6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>runforit</string>
 		</dict>
 	</array>
 </dict>
