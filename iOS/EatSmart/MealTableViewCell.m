@@ -53,7 +53,7 @@
     cookoreatPic = [[UIImageView alloc] init];
     [self addSubview:cookoreatPic];
     
-    
+
     
     return self;
 }
@@ -74,6 +74,9 @@
     }
     
     
+    NSLog(meal.profilePicString);
+    
+
     
     
     
@@ -109,6 +112,12 @@
         }
     }
     starLabel.text=ratingString;
+    
+    
+    if(meal.thisUserIsHost) {
+        distanceDescriptionLabel.text=@"You host this event";
+        starLabel.text=[NSString stringWithFormat:@"%u new requests.",meal.numberOfPending];
+    }
     
 }
 

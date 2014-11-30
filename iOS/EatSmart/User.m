@@ -12,17 +12,25 @@
 @synthesize uuid,name,profilePicURL,guestRating,hostRating,registerdsince,gender,phoneNumber,age;
 
 -(id) initWithJSON:(NSDictionary *) JSON {
-    self = [super init];    
+    self = [super init];
     
     if(self) {
-
-
+        
+        
         uuid = [[JSON valueForKey:@"hostId"] integerValue];
         
+        if(!uuid) {
+            uuid = [[JSON valueForKey:@"userId"] integerValue];
+        }
         
         name = [JSON objectForKey:@"hostname"];
+        
         if(name == (id)[NSNull null]) {
             name=nil;
+        }
+        
+        if(!name) {
+            name = [JSON objectForKey:@"name"];
         }
         
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -43,7 +51,7 @@
             phoneNumber=nil;
         }
         
-        age=[JSON objectForKey:@"age"];
+        age=[[JSON objectForKey:@"age"] integerValue];
         if(age == (id)[NSNull null]) {
             age=nil;
         }

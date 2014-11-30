@@ -10,4 +10,14 @@
 
 @implementation HostRating
 
+-(id) initWithJSON:(NSDictionary *) JSON {
+    self = [super init];
+    
+
+    
+    return self;
+    
+    
+}
+
 @end

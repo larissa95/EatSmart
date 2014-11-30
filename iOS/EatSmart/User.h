@@ -17,7 +17,7 @@
 @property(readonly) NSString *profilePicURL;
 @property(readonly) NSString *gender;
 @property(readonly) NSString *phoneNumber;
-@property(readonly) NSString *age;
+@property(readonly) NSInteger age;
 
 @property(readonly) NSNumber *guestRating;
 @property(readonly) HostRating *hostRating;

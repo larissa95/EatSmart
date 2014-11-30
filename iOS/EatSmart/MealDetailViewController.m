@@ -13,7 +13,7 @@
 @end
 
 @implementation MealDetailViewController
-@synthesize mealView,mealHeadView,table,segmentControl,host;
+@synthesize mealView,mealHeadView,table,segmentControl,host,reviews,pendingUsers,confirmedUsers;
 
 
 -(id) initWithMeal:(Meal *) meal {
@@ -31,7 +31,14 @@
         table.dataSource=self;
         [self.view addSubview:table];
         
-        segmentControl =[[UISegmentedControl alloc] initWithItems:@[@"Event",@"Host",@"Reviews"]];
+        
+        if(meal.thisUserIsHost) {
+            segmentControl =[[UISegmentedControl alloc] initWithItems:@[@"Event",@"Confirmed Guests",@"Pending Guests"]];
+        } else {
+            segmentControl =[[UISegmentedControl alloc] initWithItems:@[@"Event",@"Host",@"Reviews"]];
+        }
+        
+        
         segmentControl.tintColor=[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0];
         segmentControl.selectedSegmentIndex=0;
         
@@ -44,30 +51,80 @@
         
         [self performSelectorInBackground:@selector(loadAdditionalDataInbackground) withObject:nil];
         
-
-
+        reviews=[[NSMutableArray alloc] init];
+        
+        pendingUsers = [[NSMutableArray alloc] init];
+        confirmedUsers=[[NSMutableArray alloc] init];
+        
         
     }
     return self;
 }
 
 
+-(User *) userForID:(int) uuid {
+    NSString *url = [NSString stringWithFormat:@"%@/user/%u/information",[ServerUrl serverUrl],uuid];
+    NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    
+    NSData *postData = [@"" dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    [request setHTTPBody:postData];
+    
+    NSURLResponse *response;
+    NSError *err;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    
+    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+    
+
+    
+    User *user = [[User alloc] initWithJSON:JSON];
+    return user;
+}
+
 
 -(void) loadAdditionalDataInbackground {
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/meals/%ld",[ServerUrl serverUrl],(long)self.meal.uuid]]];
-    if(data) {
-        
-        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        
-        NSDictionary *hostHuelle = [JSON objectForKey:@"host"];
-        
-        host = [[User alloc] initWithJSON:hostHuelle];
-        if(host.uuid==[LocalDataBase userId]) {
-            NSLog(@"eigenes Event");
+    [pendingUsers performSelectorOnMainThread:@selector(removeAllObjects) withObject:nil waitUntilDone:YES];
+    [confirmedUsers performSelectorOnMainThread:@selector(removeAllObjects) withObject:nil waitUntilDone:YES];
+    
+    if(self.meal.thisUserIsHost) {
+        for(int i=0; i<[self.meal.pendingUserIDs count]; i++) {
+            User *user = [self userForID:[[self.meal.pendingUserIDs objectAtIndex:i] intValue]];
+            [pendingUsers addObject:user];
         }
+        
+        for(int i=0; i<[self.meal.confirmedUserIDs count]; i++) {
+            User *user = [self userForID:[[self.meal.confirmedUserIDs objectAtIndex:i] intValue]];
+            [confirmedUsers addObject:user];
+        }
+        
         [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
         
-        
+    } else {
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/meals/%ld",[ServerUrl serverUrl],(long)self.meal.uuid]]];
+        if(data) {
+            
+            NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            
+            NSDictionary *hostHuelle = [JSON objectForKey:@"host"];
+            
+            host = [[User alloc] initWithJSON:hostHuelle];
+            if(host.uuid==[LocalDataBase userId]) {
+                NSLog(@"eigenes Event");
+            }
+            
+            NSArray *reviewHuelle = [JSON objectForKey:@"reviews"];
+            
+            for(NSString *reviewString in reviewHuelle) {
+                Review *review = [[Review alloc] init];
+                review.reviewText=reviewString;
+                review.authorname=@"Larissa";
+                [reviews addObject:review];
+            }
+            
+            [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+        }
     }
     
     
@@ -75,7 +132,9 @@
 }
 
 -(void) segmentChanged {
-    [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+   /* if([table numberOfSections]>0) {
+        [table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }*/
     [table reloadData];
 }
 
@@ -109,6 +168,16 @@
 
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    if(self.meal.thisUserIsHost) {
+        if(segmentControl.selectedSegmentIndex==1) {
+            return [confirmedUsers count];
+        }
+        if(segmentControl.selectedSegmentIndex==2) {
+            return [pendingUsers count];
+        }
+    }
+    
     if(segmentControl.selectedSegmentIndex == 0) {
         return 3;
     }
@@ -123,106 +192,160 @@
 
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+    if(self.meal.thisUserIsHost) {
+        return 1;
+    }
+    
     if(segmentControl.selectedSegmentIndex==0 || segmentControl.selectedSegmentIndex==1) {
         return 1;
     }
-    return 100;
+    return [reviews count]+4;
 }
 
 
 
-
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if(segmentControl.selectedSegmentIndex == 2) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reviewcell"];
+    if((self.meal.thisUserIsHost && segmentControl.selectedSegmentIndex==1) || (self.meal.thisUserIsHost && segmentControl.selectedSegmentIndex==2)) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"usercell"];
         if(!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reviewcell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"usercell"];
         }
         
-        cell.textLabel.text=@"Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war.";
-        cell.textLabel.numberOfLines=-1;
+
+        if(segmentControl.selectedSegmentIndex==1) {
+            cell.textLabel.text = ((User *)[confirmedUsers objectAtIndex:indexPath.row]).name;
+            cell.detailTextLabel.text=@"";
+        } else {
+            cell.textLabel.text = ((User *)[pendingUsers objectAtIndex:indexPath.row]).name;
+            cell.detailTextLabel.text=@"click to confirm";
+        }
+        
         return cell;
         
     } else {
         
-        MealDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mealdetailinformation"];
         
-        if(!cell) {
-            cell = [[MealDetailTableViewCell alloc] init];
-        }
-        
-        if(segmentControl.selectedSegmentIndex==0) {
-            switch (indexPath.row) {
-                case 0: {
-                    cell.titleLabel.text=@"date and time";
-                    
-                    NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
-                    [fmt setDateFormat:@"dd.MM.YYYY, HH:mm a"];
-                    NSString* dateStr = [fmt stringFromDate:self.meal.timeStamp];
-                    cell.descriptionLabel.text=dateStr;
-                    break;
-                }
-                case 1: {
-                    cell.titleLabel.text=@"signed up guests";
-                    cell.descriptionLabel.text=[NSString stringWithFormat:@"%@ of %@",self.meal.numberOfCurrentPersons,self.meal.numberOfMaxPersons];
-                    break;
-                }
-                case 2: {
-                    cell.titleLabel.text=@"location";
-                    cell.descriptionLabel.text=self.meal.locationDescription;
-                    break;
-                }
-                    
-                    
-                default:
-                    break;
+        if(segmentControl.selectedSegmentIndex == 2) {
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reviewcell"];
+            if(!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"reviewcell"];
             }
-        }
-        
-        if(segmentControl.selectedSegmentIndex == 1) {
-            switch (indexPath.row) {
-                case 0: {
-                    cell.titleLabel.text=@"name";
-                    cell.descriptionLabel.text=host.name;
-                    break;
+            
+            if(indexPath.section<4) {
+                
+                if(indexPath.section==0) {
+                    cell.textLabel.text=@"★★★★☆";
+                    cell.detailTextLabel.text=@"Mood";
                 }
-                case 1: {
-                    cell.titleLabel.text=@"age";
-                    cell.descriptionLabel.text=host.age;
-                    break;
+
+                if(indexPath.section==1) {
+                    cell.textLabel.text=@"★★★★★";
+                    cell.detailTextLabel.text=@"Quality";
                 }
-                case 2: {
-                    cell.titleLabel.text=@"gender";
-                    cell.descriptionLabel.text=host.gender;
-                    break;
+                if(indexPath.section==2) {
+                    cell.textLabel.text=@"★★★★☆";
+                    cell.detailTextLabel.text=@"Quantity";
                 }
-                case 3: {
-                    cell.titleLabel.text=@"registered for";
-                    
-                    NSTimeInterval daysbetween = [[[NSDate alloc] init] timeIntervalSinceDate:host.registerdsince] / 86400;
-                    
-                    cell.descriptionLabel.text=[NSString stringWithFormat:@"%f days",daysbetween];
-                    break;
+                if(indexPath.section==3) {
+                    cell.textLabel.text=@"★★★☆☆";
+                    cell.detailTextLabel.text=@"Timeliness";
                 }
-                    
+  
+                
+            } else {
+            
+            cell.textLabel.text=((Review *)[reviews objectAtIndex:((int)indexPath.section)-4]).reviewText;
+            cell.textLabel.numberOfLines=-1;
             }
+            return cell;
+            
+        } else {
+            
+            MealDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mealdetailinformation"];
+            
+            if(!cell) {
+                cell = [[MealDetailTableViewCell alloc] init];
+            }
+            
+            if(segmentControl.selectedSegmentIndex==0) {
+                switch (indexPath.row) {
+                    case 0: {
+                        cell.titleLabel.text=@"date and time";
+                        
+                        NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
+                        [fmt setDateFormat:@"dd.MM.YYYY, HH:mm a"];
+                        NSString* dateStr = [fmt stringFromDate:self.meal.timeStamp];
+                        cell.descriptionLabel.text=dateStr;
+                        break;
+                    }
+                    case 1: {
+                        cell.titleLabel.text=@"signed up guests";
+                        cell.descriptionLabel.text=[NSString stringWithFormat:@"%@ of %@",self.meal.numberOfCurrentPersons,self.meal.numberOfMaxPersons];
+                        break;
+                    }
+                    case 2: {
+                        cell.titleLabel.text=@"location";
+                        cell.descriptionLabel.text=self.meal.locationDescription;
+                        break;
+                    }
+                        
+                        
+                    default:
+                        break;
+                }
+            }
+            
+            if(segmentControl.selectedSegmentIndex == 1) {
+                switch (indexPath.row) {
+                    case 0: {
+                        cell.titleLabel.text=@"name";
+                        cell.descriptionLabel.text=host.name;
+                        break;
+                    }
+                    case 1: {
+                        cell.titleLabel.text=@"age";
+                        cell.descriptionLabel.text=[NSString stringWithFormat:@"%ld",(long)host.age];
+                        break;
+                    }
+                    case 2: {
+                        cell.titleLabel.text=@"gender";
+                        cell.descriptionLabel.text=host.gender;
+                        break;
+                    }
+                    case 3: {
+                        cell.titleLabel.text=@"registered for";
+                        
+                        NSTimeInterval daysbetween = [[[NSDate alloc] init] timeIntervalSinceDate:host.registerdsince] / 86400;
+                        
+                        cell.descriptionLabel.text=[NSString stringWithFormat:@"%.0f days",daysbetween];
+                        break;
+                    }
+                        
+                }
+            }
+            return cell;
         }
-        return cell;
     }
     return nil;
 }
 
 -(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (segmentControl.selectedSegmentIndex==2) {
-        return @"Larissa Laich";
+    if (segmentControl.selectedSegmentIndex==2 && !self.meal.thisUserIsHost) {
+        return @"";
     }
     return @"";
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(self.meal.thisUserIsHost) {
+        return 60;
+    }
+    
     if(segmentControl.selectedSegmentIndex==2) {
-        NSString *str = @"Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war.";
+        if(indexPath.section<4) {
+            return 60;
+        }
+        NSString *str =((Review *)[reviews objectAtIndex:indexPath.section-4]).reviewText;
         CGSize size = [str sizeWithFont:[UIFont fontWithName:@"HelveticaNeue" size:19] constrainedToSize:CGSizeMake(self.view.frame.size.width, 10000) lineBreakMode:UILineBreakModeWordWrap];
         
         return size.height + 10;
@@ -243,7 +366,7 @@
         
         [view addSubview:map];
         map.userInteractionEnabled=NO;
-        map.region = MKCoordinateRegionMake(self.meal.gpsLocation, MKCoordinateSpanMake(0.002, 0.003));
+        map.region = MKCoordinateRegionMake(self.meal.gpsLocation, MKCoordinateSpanMake(0.004, 0.006));
         
         
         
@@ -263,6 +386,32 @@
     
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
+    if((self.meal.thisUserIsHost && segmentControl.selectedSegmentIndex==2)) {
+        
+        [self performSelectorInBackground:@selector(confirmPendingInbackground:) withObject:[NSNumber numberWithInt:(int)((User *)[pendingUsers objectAtIndex:indexPath.row]).uuid]];
+    }
+}
+
+-(void) confirmPendingInbackground:(NSNumber *) userId {
+    NSString *url = [NSString stringWithFormat:@"%@/meals/%ld/user/%u",[ServerUrl serverUrl],(long)self.meal.uuid,[userId intValue]];
+
+    NSLog(url);
+    
+    NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setHTTPMethod:@"PUT"];
+
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    
+    
+    NSData *postData = [@"" dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    [request setHTTPBody:postData];
+    
+    NSURLResponse *response;
+    NSError *err;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    [self loadAdditionalDataInbackground];
 }
 
 /*
