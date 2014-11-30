@@ -46,7 +46,7 @@ bool deadlinecellExtended;
     [self setNeedsStatusBarAppearanceUpdate];
     
     
-    table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStyleGrouped];
+    table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) style:UITableViewStylePlain];
     table.delegate=self;
     table.dataSource=self;
     [self.view addSubview:table];
@@ -55,6 +55,11 @@ bool deadlinecellExtended;
     [textField setBorderStyle:UITextBorderStyleRoundedRect];
     textField.placeholder=@"What do you cook?";
     textField.delegate=self;
+    
+    locationDescription= [[UITextField alloc] init];
+    [locationDescription setBorderStyle:UITextBorderStyleRoundedRect];
+    locationDescription.placeholder=@"short location description";
+    locationDescription.delegate=self;
     
     
     happeningDatePicker = [[UIDatePicker alloc] init];
@@ -81,7 +86,7 @@ bool deadlinecellExtended;
     locManager.delegate = self;
     [locManager startUpdatingLocation];
     
-    map =[[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
+    map =[[MKMapView alloc] initWithFrame:CGRectMake(0, 5, self.view.frame.size.width, 295)];
     map.showsUserLocation=YES;
     // Do any additional setup after loading the view.
 }
@@ -113,11 +118,14 @@ bool deadlinecellExtended;
     
     NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
     [fmt setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString* hapeningDateString = [fmt stringFromDate:happeningDatePicker.date];
+    NSString* hapeningDateString = [fmt stringFromDate:[happeningDatePicker.date dateByAddingTimeInterval:60*60]];
+    
+    NSDateFormatter* fmt2 = [[NSDateFormatter alloc] init];
+    [fmt2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString* deadlineDateString = [fmt2 stringFromDate:[deadlineDatePicker.date dateByAddingTimeInterval:60*60]];
     
     
-    
-    NSString *post = [NSString stringWithFormat:@"name=%@&dateRegistrationEnd=%@&date=%@&price=%f&host=%u&address=%@&typ=%@&maxGuests=%.0f&nutrition_typ=%@&description=%@&longitude=%f&latitude=%f",textField.text,@"2014-11-30 12:59:12",hapeningDateString,[costPerGuest value],2,@"WG 5, bitte oben klingeln",cookingoreatingevent,[numberOfGuests value],@"vegan",@"Ich würde mich freuen wenn noch jemand einen Nachtisch mitbringen könnte!",locManager.location.coordinate.longitude,locManager.location.coordinate.latitude];
+    NSString *post = [NSString stringWithFormat:@"name=%@&dateRegistrationEnd=%@&date=%@&price=%f&host=%u&address=%@&typ=%@&maxGuests=%.0f&nutrition_typ=%@&description=%@&longitude=%f&latitude=%f",textField.text,deadlineDateString,hapeningDateString,[costPerGuest value],[LocalDataBase userId],locationDescription.text,cookingoreatingevent,[numberOfGuests value],@"vegan",@"Ich würde mich freuen wenn noch jemand einen Nachtisch mitbringen könnte!",locManager.location.coordinate.longitude,locManager.location.coordinate.latitude];
     
     NSLog(post);
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -187,7 +195,7 @@ bool deadlinecellExtended;
         case 2: {
             UILabel *desctiptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
             desctiptionLabel.font=[UIFont fontWithName:@"Helveticaneue-light" size:20];
-            desctiptionLabel.text=@"Select start time";
+            desctiptionLabel.text=@"Deadline";
             [cell addSubview:desctiptionLabel];
             
             UILabel *currentDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
@@ -226,6 +234,7 @@ bool deadlinecellExtended;
             
             
             [cell addSubview:map];
+            [cell addSubview:locationDescription];
             break;
         }
         case 7: {
@@ -250,18 +259,24 @@ bool deadlinecellExtended;
         if(deadlinecellExtended) {
             return 50+deadlineDatePicker.frame.size.height;
         }
-    }else if(indexPath.row==5) {
+    }else if(indexPath.row==6) {
         return 300;
     }
     return 50;
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    [textField resignFirstResponder];
+    [locationDescription resignFirstResponder];
     if(indexPath.row==1) {
         
         dateCellExtended=!dateCellExtended;
         [table reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    if(indexPath.row==2) {
+        
+        deadlinecellExtended=!deadlinecellExtended;
+        [table reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -269,7 +284,8 @@ bool deadlinecellExtended;
 
 -(void) viewWillLayoutSubviews {
     table.frame=CGRectMake(0, 66, self.view.frame.size.width, self.view.frame.size.height-66);
-    textField.frame=CGRectMake(5, 15, self.view.frame.size.width-10, 30);
+    textField.frame=CGRectMake(5, 10, self.view.frame.size.width-10, 30);
+    locationDescription.frame=CGRectMake(5, 10, self.view.frame.size.width-10, 30);
     costPerGuest.frame=CGRectMake(0, 5, self.view.frame.size.width, 50-5);
     numberOfGuests.frame=CGRectMake(0, 0, self.view.frame.size.width, 50-5);
     happeningDatePicker.frame=CGRectMake(0, 50, self.view.frame.size.width, happeningDatePicker.frame.size.height);

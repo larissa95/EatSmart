@@ -114,6 +114,28 @@
         
         if([LocalDataBase UserIsRegistered]){
             [buy setTitle:@"Pending" forState:UIControlStateNormal];
+            
+            
+            NSString *url = [NSString stringWithFormat:@"%@/meals/%ld/user/%u",[ServerUrl serverUrl],(long)self.meal.uuid,[LocalDataBase userId]];
+            
+
+            
+            NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+            [request setHTTPMethod:@"POST"];
+            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            
+            
+            NSData *postData = [@"" dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+            [request setHTTPBody:postData];
+            
+            NSURLResponse *response;
+            NSError *err;
+            NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+            
+            NSString *someString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+            NSLog(someString);
+            
+            
             buyStatusForThisUser++;
         }else{
             NSLog(@"test");

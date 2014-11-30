@@ -62,6 +62,9 @@
         NSDictionary *hostHuelle = [JSON objectForKey:@"host"];
         
         host = [[User alloc] initWithJSON:hostHuelle];
+        if(host.uuid==[LocalDataBase userId]) {
+            NSLog(@"eigenes Event");
+        }
         [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
         
         

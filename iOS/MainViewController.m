@@ -63,7 +63,7 @@
     
     if(data) {
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-    
+        
     NSArray *mealsHuelle = [JSON objectForKey:@"results"];
     
     NSMutableArray *meals = [[NSMutableArray alloc] init];
@@ -72,21 +72,24 @@
         Meal *meal =  [[Meal alloc] initWithJSON:dic];
         [meals addObject:meal];
     }
+        [self performSelectorOnMainThread:@selector(doneWithNewArray:) withObject:meals waitUntilDone:NO];
     
-    mealSuggestions = [NSArray arrayWithArray:meals];
-    [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-    [refreshControl endRefreshing];
     } else {
         Meal *meal = [[Meal alloc] initDummy];
-        mealSuggestions =  @[meal,meal];
-        [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-        [refreshControl endRefreshing];
+        [self performSelectorOnMainThread:@selector(doneWithNewArray:) withObject:@[meal,meal] waitUntilDone:NO];
     }
+}
+
+-(void) doneWithNewArray: (NSMutableArray *) array {
+    mealSuggestions = [NSArray arrayWithArray:array];
+    [table reloadData];
+    [refreshControl endRefreshing];
 }
 
 
 -(void) events {
-    
+    MyEventsViewController *event = [[MyEventsViewController alloc] init];
+    [self.navigationController pushViewController:event animated:YES];
 }
 
 -(void) filter {

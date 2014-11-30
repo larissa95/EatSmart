@@ -14,6 +14,7 @@
 #import "CreateNewMealViewController.h"
 #import "ProfileViewController.h"
 #import "ServerUrl.h"
+#import "MyEventsViewController.h"
 
 @interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 

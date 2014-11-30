@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FRSlider.h"
 #import "ServerUrl.h"
+#import "LocalDataBase.h"
 
 @import MapKit;
 @import CoreLocation;
