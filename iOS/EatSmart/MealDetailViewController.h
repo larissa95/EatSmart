@@ -10,7 +10,9 @@
 #import "Meal.h"
 #import "MealHeadView.h"
 #import "MealDetailTableViewCell.h"
+#import "AppDelegate.h"
 @import MapKit;
+@import CoreLocation;
 
 @interface MealDetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
 
@@ -22,6 +24,8 @@
 @property(nonatomic) Meal *meal;
 @property(nonatomic) User *host;
 @property(nonatomic) NSMutableArray *reviews;
+
+
 
 
 -(id) initWithMeal:(Meal *) meal;

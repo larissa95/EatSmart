@@ -12,8 +12,9 @@
 
 
 +(NSArray *) mealSuggestions {
-    
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://10.60.36.31:5000/0.2.1b/meals/search/48.742627/9.095000"]];
+    Meal *meal = [[Meal alloc] initDummy];
+    return @[meal,meal];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/meals/search/48.742627/9.095000",[AppDelegate IP]]]];
     if(data) {
 
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -29,7 +30,8 @@
     
     return [NSArray arrayWithArray:meals];
     }
-    Meal *meal = [[Meal alloc] initDummy];
+    
+    //Meal *meal = [[Meal alloc] initDummy];
     return @[meal,meal];
 }
 

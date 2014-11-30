@@ -15,6 +15,17 @@
 @implementation FilterViewController
 @synthesize table,datePicker;
 bool dateCellExtended;
+
+static int lowestRating;
+static float maxPrice;
+static float maxMinutes;
+static NSDate *startTime;
+
++(void) setLowestRating:(int)_lowestRating {
+    lowestRating=_lowestRating;
+}
+
+
 - (void)viewDidLoad {
     dateCellExtended=false;
     [super viewDidLoad];
@@ -144,7 +155,7 @@ bool dateCellExtended;
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.section==0 && indexPath.section==0) {
+    if(indexPath.section==0 && indexPath.row==0) {
         dateCellExtended=!dateCellExtended;
         [table reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     }

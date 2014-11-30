@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Meal.h"
+#import "AppDelegate.h"
 
 @interface DataBaseConnection : NSObject
 +(NSArray *) mealSuggestions;

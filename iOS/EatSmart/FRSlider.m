@@ -60,7 +60,6 @@
 
 -(NSString *) valueString {
     float currentPercentage=(scrollView.frame.size.width - scrollView.contentOffset.x) / scrollView.frame.size.width;
-    NSLog(@"%f",scrollView.contentOffset.x);
     self.currentValue = currentPercentage * (self.max-self.min) + self.min;
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
