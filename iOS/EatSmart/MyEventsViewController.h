@@ -11,6 +11,7 @@
 #import "Meal.h"
 #import "ServerUrl.h"
 #import "LocalDataBase.h"
+#import "MealDetailViewController.h"
 
 @interface MyEventsViewController : UIViewController<UITableViewDataSource>
 
