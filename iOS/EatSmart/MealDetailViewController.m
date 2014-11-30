@@ -216,7 +216,7 @@
             cell.textLabel.text = ((User *)[confirmedUsers objectAtIndex:indexPath.row]).name;
             cell.detailTextLabel.text=@"";
         } else {
-            cell.textLabel.text = ((User *)[pendingUsers objectAtIndex:indexPath.row]).name;
+            cell.textLabel.text = @"Frederik";
             cell.detailTextLabel.text=@"click to confirm";
         }
         

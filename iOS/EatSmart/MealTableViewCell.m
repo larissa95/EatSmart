@@ -74,7 +74,6 @@
     }
     
     
-    NSLog(meal.profilePicString);
     
 
     

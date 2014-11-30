@@ -51,13 +51,13 @@
             phoneNumber=nil;
         }
         
-        age=[[JSON objectForKey:@"age"] integerValue];
-        if(age == (id)[NSNull null]) {
+        age=20;
+        /*if(age == (id)[NSNull null]) {
             age=nil;
-        }
+        }*/
         email=[JSON objectForKey:@"email"];
-        if(age == (id)[NSNull null]) {
-            age=nil;
+        if(email == (id)[NSNull null]) {
+            email=nil;
         }
     }
     

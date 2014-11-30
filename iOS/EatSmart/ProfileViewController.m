@@ -20,15 +20,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.userAtrri = [NSArray arrayWithObjects: @"Name",@"Email", @"FirstLogin",@"Age", @"Gender", @"Phone Number", nil];
-
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"Profile";
-    [self showLoginTable];
     if(![LocalDataBase UserIsRegistered]){
         [self showPayPalLogin];
     }else{
         [self loadUserInfos];
+        [self showLoginTable];
         }
 }
 
@@ -148,6 +147,7 @@
     [self loadUserIdFromServer];
     NSLog(@"succes");
     NSLog(@"Here is your authorization:\n\n%@\n\nSend this to your server to complete profile sharing setup.", authorization);
+        [self showLoginTable];
 
  
 }
@@ -170,9 +170,9 @@
     }
     
     if(self.user){
-        if(indexPath.row == 0){
+        if(indexPath.section == 0){
         if(self.user.name){
-            cell.textLabel.text = self.user.name;
+            cell.textLabel.text = @"Frederik Riedel";
         }else{
         UITextField *tf0 = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, cell.frame.size.width,cell.frame.size.height)];
         tf0.textColor = [UIColor colorWithRed:0/256.0 green:84/256.0 blue:129/256.0 alpha:1.0];
@@ -185,7 +185,7 @@
         }
         }
         
-        if(indexPath.row == 1){
+        if(indexPath.section == 1){
         if(self.user.email){
             cell.textLabel.text = self.user.email;
         }else{
@@ -201,9 +201,9 @@
         }
 
         
-        if(indexPath.row == 3){
+        if(indexPath.section == 3){
         if(self.user.age){
-            cell.textLabel.text = self.user.age;
+            cell.textLabel.text = [NSString stringWithFormat:@"%ld",(long)self.user.age];
         }else{
             UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, cell.frame.size.width,cell.frame.size.height)];
             tf.textColor = [UIColor colorWithRed:0/256.0 green:84/256.0 blue:129/256.0 alpha:1.0];
@@ -215,7 +215,7 @@
             cell.backgroundColor=[UIColor clearColor];
         }
         }
-        if(indexPath.row == 4){
+        if(indexPath.section == 4){
         if(self.user.gender){
             cell.textLabel.text = self.user.gender;
         }else{
@@ -229,7 +229,7 @@
             cell.backgroundColor=[UIColor clearColor];
         }
         }
-        if(indexPath.row == 5){
+        if(indexPath.section == 5){
         if(self.user.phoneNumber){
             cell.textLabel.text = self.user.phoneNumber;
         }else{
@@ -243,7 +243,7 @@
             cell.backgroundColor=[UIColor clearColor];
         }
         }
-        if(indexPath.row == 2){
+        if(indexPath.section == 2){
             cell.textLabel.text = @"30.11.2014";
         }
         

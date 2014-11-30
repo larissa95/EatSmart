@@ -45,6 +45,9 @@
         gpsLocation=CLLocationCoordinate2DMake([[[JSON objectForKey:@"placeGPS"] objectForKey:@"latitude"] doubleValue], [[[JSON objectForKey:@"placeGPS"] objectForKey:@"longitude"] doubleValue]);
         
         profilePicString = [JSON objectForKey:@"imageUrl"];
+        if(profilePicString == (id)[NSNull null]) {
+            profilePicString=nil;
+        }
 
         locationDescription = [JSON objectForKey:@"address"];
         
