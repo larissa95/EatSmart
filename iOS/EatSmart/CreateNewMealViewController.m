@@ -13,8 +13,9 @@
 @end
 
 @implementation CreateNewMealViewController
-@synthesize table,textField,datePicker,numberOfGuests,costPerGuest,segmentControl,locManager,map;
+@synthesize table,textField,happeningDatePicker,numberOfGuests,costPerGuest,segmentControl,locManager,map,locationDescription,deadlineDatePicker;
 bool dateCellExtended;
+bool deadlinecellExtended;
 - (void)viewDidLoad {
     UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
     navBar.barTintColor = [UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0];
@@ -56,8 +57,12 @@ bool dateCellExtended;
     textField.delegate=self;
     
     
-    datePicker = [[UIDatePicker alloc] init];
-    [datePicker addTarget:self action:@selector(dateChanged) forControlEvents:UIControlEventValueChanged];
+    happeningDatePicker = [[UIDatePicker alloc] init];
+    [happeningDatePicker addTarget:self action:@selector(dateChanged) forControlEvents:UIControlEventValueChanged];
+    
+    
+    deadlineDatePicker = [[UIDatePicker alloc] init];
+    [deadlineDatePicker addTarget:self action:@selector(dateChanged) forControlEvents:UIControlEventValueChanged];
     
     numberOfGuests = [[FRSlider alloc] initWithName:@"max number of guests" Unit:@"" min:1 max:15 currentValue:3 nachKommaStellen:1.0];
     
@@ -75,7 +80,7 @@ bool dateCellExtended;
     locManager.desiredAccuracy = kCLLocationAccuracyBest;
     locManager.delegate = self;
     [locManager startUpdatingLocation];
-
+    
     map =[[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
     map.showsUserLocation=YES;
     // Do any additional setup after loading the view.
@@ -93,15 +98,26 @@ bool dateCellExtended;
 }
 
 -(void) create {
-    NSString *url = [NSString stringWithFormat:@"http://%@/meals/create",[AppDelegate IP]];
+    NSString *url = [NSString stringWithFormat:@"%@/meals/create",[ServerUrl serverUrl]];
     
     
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-
     
-    NSString *post = [NSString stringWithFormat:@"name=%@&dateRegistrationEnd=%@&date=%@&price=%f&host=%u&address=%@&typ=%@&maxGuests=%u&nutrition_typ=%@&description=%@&longitude=%f&latitude=%f",@"Pfannkuchen",@"2014-11-30 12:59:12",@"2014-12-30 12:59:12",3.20,2,@"DingsBumsHausen",@"eating",5,@"vegan",@"Toller Abend!",locManager.location.coordinate.longitude,locManager.location.coordinate.latitude];
+    
+    NSString *cookingoreatingevent = @"eating";
+    if(segmentControl.selectedSegmentIndex==1) {
+        cookingoreatingevent=@"cooking";
+    }
+    
+    NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
+    [fmt setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString* hapeningDateString = [fmt stringFromDate:happeningDatePicker.date];
+    
+    
+    
+    NSString *post = [NSString stringWithFormat:@"name=%@&dateRegistrationEnd=%@&date=%@&price=%f&host=%u&address=%@&typ=%@&maxGuests=%.0f&nutrition_typ=%@&description=%@&longitude=%f&latitude=%f",textField.text,@"2014-11-30 12:59:12",hapeningDateString,[costPerGuest value],2,@"WG 5, bitte oben klingeln",cookingoreatingevent,[numberOfGuests value],@"vegan",@"Ich würde mich freuen wenn noch jemand einen Nachtisch mitbringen könnte!",locManager.location.coordinate.longitude,locManager.location.coordinate.latitude];
     
     NSLog(post);
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -110,23 +126,24 @@ bool dateCellExtended;
     NSURLResponse *response;
     NSError *err;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-
+    
     [self dismissModalViewControllerAnimated:YES];
 }
 
 -(void) dateChanged {
-    [table reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [table reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0],[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textFielda
 {
     [textField resignFirstResponder];
+    [locationDescription resignFirstResponder];
     return YES;
 }
 
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 6;
+    return 7;
 }
 
 
@@ -154,7 +171,7 @@ bool dateCellExtended;
             
             NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
             [fmt setDateFormat:@"HH:mm a, dd.MM."];
-            NSString* dateStr = [fmt stringFromDate:datePicker.date];
+            NSString* dateStr = [fmt stringFromDate:happeningDatePicker.date];
             currentDateLabel.text=dateStr;
             currentDateLabel.font=[UIFont fontWithName:@"Helveticaneue-light" size:20];
             currentDateLabel.textAlignment=NSTextAlignmentRight;
@@ -164,30 +181,54 @@ bool dateCellExtended;
             }
             [cell addSubview:currentDateLabel];
             
-            [cell addSubview:datePicker];
+            [cell addSubview:happeningDatePicker];
             break;
         }
         case 2: {
+            UILabel *desctiptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
+            desctiptionLabel.font=[UIFont fontWithName:@"Helveticaneue-light" size:20];
+            desctiptionLabel.text=@"Select start time";
+            [cell addSubview:desctiptionLabel];
+            
+            UILabel *currentDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
+            
+            
+            NSDateFormatter* fmt = [[NSDateFormatter alloc] init];
+            [fmt setDateFormat:@"HH:mm a, dd.MM."];
+            NSString* dateStr = [fmt stringFromDate:happeningDatePicker.date];
+            currentDateLabel.text=dateStr;
+            currentDateLabel.font=[UIFont fontWithName:@"Helveticaneue-light" size:20];
+            currentDateLabel.textAlignment=NSTextAlignmentRight;
+            
+            if(deadlinecellExtended) {
+                currentDateLabel.textColor=[UIColor blueColor];
+            }
+            [cell addSubview:currentDateLabel];
+            
+            [cell addSubview:deadlineDatePicker];
+            break;
+        }
+        case 3: {
             [cell addSubview:segmentControl];
             
             break;
         }
-        case 3: {
+        case 4: {
             [cell addSubview:numberOfGuests];
             
             break;
         }
-        case 4: {
+        case 5: {
             [cell addSubview:costPerGuest];
             break;
         }
-        case 5: {
+        case 6: {
             
-
+            
             [cell addSubview:map];
             break;
         }
-        case 6: {
+        case 7: {
             
             break;
         }
@@ -203,9 +244,13 @@ bool dateCellExtended;
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.row==1) {
         if(dateCellExtended) {
-            return 50+datePicker.frame.size.height;
+            return 50+happeningDatePicker.frame.size.height;
         }
-    } else if(indexPath.row==5) {
+    } else if(indexPath.row==2) {
+        if(deadlinecellExtended) {
+            return 50+deadlineDatePicker.frame.size.height;
+        }
+    }else if(indexPath.row==5) {
         return 300;
     }
     return 50;
@@ -227,7 +272,8 @@ bool dateCellExtended;
     textField.frame=CGRectMake(5, 15, self.view.frame.size.width-10, 30);
     costPerGuest.frame=CGRectMake(0, 5, self.view.frame.size.width, 50-5);
     numberOfGuests.frame=CGRectMake(0, 0, self.view.frame.size.width, 50-5);
-    datePicker.frame=CGRectMake(0, 50, self.view.frame.size.width, datePicker.frame.size.height);
+    happeningDatePicker.frame=CGRectMake(0, 50, self.view.frame.size.width, happeningDatePicker.frame.size.height);
+    deadlineDatePicker.frame=CGRectMake(0, 50, self.view.frame.size.width, happeningDatePicker.frame.size.height);
     segmentControl.frame=CGRectMake(10, 10, self.view.frame.size.width-20, 30);
 }
 

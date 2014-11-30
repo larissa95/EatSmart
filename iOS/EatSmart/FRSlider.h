@@ -24,7 +24,7 @@
 @property(nonatomic) double roundingIncrement;
 
 
-
+-(float) value;
 -(id) initWithName:(NSString *) name Unit:(NSString *) unit min:(float) min max:(float) max currentValue:(float) currentValue nachKommaStellen:(double) roundingIncrement;
 
 @end

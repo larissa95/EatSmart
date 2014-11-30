@@ -13,6 +13,7 @@
 #import "FilterViewController.h"
 #import "CreateNewMealViewController.h"
 #import "ProfileViewController.h"
+#import "ServerUrl.h"
 
 @interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 

@@ -13,7 +13,7 @@
 
 +(NSArray *) mealSuggestions {
 
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/meals/search/48.742627/9.095000",[ServerUrl serverUrl]]]];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/meals/search/48.742012/9.100757",[ServerUrl serverUrl]]]];
     if(data) {
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
     

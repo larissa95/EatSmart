@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FRSlider.h"
-#import "AppDelegate.h"
+#import "ServerUrl.h"
 
 @import MapKit;
 @import CoreLocation;
@@ -18,7 +18,8 @@
 @property(nonatomic) UITableView *table;
 @property(nonatomic) UITextField *textField;
 @property(nonatomic) UITextField *locationDescription;
-@property(nonatomic) UIDatePicker *datePicker;
+@property(nonatomic) UIDatePicker *happeningDatePicker;
+@property(nonatomic) UIDatePicker *deadlineDatePicker;
 @property(nonatomic) FRSlider *numberOfGuests;
 @property(nonatomic) FRSlider *costPerGuest;
 @property(nonatomic) UISegmentedControl *segmentControl;

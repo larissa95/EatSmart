@@ -10,6 +10,6 @@
 
 @implementation ServerUrl
 +(NSString *) serverUrl {
-    return @"http://100.71.3.186:5000/0.2.1b";
+    return @"http://10.60.39.212:5000/0.2.1b";
 }
 @end

@@ -54,7 +54,7 @@
 
 
 -(void) loadAdditionalDataInbackground {
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/meals/%ld",[AppDelegate IP],(long)self.meal.uuid]]];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/meals/%ld",[ServerUrl serverUrl],(long)self.meal.uuid]]];
     if(data) {
         
         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];

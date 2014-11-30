@@ -59,7 +59,7 @@
 }
 
 -(void) loadNewMenuDataInBackground {
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://10.60.36.31:5000/0.2.1b/meals/search/48.742627/9.095000"]];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/meals/search/48.742627/9.095000",[ServerUrl serverUrl]]]];
     
     if(data) {
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];

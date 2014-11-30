@@ -70,6 +70,10 @@
     return [NSString stringWithFormat:@"%@ %@",[formatter stringFromNumber:[NSNumber numberWithFloat:self.currentValue]],self.unit];
 }
 
+-(float) value {
+    return self.currentValue;
+}
+
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView {
     valueLabel.text=[self valueString];
 }
