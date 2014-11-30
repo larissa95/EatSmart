@@ -11,10 +11,18 @@
 #import "ServerUrl.h"
 #import "PayPalMobile.h"
 #import "ServerCommunication.h"
+#import "User.h"
 
 @interface ProfileViewController : UIViewController
 
 @property(nonatomic, strong, readwrite) PayPalConfiguration *payPalConfig;
+@property(nonatomic, strong, readwrite) UILabel *intro;
+@property(nonatomic, strong, readwrite) UIButton *loginButton;
+@property(nonatomic, strong, readwrite) UITableView *tableView;
+@property(nonatomic, strong, readwrite) User *user;
+@property(nonatomic, strong, readwrite) NSArray *userAtrri;
+
+
 
 
 @end

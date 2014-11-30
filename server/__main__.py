@@ -14,28 +14,30 @@ DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 @app.route('/0.2.1b/meals/create', methods=['POST'])
 def meal_create():
-    name = request.form['name']
-    date = datetime.strptime(request.form['date'], DATETIME_FORMAT)
+    name = request.form.get('name', None)
+    date = datetime.strptime(request.form.get('date'), DATETIME_FORMAT)
     dateRegistrationEnd = datetime.strptime(
-        request.form['dateRegistrationEnd'],
+        request.form.get('dateRegistrationEnd'),
         DATETIME_FORMAT)
-    price = request.form['price']
-    host = request.form['host']
-    address = request.form['address']
-    typ = request.form['typ']
-    maxGuests = request.form['maxGuests']
-    description = request.form['description']
-    nutrition_typ = request.form['nutrition_typ']
-    latitude = request.form['latitude']
-    longitude = request.form['longitude']
+    price = request.form.get('price', None)
+    host = request.form.get('host', None)
+    address = request.form.get('address', None)
+    typ = request.form.get('typ', "eating")
+    maxGuests = request.form.get('maxGuests', None)
+    description = request.form.get('description', "")
+    nutrition_typ = request.form.get('nutrition_typ', "normal")
+    if request.form.get('latitude', None):
+        latitude = request.form.get('latitude')
+        longitude = request.form.get('longitude')
+    else:
+        latitude, longitude = getGPSCoordinatesFromGoogle(address)
 
     session = DBSession()
     try:
         host = session.query(User).filter(User.id == host).one()
     except NoResultFound:
         return jsonify({"success": False,
-                        "error": {"message": "No User Found with this id."}})
-    # latitude, longitude = getGPSCoordinatesFromGoogle(address)
+                        "error": {"message": "No User Found with this id."}}), 400
     meal = Meal(name=name,
                 date=date,
                 dateRegistrationEnd=dateRegistrationEnd,
@@ -108,8 +110,10 @@ def meal_get_information(mealId):
                        "reviews": reviews,
                        "nutrition_typ": meal.nutrition_typ,
                        "description": meal.description,
-                       "pendingUserIds":pendingUserIds,
-                       "confirmedUserIds":confirmedUserIds,
+                       "pendingUserIds": pendingUserIds,
+                       "confirmedUserIds": confirmedUserIds,
+                       "imageUrl": meal.host.imageUrl,
+                       "host_id": host.id,
                        "placeGPS": {
                            "latitude": meal.latitude,
                            "longitude": meal.longitude},
@@ -118,18 +122,16 @@ def meal_get_information(mealId):
                            "age": host.age,
                            "phone": host.phone,
                            "gender": host.gender,
-                           "hostId": host.id,
+                           
                            "registerdsince": host.firstLogin,
-                           "image": meal.host.imageUrl,
-                            "hostRating":calculateTotalAverageHostRating(host.id)
-
-
-                       }
+                           
+                           "hostRating":calculateTotalAverageHostRating(host.id)
+                       }}
         session.commit()
     except NoResultFound:
         session.close()
         return jsonify({"success": False,
-                        "error": {"message": "No Meal Found with this id"}})
+                        "error": {"message": "No Meal Found with this id"}}), 400
     session.close()
 
     return jsonify(responseDic)
@@ -189,6 +191,9 @@ def meal_confirm_unconfirmed_user(mealId, userId):
             #just add to list if it was in the confirmations list before.
             if(len(meal.users) < meal.maxGuests):
                 meal.users.append(user)
+            else:
+                return jsonify({"success": False,
+                        "error": {"message": "Sorry mate somebody was faster than you"}})
         except ValueError:
             session.close()
             return jsonify({"success": False,
@@ -245,6 +250,13 @@ def meal_search(latitude, longitude):
                     continue
             rating = calculateTotalAverageHostRating(meal.host.id)
             numberOfRatings = getNumberOfRatings(meal.host.id)
+            pendingUserIds = []
+            for user in meal.unconfirmedUsers:
+                pendingUserIds.append(user.id)
+
+            confirmedUserIds = []
+            for user in meal.users:
+                confirmedUserIds.append(user.id)
             resultList.append(
                 {"mealId": meal.id,
                  "mealName": meal.name,
@@ -254,11 +266,14 @@ def meal_search(latitude, longitude):
                  "guest_attending": len(meal.users),
                  "address": meal.address,
                  "placeGPS": {"latitude": meal.latitude, "longitude": meal.longitude},
-                 "imageUrl": "http://placekitten.com/g/200/300", # change back to image value
+                 "imageUrl": meal.host.imageUrl, # change back to image value
                  "rating": rating,
                  "numberOfRatings": numberOfRatings,
                  "price": meal.price,
-                 "typ": meal.typ})
+                 "typ": meal.typ,
+                 "pendingUserIds": pendingUserIds,
+                 "confirmedUserIds": confirmedUserIds,
+                 "host_id": meal.host.id})
     except NoResultFound:
         session.close()
         return jsonify({"success": False,
@@ -271,17 +286,13 @@ def meal_search(latitude, longitude):
 
 @app.route('/0.2.1b/rating/host/<uhostId>', methods=['POST'])
 def rating_host_add(uhostId):
-    userId = int(request.form['userId'])
-    mealId = int(request.form['mealId'])
-    quality = request.form['quality']
-    quantity = request.form['quantity']
-    onTime = request.form['onTime']
-    mood = request.form['mood']
-
-    try:
-        comment = request.form['comments']
-    except Exception:
-        comment = None
+    userId = int(request.form.get('userId', None))
+    mealId = int(request.form.get('mealId', None))
+    quality = request.form.get('quality', None)
+    quantity = request.form.get('quantity', None)
+    onTime = request.form.get('onTime', None)
+    mood = request.form.get('mood', None)
+    comment = request.form.get('comments', None)
 
     alreadyAdded = False
     session = DBSession()
@@ -330,7 +341,7 @@ def rating_guest_add(userId):
             session.close()
             return jsonify({"error": True})
     session.close()
-    return jsonify({'success': "1"})
+    return jsonify({'success': True})
 
 
 @app.route('/0.2.1b/rating/guest/average/<userId>', methods=['GET'])
@@ -360,7 +371,7 @@ def getUserInformation(userId):
     mealGuestIds = []
     mealUnconfirmedIds = []
     for meal in user.meals:
-        if meal.host_id == userId:
+        if meal.host_id == int(userId):
             mealHostIds.append(meal.id)
         else:
             mealGuestIds.append(meal.id)
@@ -374,6 +385,7 @@ def getUserInformation(userId):
                 "age": user.age,
                 "phone": user.phone,
                 "gender": user.gender,
+                "imageUrl": user.imageUrl,
                 "hostRating": hostRating,
                 "guestRating": calculateAverageGuestRating(userId),
                 "mealHostIds": mealHostIds,
@@ -406,6 +418,10 @@ def setUserInfromation(userId):
         session.close()
         return jsonify({"success": False,
                         "error": {"message": "No User found with this id"}})
+    except IntegrityError:
+        session.close()
+        return jsonify({"success": False,
+                        "error": {"message": "We already have somebody with this email address"}})
     session.close()
     return jsonify({"success": True})
 
@@ -415,7 +431,11 @@ def  mailToAccepted(userId, mealId):
         session = DBSession()
 
         user = session.query(User).filter(User.id == userId).one()
-        payload = {'subject':"THis is a test",'api_key': getPassword(), 'api_user': getUser(), 'to': user.email, 'from': 'info@eatcookNmeet.com', 'html': render_template('emailAccepted.html', **locals())}
+        meal = session.query(Meal).filter(Meal.id == mealId).one()
+        name = user.name
+        host_name = meal.host.name
+        event_typ = meal.typ
+        payload = {'subject':"Eating together with "+str(meal.host.name),'api_key': getPassword(), 'api_user': getUser(), 'to': "f@polarapps.de", 'from': 'info@mealhub.com', 'html': render_template('emailAccepted.html', **locals())}
         r = requests.post("https://api.sendgrid.com/api/mail.send.json", data=payload)
     except NoResultFound:
         pass
@@ -454,36 +474,41 @@ def getNumberOfRatings(userId):
 
 def calculateAverageHostRating(userId):
     session = DBSession()
-    user = session.query(User).filter(User.id == userId).one()
-    averageQuality = 0
-    averageQuantity = 0
-    averageonTime = 0
-    averageMood = 0
-    numberOfRatings = len(user.hostratings)
-    if(numberOfRatings != 0):
-        comments = []
-        for hostrate in user.hostratings:
-            averageQuality += hostrate.quality
-            averageQuantity += hostrate.quantity
-            averageonTime += hostrate.onTime
-            averageMood += hostrate.mood
-            if hostrate.comment is not None:
-                comments.append(hostrate.comment)
+    try:
+        user = session.query(User).filter(User.id == userId).one()
+        averageQuality = 0
+        averageQuantity = 0
+        averageonTime = 0
+        averageMood = 0
+        numberOfRatings = len(user.hostratings)
+        if(numberOfRatings != 0):
+            comments = []
+            for hostrate in user.hostratings:
+                averageQuality += hostrate.quality
+                averageQuantity += hostrate.quantity
+                averageonTime += hostrate.onTime
+                averageMood += hostrate.mood
+                if hostrate.comment is not None:
+                    comments.append(hostrate.comment)
+            session.close()
+            if len(comments) == 0:
+                comments = None
+            return{"quality": averageQuality/numberOfRatings,
+                   "quantity": averageQuantity/numberOfRatings,
+                   "onTime": averageonTime/numberOfRatings,
+                   "mood": averageMood/numberOfRatings,
+                   "comments": comments}
+        else:
+            session.close()
+            return {"quality": None,
+                    "quantity": None,
+                    "onTime": None,
+                    "mood": None,
+                    "comments": None}
+    except NoResultFound:
         session.close()
-        if len(comments) == 0:
-            comments = None
-        return{"quality": averageQuality/numberOfRatings,
-               "quantity": averageQuantity/numberOfRatings,
-               "onTime": averageonTime/numberOfRatings,
-               "mood": averageMood/numberOfRatings,
-               "comments": comments}
-    else:
-        session.close()
-        return {"quality": None,
-                "quantity": None,
-                "onTime": None,
-                "mood": None,
-                "comments": None}
+        return jsonify({"success": False,
+                        "error": {"message": "No User found with this id"}})
 
 
 def getWalkingDistanceFromGoogle(startCoordinats, listofDestinations):
