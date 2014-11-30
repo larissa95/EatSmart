@@ -13,6 +13,7 @@ static int uuid = -1;
 
 
 +(void) setUserId:(int) _id{
+    NSLog(@"%d",_id);
     NSString *string = [NSString stringWithFormat:@"%u",_id];
     NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *path = [documentsPath stringByAppendingPathComponent:@"user.txt"];
@@ -41,7 +42,7 @@ static int uuid = -1;
     NSString* filePath = [documentsPath stringByAppendingPathComponent:@"user.txt"];
     NSString* string = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:NULL];
     if(string) {
-        uuid = (int)[string componentsSeparatedByString:@"\n"][0];
+        uuid = [[string componentsSeparatedByString:@"\n"][0] intValue];
     }
 }
 

@@ -7,18 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @import UIKit;
 @protocol ServerDelegate <NSObject>
 
 @required
--(void) finishedServerCommunication:(NSData *) output;
+-(void) finishedServerCommunication:(NSData *) output fromServer:(int) serverTag;
 
 @end
 
 @interface ServerCommunication : NSObject
+@property(nonatomic) int tag;
 
-
--(void) loadDataFromServerWithURL:(NSString *) url andParameters:(NSString *) parameters;
+-(void) loadDataFromServerWithURL:(NSString *) url andParameters:(NSString *) parameters andHTTPMethod:(NSString*) httpRequestMethods;
 +(void) loadImageFromURLInBackgroundAndPutInImageView:(NSArray *) urlAndImageView;
 @property (strong, nonatomic) id<ServerDelegate> delegate;
 

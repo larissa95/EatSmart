@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AppDelegate.h"
 #import "LocalDataBase.h"
+#import "ServerUrl.h"
+#import "ServerCommunication.h"
 
 @interface ProfileViewController : UIViewController
 

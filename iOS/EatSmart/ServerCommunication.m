@@ -13,32 +13,36 @@
 @synthesize delegate;
 
 
-
--(void) loadDataFromServerWithURL:(NSString *) url andParameters:(NSString *) parameters {
-    [self performSelectorInBackground:@selector(backgroundLoading:) withObject:@[url,parameters]];
+-(void) loadDataFromServerWithURL:(NSString *) url andParameters:(NSString *) parameters andHTTPMethod:(NSString*) httpRequestMethods {
+    [self performSelectorInBackground:@selector(backgroundLoading:) withObject:@[url,parameters,httpRequestMethods]];
 }
 
 - (void) backgroundLoading:(NSArray *)array{
     NSString *url = array[0];
     NSString *data = array[1];
-
+    NSString *httpRequestMethods = array[2];
     
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    [request setHTTPMethod:@"GET"];
+    [request setHTTPMethod:httpRequestMethods];
+    NSLog(@"%@",request);
     
-    NSString *post =data;
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    [request setHTTPBody:postData];
+  //  NSString *post =data;
+  //  NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+  //  [request setHTTPBody:postData];
     
     NSURLResponse *response;
     NSError *err;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
     
     [self performSelectorOnMainThread:@selector(finishedCatchingData:) withObject:responseData waitUntilDone:NO];
+    NSString *someString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSLog(@"%@,respo",someString);
 }
 
 -(void) finishedCatchingData:(NSData *) ausgabe {
-    [delegate finishedServerCommunication:ausgabe];
+    NSString *someString = [[NSString alloc] initWithData:ausgabe encoding:NSUTF8StringEncoding];
+    NSLog(@"%@,test",someString);
+    [delegate finishedServerCommunication:ausgabe fromServer:self.tag];
 }
 
 

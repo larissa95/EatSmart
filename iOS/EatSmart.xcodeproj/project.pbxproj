@@ -13,6 +13,7 @@
 		4EA09BDF1A28FE9E00D2618B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EA09BDE1A28FE9E00D2618B /* Images.xcassets */; };
 		4EA09BE21A28FE9E00D2618B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4EA09BE01A28FE9E00D2618B /* LaunchScreen.xib */; };
 		4EA09BEE1A28FE9E00D2618B /* EatSmartTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA09BED1A28FE9E00D2618B /* EatSmartTests.m */; };
+		4ECBAB771A2A563E0027F980 /* ServerUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECBAB761A2A563E0027F980 /* ServerUrl.m */; };
 		518998701A290B77004C71E5 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5189986F1A290B77004C71E5 /* MainViewController.m */; };
 		518998731A290EF1004C71E5 /* Meal.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998721A290EF1004C71E5 /* Meal.m */; };
 		518998761A290EF8004C71E5 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998751A290EF8004C71E5 /* User.m */; };
@@ -56,6 +57,8 @@
 		4EA09BE71A28FE9E00D2618B /* EatSmartTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EatSmartTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EA09BEC1A28FE9E00D2618B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4EA09BED1A28FE9E00D2618B /* EatSmartTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EatSmartTests.m; sourceTree = "<group>"; };
+		4ECBAB751A2A563E0027F980 /* ServerUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerUrl.h; sourceTree = "<group>"; };
+		4ECBAB761A2A563E0027F980 /* ServerUrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerUrl.m; sourceTree = "<group>"; };
 		5189986E1A290B77004C71E5 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = ../MainViewController.h; sourceTree = "<group>"; };
 		5189986F1A290B77004C71E5 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = ../MainViewController.m; sourceTree = "<group>"; };
 		518998711A290EF1004C71E5 /* Meal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meal.h; sourceTree = "<group>"; };
@@ -135,6 +138,8 @@
 				51B238891A2A3B1A0076509E /* PlaceholderProfileImage.png */,
 				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
+				4ECBAB751A2A563E0027F980 /* ServerUrl.h */,
+				4ECBAB761A2A563E0027F980 /* ServerUrl.m */,
 				4E080BD21A2A37BD0021D33F /* ProfileViewController.h */,
 				4E080BD31A2A37BD0021D33F /* ProfileViewController.m */,
 				5189986E1A290B77004C71E5 /* MainViewController.h */,
@@ -314,6 +319,7 @@
 				5189987F1A292106004C71E5 /* DataBaseConnection.m in Sources */,
 				4E080BD41A2A37BD0021D33F /* ProfileViewController.m in Sources */,
 				51CAD7F91A2A0F1A0042FC77 /* MealDetailTableViewCell.m in Sources */,
+				4ECBAB771A2A563E0027F980 /* ServerUrl.m in Sources */,
 				518998701A290B77004C71E5 /* MainViewController.m in Sources */,
 				518998981A2937B8004C71E5 /* AMRatingControl.m in Sources */,
 				518998791A29165F004C71E5 /* HostRating.m in Sources */,

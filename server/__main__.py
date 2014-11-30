@@ -4,7 +4,7 @@ import requests
 from sqlalchemy_declarative import *
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy import func, count
+from sqlalchemy import func
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
@@ -162,6 +162,7 @@ def meal_confirm_unconfirmed_user(mealId, userId):
 def meal_search(latitude, longitude):
     #squareLat, squareLong = getCloseByCoordinats(latitude, longitude, 5000)
     session = DBSession()
+    #       ' .filter(Meal.users.count() <= Meal.maxGuests)\
     try:
         diffLatitude = 5000/110574
         diffLongitude = 110574*math.cos(math.radians(longitude))
@@ -170,7 +171,6 @@ def meal_search(latitude, longitude):
                      Meal.longitude >= longitude-diffLongitude))\
         .filter(and_(Meal.latitude <= latitude+diffLatitude,
                      Meal.latitude >= latitude-diffLatitude))\
-        .filter(Meal.users.count() <= Meal.maxGuests)\
         .all()
         if len(meals) == 0:
             return {"success": True, "results": []}
