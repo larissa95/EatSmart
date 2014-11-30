@@ -117,9 +117,8 @@
             buyStatusForThisUser++;
         }else{
             NSLog(@"test");
-            //TODO
-            //ProfileViewController *profile = [[ProfileViewController alloc] init];
-            //[self.navigationController pushViewController:profile animated:YES];
+            ProfileViewController *profile = [[ProfileViewController alloc] init];
+            [self.navigationController pushViewController:profile animated:YES];
         }
     } else if(buyStatusForThisUser==2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Pending…"

@@ -48,6 +48,10 @@ def meal_create():
                 latitude=latitude,
                 longitude=longitude,
                 description=description)
+    #New => muss über all noch hinzugefügt werden
+    host.meals.append(meal)
+    session.add(host)
+
     session.add(meal)
     session.commit()
     mealDic = {"success": True, "mealId": meal.id}
@@ -82,7 +86,17 @@ def meal_get_information(mealId):
         for rating in meal.host.hostratings:
             if rating.comment:
                 reviews.append(rating.comment)
+        #Neu
+        pendingUserIds = []
+        for user in meal.unconfirmedUsers:
+            pendingUserIds.append(user.id)
+
+        confirmedUserIds = []
+        for user in meal.users:
+            confirmedUserIds.append(user.id)
+
         responseDic = {"success": True,
+                       "mealName": meal.name,
                        "mealId": mealId,
                        "typ": meal.typ,
                        "date": meal.date,
@@ -94,6 +108,8 @@ def meal_get_information(mealId):
                        "reviews": reviews,
                        "nutrition_typ": meal.nutrition_typ,
                        "description": meal.description,
+                       "pendingUserIds":pendingUserIds,
+                       "confirmedUserIds":confirmedUserIds,
                        "placeGPS": {
                            "latitude": meal.latitude,
                            "longitude": meal.longitude},
@@ -104,7 +120,10 @@ def meal_get_information(mealId):
                            "gender": host.gender,
                            "hostId": host.id,
                            "registerdsince": host.firstLogin,
-                           "image": meal.host.imageUrl},
+                           "image": meal.host.imageUrl,
+                            "hostRating":calculateTotalAverageHostRating(host.id)
+
+
                        }
         session.commit()
     except NoResultFound:
@@ -115,6 +134,7 @@ def meal_get_information(mealId):
 
     return jsonify(responseDic)
 #get guests, date,...
+
 
 
 @app.route('/0.2.1b/meals/<mealId>/user/<userId>', methods=['POST'])
