@@ -1,8 +1,43 @@
-<!doctype html>
-<title>mealhub</title>
-<link rel=stylesheet type=text/css href="">
-<div class=page>
-  <h1>mealhub</h1>
-  <div class=metanav>
-  
-</div>
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Your request has been confirmed</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+    <link type="text/css" href="https://github.com/larissa88/EatSmart/blob/master/Mail/style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1>Notification from Mealhub</h1>
+      <div id="content">
+        Hi {{user.name}},
+        <p>
+          {{meal.host.name}} has just confirmed your request to join the {{meal.typ}} "{{meal.name}}".
+        </p>
+        <p>
+          Here is the most important information about the event:
+          <div class="event-info">
+            <div>
+              Date: <b>{{meal.date}}</b>
+            </div>
+            <div>
+              Location: <b>{{meal.address}}</b>
+            </div>
+            <div>
+              Price: <b>{{meal.price}} &euro;</b>
+            </div>
+          </div>
+        </p>
+        <p>
+          Cheers,<br>
+          The Mealhub team
+        </p>
+        <div class="image-wrapper">
+          <img class="logo" src="https://raw.githubusercontent.com/larissa88/EatSmart/master/Mail/Logo.png" width="10%" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
