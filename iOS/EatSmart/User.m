@@ -9,7 +9,7 @@
 #import "User.h"
 
 @implementation User
-@synthesize uuid,name,profilePicURL,guestRating,hostRating,registerdsince,gender,phoneNumber,age;
+@synthesize uuid,name,profilePicURL,guestRating,hostRating,registerdsince,gender,phoneNumber,age,email;
 
 -(id) initWithJSON:(NSDictionary *) JSON {
     self = [super init];    
@@ -44,6 +44,10 @@
         }
         
         age=[JSON objectForKey:@"age"];
+        if(age == (id)[NSNull null]) {
+            age=nil;
+        }
+        email=[JSON objectForKey:@"email"];
         if(age == (id)[NSNull null]) {
             age=nil;
         }

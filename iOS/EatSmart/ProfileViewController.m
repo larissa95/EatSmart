@@ -16,15 +16,19 @@
 
 @implementation ProfileViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.userAtrri = [NSArray arrayWithObjects: @"Name",@"Email", @"FirstLogin",@"Age", @"Gender", @"Phone Number", nil];
+
+    
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"Profile";
-
+    [self showLoginTable];
     if(![LocalDataBase UserIsRegistered]){
         [self showPayPalLogin];
     }else{
-        [self showProfileView];
+        [self loadUserInfos];
         }
 }
 
@@ -39,7 +43,7 @@
         NSLog(JSON.description);
         NSNumber *iden = (NSNumber*)[JSON objectForKey:@"userId"];
         [LocalDataBase setUserId:[iden intValue]];
-        [self showProfileView];
+        [self loadUserInfos];
     }else{
         self.loginButton.alpha = 1;
         self.intro.alpha = 1;
@@ -50,9 +54,10 @@
     if(serverTag == 1){
         if(output){
             NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:output options:0 error:nil];
-            NSLog(JSON.description);
-            User *user = [[User alloc] initWithJSON:JSON];
-            NSLog(user.name);
+           // NSLog(JSON.description);
+            self.user = [[User alloc] initWithJSON:JSON];
+            [self.tableView reloadData];
+        
         }else{
             NSLog(@"nil");
         }
@@ -147,13 +152,141 @@
  
 }
 
+-(void) showLoginTable{
+    self.tableView=[[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    self.tableView.dataSource=self;
+    self.tableView.delegate=self;
+    [self.view addSubview:self.tableView];
+}
 
--(void) showProfileView{
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if(!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+    }
+    
+    if(self.user){
+        if(indexPath.row == 0){
+        if(self.user.name){
+            cell.textLabel.text = self.user.name;
+        }else{
+        UITextField *tf0 = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, cell.frame.size.width,cell.frame.size.height)];
+        tf0.textColor = [UIColor colorWithRed:0/256.0 green:84/256.0 blue:129/256.0 alpha:1.0];
+        tf0.backgroundColor=[UIColor clearColor];
+        tf0.placeholder= [[self.userAtrri objectAtIndex:indexPath.section] lowercaseString];
+        tf0.tag = 0;
+        tf0.delegate = self;
+        [cell addSubview:tf0];
+        cell.backgroundColor=[UIColor clearColor];
+        }
+        }
+        
+        if(indexPath.row == 1){
+        if(self.user.email){
+            cell.textLabel.text = self.user.email;
+        }else{
+            UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, cell.frame.size.width,cell.frame.size.height)];
+            tf.textColor = [UIColor colorWithRed:0/256.0 green:84/256.0 blue:129/256.0 alpha:1.0];
+            tf.backgroundColor=[UIColor clearColor];
+            tf.placeholder= [[self.userAtrri objectAtIndex:indexPath.section] lowercaseString];
+            tf.tag = 1;
+            tf.delegate = self;
+            [cell addSubview:tf];
+            cell.backgroundColor=[UIColor clearColor];
+        }
+        }
+
+        
+        if(indexPath.row == 3){
+        if(self.user.age){
+            cell.textLabel.text = self.user.age;
+        }else{
+            UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, cell.frame.size.width,cell.frame.size.height)];
+            tf.textColor = [UIColor colorWithRed:0/256.0 green:84/256.0 blue:129/256.0 alpha:1.0];
+            tf.backgroundColor=[UIColor clearColor];
+            tf.placeholder= [[self.userAtrri objectAtIndex:indexPath.section] lowercaseString];
+            tf.tag = 3;
+            tf.delegate = self;
+            [cell addSubview:tf];
+            cell.backgroundColor=[UIColor clearColor];
+        }
+        }
+        if(indexPath.row == 4){
+        if(self.user.gender){
+            cell.textLabel.text = self.user.gender;
+        }else{
+            UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, cell.frame.size.width,cell.frame.size.height)];
+            tf.textColor = [UIColor colorWithRed:0/256.0 green:84/256.0 blue:129/256.0 alpha:1.0];
+            tf.backgroundColor=[UIColor clearColor];
+            tf.tag = 4;
+            tf.delegate = self;
+            tf.placeholder= [[self.userAtrri objectAtIndex:indexPath.section] lowercaseString];
+            [cell addSubview:tf];
+            cell.backgroundColor=[UIColor clearColor];
+        }
+        }
+        if(indexPath.row == 5){
+        if(self.user.phoneNumber){
+            cell.textLabel.text = self.user.phoneNumber;
+        }else{
+            UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, cell.frame.size.width,cell.frame.size.height)];
+            tf.textColor = [UIColor colorWithRed:0/256.0 green:84/256.0 blue:129/256.0 alpha:1.0];
+            tf.backgroundColor=[UIColor clearColor];
+            tf.tag = 5;
+            tf.delegate = self;
+            tf.placeholder= [[self.userAtrri objectAtIndex:indexPath.section] lowercaseString];
+            [cell addSubview:tf];
+            cell.backgroundColor=[UIColor clearColor];
+        }
+        }
+        if(indexPath.row == 2){
+            cell.textLabel.text = @"30.11.2014";
+        }
+        
+    }else{
+        NSLog(@"notInitialed");
+    }
+    return cell;
+}
+
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [self.userAtrri count];
+}
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+
+ return [self.userAtrri objectAtIndex:section];
+}
+
+
+
+-(void) loadUserInfos{
     NSLog(@"%i",[LocalDataBase userId]);
     ServerCommunication *server = server = [[ServerCommunication alloc] init];
     server.delegate = self;
     server.tag = 1;
     [server loadDataFromServerWithURL:[NSString stringWithFormat:@"%@/user/%i/information",[ServerUrl serverUrl],[LocalDataBase userId]] andParameters:@"" andHTTPMethod:@"GET"];
+    
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    NSLog(@"%ld",(long)textField.tag);
+    return NO;
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    textField.placeholder = @"adfdaf";
+    textField.placeholder = nil;
+    NSLog(@"did");
 }
 /*
 #pragma mark - Navigation
