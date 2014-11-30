@@ -7,7 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FRSlider.h"
+#import "AppDelegate.h"
 
-@interface CreateNewMealViewController : UIViewController
+@import MapKit;
+@import CoreLocation;
+
+@interface CreateNewMealViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,CLLocationManagerDelegate>
+
+@property(nonatomic) UITableView *table;
+@property(nonatomic) UITextField *textField;
+@property(nonatomic) UITextField *locationDescription;
+@property(nonatomic) UIDatePicker *datePicker;
+@property(nonatomic) FRSlider *numberOfGuests;
+@property(nonatomic) FRSlider *costPerGuest;
+@property(nonatomic) UISegmentedControl *segmentControl;
+@property(nonatomic) CLLocationManager *locManager;
+@property(nonatomic) MKMapView *map;
 
 @end

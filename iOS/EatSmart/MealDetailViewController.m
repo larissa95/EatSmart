@@ -44,13 +44,17 @@
         
         [self performSelectorInBackground:@selector(loadAdditionalDataInbackground) withObject:nil];
         
+
+
         
     }
     return self;
 }
 
+
+
 -(void) loadAdditionalDataInbackground {
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://10.60.36.31:5000/0.2.1b/meals/%ld",(long)self.meal.uuid]]];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@/meals/%ld",[AppDelegate IP],(long)self.meal.uuid]]];
     if(data) {
         
         NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -62,8 +66,8 @@
         
         
     }
-
-
+    
+    
     //http://10.60.36.31:5000/0.2.1b/meals/1
 }
 
@@ -201,7 +205,7 @@
                     
             }
         }
-         return cell;
+        return cell;
     }
     return nil;
 }
@@ -210,14 +214,14 @@
     if (segmentControl.selectedSegmentIndex==2) {
         return @"Larissa Laich";
     }
-     return @"";
+    return @"";
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(segmentControl.selectedSegmentIndex==2) {
         NSString *str = @"Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war. Das Essen hat sehr gut geschmeckt, allerdings fand ich es doof, dass eine Ratte mit knallroten Augen unter dem Kühlschrank war.";
         CGSize size = [str sizeWithFont:[UIFont fontWithName:@"HelveticaNeue" size:19] constrainedToSize:CGSizeMake(self.view.frame.size.width, 10000) lineBreakMode:UILineBreakModeWordWrap];
-
+        
         return size.height + 10;
     }
     return 60;
@@ -227,16 +231,18 @@
     if (segmentControl.selectedSegmentIndex==0) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
         
-        MKMapView *map =[[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
+        
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         annotation.coordinate=self.meal.gpsLocation;
+        
+        MKMapView *map =[[MKMapView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 300)];
         [map addAnnotation:annotation];
         
         [view addSubview:map];
         map.userInteractionEnabled=NO;
         map.region = MKCoordinateRegionMake(self.meal.gpsLocation, MKCoordinateSpanMake(0.002, 0.003));
         
-       
+        
         
         return view;
     }
