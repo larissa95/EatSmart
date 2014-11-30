@@ -61,27 +61,29 @@
     NSError *err;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
     
-    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-    
-    
-    NSArray *tempPendingMeals = [JSON objectForKey:@"mealUnconfirmedIds"];
-    for(int i=0; i<[tempPendingMeals count]; i++) {
-        [self addUnconfirmedMeals:[[tempPendingMeals objectAtIndex:i] intValue]];
+    if(responseData) {
+        NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+        
+        
+        NSArray *tempPendingMeals = [JSON objectForKey:@"mealUnconfirmedIds"];
+        for(int i=0; i<[tempPendingMeals count]; i++) {
+            [self addUnconfirmedMeals:[[tempPendingMeals objectAtIndex:i] intValue]];
+        }
+        
+        NSArray *tempConfirmedMeals = [JSON objectForKey:@"mealGuestIds"];
+        for(int i=0; i<[tempConfirmedMeals count]; i++) {
+            [self addConfirmedMeals:[[tempConfirmedMeals objectAtIndex:i] intValue]];
+        }
+        
+        NSArray *tempHostedMeals = [JSON objectForKey:@"mealHostIds"];
+        for(int i=0; i<[tempHostedMeals count]; i++) {
+            [self addHostedMeals:[[tempHostedMeals objectAtIndex:i] intValue]];
+        }
+        
+        
+        
+        [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     }
-    
-    NSArray *tempConfirmedMeals = [JSON objectForKey:@"mealGuestIds"];
-    for(int i=0; i<[tempConfirmedMeals count]; i++) {
-        [self addConfirmedMeals:[[tempConfirmedMeals objectAtIndex:i] intValue]];
-    }
-    
-    NSArray *tempHostedMeals = [JSON objectForKey:@"mealHostIds"];
-    for(int i=0; i<[tempHostedMeals count]; i++) {
-        [self addHostedMeals:[[tempHostedMeals objectAtIndex:i] intValue]];
-    }
-    
-    
-    
-    [table performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
     [refreshControl performSelectorOnMainThread:@selector(endRefreshing) withObject:nil waitUntilDone:NO];
     
     
@@ -249,12 +251,26 @@
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    /* Meal *selectedMeal = [mealSuggestions objectAtIndex:indexPath.row];
-     MealDetailViewController *mdvc = [[MealDetailViewController alloc] initWithMeal:selectedMeal];
-     [self.navigationController pushViewController:mdvc animated:YES];*/
+    Meal *selectedMeal;
+    switch (indexPath.section) {
+        case 0:
+            selectedMeal = [myHostedMeals objectAtIndex:indexPath.row];
+            break;
+        case 1:
+            selectedMeal = [myConfirmedMeals objectAtIndex:indexPath.row];
+            break;
+        case 2:
+            selectedMeal = [myPendingMeals objectAtIndex:indexPath.row];
+            break;
+            
+        default:
+            break;
+    }
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
+    MealDetailViewController *mdvc = [[MealDetailViewController alloc] initWithMeal:selectedMeal];
+    [self.navigationController pushViewController:mdvc animated:YES];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];}
 
 /*
  #pragma mark - Navigation
