@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Your request has been confirmed</title>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+		<link type="text/css" href="style.css" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<div id="wrapper">
+			<h1>Welcome to Mealhub</h1>
+			<div id="content">
+				Hi $first_name,
+				<p>
+					$host_first_name $host_last_name has just confirmed your request to join the $cooking_event/eating_event "$event_name".
+				</p>
+				<p>
+					Here is the most important information about the event:
+					<div class="event-info">
+						<div>
+							Date: <b>$date</b>
+						</div>
+						<div>
+							Time: <b>$time</b>
+						</div>
+						<div>
+							Location: <b>$location</b>
+						</div>
+						<div>
+							Price: <b>$price</b>
+						</div>
+					</div>
+				</p>
+				<p>
+					Cheers,<br>
+					The Mealhub team
+				</p>
+				<div class="image-wrapper">
+					<img class="logo" src="Logo.png" width="10%" />
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
