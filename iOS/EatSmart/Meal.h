@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 @import CoreLocation;
 #import "User.h"
+#import "LocalDataBase.h"
 
 @interface Meal : NSObject
 
@@ -29,7 +30,16 @@
 @property(readonly) CLLocationCoordinate2D gpsLocation;
 @property(readonly) NSNumber *walkDistanceInSeconds;
 
+@property(readonly) int numberOfPending;
+
 @property(readonly) bool isCookEvent;
+@property(readonly) bool thisUserIsHost;
+
+@property(readwrite) int buyStatus;
+
+@property(readonly) NSArray *pendingUserIDs;
+@property(readonly) NSArray *confirmedUserIDs;
+
 
 -(id)initWithJSON:(NSDictionary *) JSON;
 -(id) initDummy;

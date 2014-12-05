@@ -18,7 +18,7 @@
     [super viewDidLoad];
     [self setNeedsStatusBarAppearanceUpdate];
     
-    self.title=@"EatCook'nMeet";
+    self.title=@"MealHub";
     
     self.view.backgroundColor=[UIColor whiteColor];
     

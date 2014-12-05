@@ -11,6 +11,7 @@
 #import "MealHeadView.h"
 #import "MealDetailTableViewCell.h"
 #import "AppDelegate.h"
+#import "Review.h"
 @import MapKit;
 @import CoreLocation;
 
@@ -24,6 +25,9 @@
 @property(nonatomic) Meal *meal;
 @property(nonatomic) User *host;
 @property(nonatomic) NSMutableArray *reviews;
+
+@property(nonatomic) NSMutableArray *pendingUsers;
+@property(nonatomic) NSMutableArray *confirmedUsers;
 
 
 

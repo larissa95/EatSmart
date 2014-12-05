@@ -45,6 +45,8 @@
 		518998B01A29FF17004C71E5 /* MealHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 518998AF1A29FF17004C71E5 /* MealHeadView.m */; };
 		51B2388A1A2A3B1A0076509E /* PlaceholderProfileImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B238891A2A3B1A0076509E /* PlaceholderProfileImage.png */; };
 		51B2389E1A2B1BEB0076509E /* MyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B2389D1A2B1BEB0076509E /* MyEventsViewController.m */; };
+		51B238A11A2B234F0076509E /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = 51B238A01A2B234F0076509E /* Review.m */; };
+		51B238A31A2B2A570076509E /* hdm.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 51B238A21A2B2A570076509E /* hdm.gpx */; };
 		51CAD7F91A2A0F1A0042FC77 /* MealDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */; };
 		51CAD7FC1A2A12B30042FC77 /* Cook.png in Resources */ = {isa = PBXBuildFile; fileRef = 51CAD7FA1A2A12B30042FC77 /* Cook.png */; };
 		51CAD7FD1A2A12B30042FC77 /* Eat.png in Resources */ = {isa = PBXBuildFile; fileRef = 51CAD7FB1A2A12B30042FC77 /* Eat.png */; };
@@ -134,6 +136,9 @@
 		51B238891A2A3B1A0076509E /* PlaceholderProfileImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlaceholderProfileImage.png; sourceTree = "<group>"; };
 		51B2389C1A2B1BEB0076509E /* MyEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEventsViewController.h; sourceTree = "<group>"; };
 		51B2389D1A2B1BEB0076509E /* MyEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEventsViewController.m; sourceTree = "<group>"; };
+		51B2389F1A2B234F0076509E /* Review.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Review.h; sourceTree = "<group>"; };
+		51B238A01A2B234F0076509E /* Review.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Review.m; sourceTree = "<group>"; };
+		51B238A21A2B2A570076509E /* hdm.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = hdm.gpx; path = EatSmart/hdm.gpx; sourceTree = "<group>"; };
 		51CAD7F71A2A0F1A0042FC77 /* MealDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealDetailTableViewCell.h; sourceTree = "<group>"; };
 		51CAD7F81A2A0F1A0042FC77 /* MealDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealDetailTableViewCell.m; sourceTree = "<group>"; };
 		51CAD7FA1A2A12B30042FC77 /* Cook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cook.png; sourceTree = "<group>"; };
@@ -175,6 +180,7 @@
 		4EA09BC51A28FE9E00D2618B = {
 			isa = PBXGroup;
 			children = (
+				51B238A21A2B2A570076509E /* hdm.gpx */,
 				4EA09BD01A28FE9E00D2618B /* EatSmart */,
 				4EA09BEA1A28FE9E00D2618B /* EatSmartTests */,
 				4EA09BCF1A28FE9E00D2618B /* Products */,
@@ -198,8 +204,8 @@
 				4ECBABB51A2B152D0027F980 /* loginWithPayPal.png */,
 				51CAD7FB1A2A12B30042FC77 /* Eat.png */,
 				51B238891A2A3B1A0076509E /* PlaceholderProfileImage.png */,
-				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4ECBABA51A2B13D40027F980 /* PayPalMobile */,
+				4EA09BD51A28FE9E00D2618B /* AppDelegate.h */,
 				4EA09BD61A28FE9E00D2618B /* AppDelegate.m */,
 				4ECBAB751A2A563E0027F980 /* ServerUrl.h */,
 				4ECBAB761A2A563E0027F980 /* ServerUrl.m */,
@@ -211,6 +217,8 @@
 				5189987B1A291C1A004C71E5 /* MealTableViewCell.m */,
 				518998841A2929AC004C71E5 /* MealDetailViewController.h */,
 				518998851A2929AC004C71E5 /* MealDetailViewController.m */,
+				51B2389F1A2B234F0076509E /* Review.h */,
+				51B238A01A2B234F0076509E /* Review.m */,
 				51B2389C1A2B1BEB0076509E /* MyEventsViewController.h */,
 				51B2389D1A2B1BEB0076509E /* MyEventsViewController.m */,
 				518998AE1A29FF17004C71E5 /* MealHeadView.h */,
@@ -402,6 +410,7 @@
 				51CAD7FC1A2A12B30042FC77 /* Cook.png in Resources */,
 				4ECBABB61A2B152D0027F980 /* loginWithPayPal.png in Resources */,
 				51B2388A1A2A3B1A0076509E /* PlaceholderProfileImage.png in Resources */,
+				51B238A31A2B2A570076509E /* hdm.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +433,7 @@
 				518998A41A29C75F004C71E5 /* LocalDataBase.m in Sources */,
 				518998861A2929AC004C71E5 /* MealDetailViewController.m in Sources */,
 				518998761A290EF8004C71E5 /* User.m in Sources */,
+				51B238A11A2B234F0076509E /* Review.m in Sources */,
 				518998731A290EF1004C71E5 /* Meal.m in Sources */,
 				4EA09BD71A28FE9E00D2618B /* AppDelegate.m in Sources */,
 				518998B01A29FF17004C71E5 /* MealHeadView.m in Sources */,

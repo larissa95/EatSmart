@@ -26,9 +26,9 @@
     [request setHTTPMethod:httpRequestMethods];
     NSLog(@"%@",request);
     
-  //  NSString *post =data;
-  //  NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-  //  [request setHTTPBody:postData];
+    //  NSString *post =data;
+    //  NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    //  [request setHTTPBody:postData];
     
     NSURLResponse *response;
     NSError *err;
@@ -40,7 +40,7 @@
 
 -(void) finishedCatchingData:(NSData *) ausgabe {
     NSString *someString = [[NSString alloc] initWithData:ausgabe encoding:NSUTF8StringEncoding];
-
+    
     [delegate finishedServerCommunication:ausgabe fromServer:self.tag];
 }
 

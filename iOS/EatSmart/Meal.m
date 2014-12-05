@@ -10,7 +10,7 @@
 
 
 @implementation Meal
-@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInSeconds,host,rating,isCookEvent,gpsLocation,profilePicString,locationDescription;
+@synthesize uuid,name,numberOfCurrentPersons,numberOfMaxPersons,timeStamp,price,walkDistanceInSeconds,host,rating,isCookEvent,gpsLocation,profilePicString,buyStatus,numberOfPending,thisUserIsHost,locationDescription,pendingUserIDs,confirmedUserIDs;
 -(id)initWithJSON:(NSDictionary *) JSON {
     self = [super init];
 
@@ -45,8 +45,43 @@
         gpsLocation=CLLocationCoordinate2DMake([[[JSON objectForKey:@"placeGPS"] objectForKey:@"latitude"] doubleValue], [[[JSON objectForKey:@"placeGPS"] objectForKey:@"longitude"] doubleValue]);
         
         profilePicString = [JSON objectForKey:@"imageUrl"];
+        if(profilePicString == (id)[NSNull null]) {
+            profilePicString=nil;
+        }
 
         locationDescription = [JSON objectForKey:@"address"];
+        
+        
+        pendingUserIDs = [JSON objectForKey:@"pendingUserIds"];
+        
+        for(int i=0; i<[pendingUserIDs count]; i++) {
+            if([[pendingUserIDs objectAtIndex:i] intValue] == [LocalDataBase userId]) {
+                buyStatus=2;
+            }
+        }
+        
+        numberOfPending=(int)[pendingUserIDs count];
+        
+        
+        confirmedUserIDs = [JSON objectForKey:@"confirmedUserIds"];
+        
+        for(int i=0; i<[confirmedUserIDs count]; i++) {
+            if([[confirmedUserIDs objectAtIndex:i] intValue] == [LocalDataBase userId]) {
+                buyStatus=3;
+                NSLog(@"Öpi");
+            }
+        }
+        
+        
+
+        NSString *hostID = [JSON objectForKey:@"host_id"];
+        NSLog(@"%@",hostID);
+        if([hostID intValue] == [LocalDataBase userId]) {
+            thisUserIsHost = true;
+            
+        }
+
+        
         
     }
     

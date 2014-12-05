@@ -94,7 +94,7 @@ bool deadlinecellExtended;
 
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
-    map.region = MKCoordinateRegionMake(newLocation.coordinate, MKCoordinateSpanMake(0.002, 0.003));
+    map.region = MKCoordinateRegionMake(newLocation.coordinate, MKCoordinateSpanMake(0.004, 0.006));
 }
 
 

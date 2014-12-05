@@ -35,6 +35,7 @@
     myConfirmedMeals=[[NSMutableArray alloc] init];
     
     [super viewDidLoad];
+    [refreshControl beginRefreshing];
     // Do any additional setup after loading the view.
 }
 
@@ -125,6 +126,9 @@
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
     
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+    
+    NSLog(JSON.description);
+    
     Meal *meal = [[Meal alloc] initWithJSON:JSON];
     [myHostedMeals addObject:meal];
 }
@@ -224,6 +228,7 @@
         case 0:
         {
             [cell setMeal:[myHostedMeals objectAtIndex:indexPath.row]];
+            
             break;
         }
         case 1:

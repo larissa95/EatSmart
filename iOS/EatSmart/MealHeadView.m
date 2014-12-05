@@ -37,10 +37,17 @@
         buy.layer.borderColor=[[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0] CGColor];
         buy.layer.borderWidth=1;
         [buy setTitleColor:[UIColor colorWithRed:70/255.0 green:129/255.0 blue:192/255.0 alpha:1.0] forState:UIControlStateNormal];
-
+        
         [buy addTarget:self action:@selector(buyPress) forControlEvents:UIControlEventTouchUpInside];
         
-        [buy setTitle:[NSString stringWithFormat:@"%.2f €",[meal.price floatValue]] forState:UIControlStateNormal];
+        if(meal.thisUserIsHost) {
+            [buy setTitle:[NSString stringWithFormat:@"✓"] forState:UIControlStateNormal];
+        } else if(meal.buyStatus==3) {
+            [buy setTitle:[NSString stringWithFormat:@"✓"] forState:UIControlStateNormal];
+        } else {
+            [buy setTitle:[NSString stringWithFormat:@"%.2f €",[meal.price floatValue]] forState:UIControlStateNormal];
+        }
+        
         [self addSubview:buy];
         
         title = [[UILabel alloc] init];
@@ -84,8 +91,8 @@
         
         [self addSubview:hostRating];
         
-       
-
+        
+        
         
         
     }
@@ -118,7 +125,7 @@
             
             NSString *url = [NSString stringWithFormat:@"%@/meals/%ld/user/%u",[ServerUrl serverUrl],(long)self.meal.uuid,[LocalDataBase userId]];
             
-
+            
             
             NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
             [request setHTTPMethod:@"POST"];
@@ -150,6 +157,8 @@
                                               otherButtonTitles:@"Cancel request",nil];
         
         [alert show];
+    } else if(buyStatusForThisUser==3) {
+        
     }
 }
 
@@ -177,17 +186,17 @@
     cookoreatLabel.frame=CGRectMake(self.frame.size.height+5+20, 43, 150, 20);
     hostRating.frame=CGRectMake(self.frame.size.height+5, 75, self.frame.size.width, 20);
     
-
+    
     
 }
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect {
+ // Drawing code
+ }
+ */
 
 @end
